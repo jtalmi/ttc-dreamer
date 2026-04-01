@@ -59,9 +59,9 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **SHARE-02**: User can optionally add a display name
 - [x] **SHARE-03**: User can export a clean image of the proposal
 - [x] **SHARE-04**: User can create an unlisted share link
-- [ ] **SHARE-05**: Shared proposals open in read-only view mode first
+- [x] **SHARE-05**: Shared proposals open in read-only view mode first
 - [x] **SHARE-06**: A viewer can make their own editable copy from a shared proposal
-- [ ] **SHARE-07**: First-time users get lightweight onboarding or tooltips that do not dominate the map
+- [x] **SHARE-07**: First-time users get lightweight onboarding or tooltips that do not dominate the map
 
 ## v2 Requirements
 
@@ -128,9 +128,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SHARE-02 | Phase 5 | Complete |
 | SHARE-03 | Phase 5 | Complete |
 | SHARE-04 | Phase 5 | Complete |
-| SHARE-05 | Phase 5 | Pending |
+| SHARE-05 | Phase 5 | Complete |
 | SHARE-06 | Phase 5 | Complete |
-| SHARE-07 | Phase 5 | Pending |
+| SHARE-07 | Phase 5 | Complete |
 
 **Coverage:**
 - v1 requirements: 38 total

@@ -16,7 +16,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 2: Toronto Baseline and Context Layers** - Make the map feel unmistakably local with TTC, GO, and city context (completed 2026-04-01)
 - [x] **Phase 3: Editing Core** - Deliver the fun proposal-building loop for lines, stations, branches, and styling (gap closure in progress) (completed 2026-04-01)
 - [x] **Phase 4: Stats, Inspectors, and Comparison** - Add descriptive insight without drifting into realism-heavy tooling (completed 2026-04-01)
-- [ ] **Phase 5: Sharing, Export, and Polish** - Make proposals externally shareable and viewer-friendly
+- [x] **Phase 5: Sharing, Export, and Polish** - Make proposals externally shareable and viewer-friendly (completed 2026-04-01)
 
 ## Phase Details
 
@@ -108,7 +108,7 @@ Plans:
 Plans:
 - [x] 05-01-PLAN.md — Create sharing types, serialization utilities, reducer actions (updateTitle, loadDraft), and tests
 - [x] 05-02-PLAN.md — Build Share modal, inline title editing, image export, and share link generation
-- [ ] 05-03-PLAN.md — Add shared view mode, edit-as-copy flow, and onboarding tooltips
+- [x] 05-03-PLAN.md — Add shared view mode, edit-as-copy flow, and onboarding tooltips
 
 ## Progress
 
@@ -121,4 +121,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | 2. Toronto Baseline and Context Layers | 3/3 | Complete   | 2026-04-01 |
 | 3. Editing Core | 6/6 | Complete   | 2026-04-01 |
 | 4. Stats, Inspectors, and Comparison | 3/3 | Complete   | 2026-04-01 |
-| 5. Sharing, Export, and Polish | 2/3 | In Progress|  |
+| 5. Sharing, Export, and Polish | 3/3 | Complete   | 2026-04-01 |
