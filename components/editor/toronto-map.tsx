@@ -33,6 +33,7 @@ import {
   snapToSegment,
   findNearbyStation,
   findSnapTarget,
+  detectLineHitType,
 } from "@/lib/proposal";
 import type {
   ProposalDraft,
@@ -114,6 +115,7 @@ export default function TorontoMap({
   onAddWaypoint,
   onFinishDrawing,
   onUpdateCursor,
+  onStartExtend,
   dispatch,
 }: TorontoMapProps) {
   const [data, setData] = useState<MapData | null>(null);
@@ -322,6 +324,54 @@ export default function TorontoMap({
     const map = getMap();
 
     if (activeTool === "draw-line") {
+      // If a drawing session is already active, place a waypoint as normal
+      if (drawingSession) {
+        onAddWaypoint?.(lngLat);
+        return;
+      }
+
+      // No active session — check if click is near a TTC line to extend or branch
+      if (map && data?.ttcRoutes) {
+        for (const feature of data.ttcRoutes.features) {
+          if (feature.geometry.type !== "LineString" && feature.geometry.type !== "MultiLineString") continue;
+
+          // Flatten MultiLineString into single waypoints array
+          const waypoints: [number, number][] =
+            feature.geometry.type === "LineString"
+              ? (feature.geometry.coordinates as [number, number][])
+              : (feature.geometry.coordinates as [number, number][][]).flat();
+
+          if (waypoints.length < 2) continue;
+
+          const hitType = detectLineHitType(lngLat, { waypoints }, map, 20);
+          if (!hitType) continue;
+
+          const props = feature.properties as Record<string, unknown>;
+          const ttcLineId = String(props["OBJECTID"] ?? "");
+
+          // Determine the snapped initial waypoint and draw mode
+          let initialWaypoint: [number, number];
+          let drawMode: "extend" | "branch";
+
+          if (hitType === "extend-start") {
+            initialWaypoint = waypoints[0];
+            drawMode = "extend";
+          } else if (hitType === "extend-end") {
+            initialWaypoint = waypoints[waypoints.length - 1];
+            drawMode = "extend";
+          } else {
+            // branch — snap to nearest mid-segment point
+            const nearestResult = snapToSegment(lngLat, waypoints, map, 20);
+            initialWaypoint = nearestResult?.position ?? lngLat;
+            drawMode = "branch";
+          }
+
+          onStartExtend?.(ttcLineId, drawMode, initialWaypoint);
+          return;
+        }
+      }
+
+      // Not near any TTC line — normal free waypoint placement
       onAddWaypoint?.(lngLat);
       return;
     }
@@ -425,7 +475,7 @@ export default function TorontoMap({
       // Click on empty space — deselect
       dispatch?.({ type: "setSelectedElement", payload: null });
     }
-  }, [activeTool, onAddWaypoint, draft, data, dispatch]);
+  }, [activeTool, onAddWaypoint, onStartExtend, drawingSession, draft, data, dispatch]);
 
   const handleDblClick = useCallback((e: MapMouseEvent) => {
     if (activeTool !== "draw-line" || !drawingSession) return;

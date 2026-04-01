@@ -69,6 +69,33 @@ export default function EditorShell() {
     dispatch({ type: "startDrawing", payload: { lineId: newLineId, mode: "new" } });
   }
 
+  // Handle starting an extend or branch from a TTC line click
+  function handleStartExtend(
+    ttcLineId: string,
+    mode: "extend" | "branch",
+    initialWaypoint: [number, number],
+  ) {
+    const newLineId = crypto.randomUUID();
+    const nextColor = DEFAULT_LINE_COLORS[draft.lines.length % DEFAULT_LINE_COLORS.length];
+    const lineName = mode === "extend" ? "Extension" : "Branch";
+    dispatch({
+      type: "addLine",
+      payload: {
+        id: newLineId,
+        name: lineName,
+        mode: "subway" as const,
+        color: nextColor,
+        parentLineId: ttcLineId,
+        isExtension: mode === "extend",
+        branchPoint: mode === "branch" ? initialWaypoint : undefined,
+      },
+    });
+    dispatch({
+      type: "startDrawing",
+      payload: { lineId: newLineId, mode, initialWaypoint },
+    });
+  }
+
   // Keyboard shortcuts: undo, redo, delete, escape
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -261,6 +288,7 @@ export default function EditorShell() {
       onUpdateCursor={(lngLat) =>
         dispatch({ type: "updateCursorPosition", payload: lngLat })
       }
+      onStartExtend={handleStartExtend}
       dispatch={dispatch}
     />
   );
