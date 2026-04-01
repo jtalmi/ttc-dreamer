@@ -14,6 +14,7 @@ import type { SharePayload } from "@/lib/sharing";
 import { decodeSharePayload } from "@/lib/sharing";
 import EditorFrame from "@/components/editor/editor-frame";
 import { FloatingDrawingToolbar } from "@/components/editor/floating-drawing-toolbar";
+import { FloatingLayerPicker } from "@/components/editor/floating-layer-picker";
 import { LineList } from "@/components/editor/sidebar/line-list";
 import { LineCreationPanel } from "@/components/editor/sidebar/line-creation-panel";
 import { ConfirmationDialog } from "@/components/editor/sidebar/confirmation-dialog";
@@ -490,23 +491,38 @@ export default function EditorShell() {
     </div>
   ) : undefined;
 
-  const floatingToolbar = (
-    <FloatingDrawingToolbar
-      activeTool={chrome.activeTool}
-      onToolSelect={(tool) => dispatch({ type: "setActiveTool", payload: tool })}
-      onAddLine={() => dispatch({ type: "setSidebarPanel", payload: "create" })}
-    />
+  const floatingControls = (
+    <>
+      <FloatingDrawingToolbar
+        activeTool={chrome.activeTool}
+        onToolSelect={(tool) => dispatch({ type: "setActiveTool", payload: tool })}
+        onAddLine={() => dispatch({ type: "setSidebarPanel", payload: "create" })}
+      />
+      <FloatingLayerPicker
+        baselineMode={draft.baselineMode}
+        onBaselineChange={(mode) => dispatch({ type: "setBaselineMode", payload: mode })}
+        busCorridorVisible={chrome.busCorridorVisible}
+        onCorridorToggle={() => dispatch({ type: "toggleCorridors" })}
+        comparisonMode={chrome.comparisonMode}
+        onComparisonToggle={() => dispatch({ type: "toggleComparisonMode" })}
+        hasLines={draft.lines.length > 0}
+        sidebarOpen={chrome.sidebarOpen}
+      />
+    </>
   );
 
   return (
     <>
       <EditorFrame
-        sidebarCollapsed={!chrome.sidebarOpen}
+        sidebarOpen={chrome.sidebarOpen}
         onSidebarToggle={() => dispatch({ type: "toggleSidebar" })}
         mapBanner={comparisonBanner}
         mapChildren={mapElement}
         sidebarChildren={sidebarContent}
-        floatingControls={floatingToolbar}
+        floatingControls={floatingControls}
+        title={draft.title}
+        onTitleChange={(title) => dispatch({ type: "updateTitle", payload: title })}
+        onShareClick={() => setShareModalOpen(true)}
       />
       {confirmationProps && (
         <ConfirmationDialog

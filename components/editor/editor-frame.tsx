@@ -4,8 +4,8 @@ import MapStage from "@/components/editor/map-stage";
 import SidebarShell from "@/components/editor/sidebar-shell";
 
 type EditorFrameProps = Readonly<{
-  /** Override sidebar collapsed state */
-  sidebarCollapsed?: boolean;
+  /** Whether the sidebar is open */
+  sidebarOpen?: boolean;
   /** Called when the sidebar toggle is clicked */
   onSidebarToggle?: () => void;
   /** Slot for injecting map content */
@@ -16,15 +16,24 @@ type EditorFrameProps = Readonly<{
   mapBanner?: React.ReactNode;
   /** Slot for floating controls (toolbars, layer pickers) rendered over the map */
   floatingControls?: React.ReactNode;
+  /** Current proposal title for sidebar header */
+  title?: string;
+  /** Called when the user commits a title change */
+  onTitleChange?: (title: string) => void;
+  /** Called when the Share button is clicked */
+  onShareClick?: () => void;
 }>;
 
 export default function EditorFrame({
-  sidebarCollapsed,
+  sidebarOpen = true,
   onSidebarToggle,
   mapChildren,
   sidebarChildren,
   mapBanner,
   floatingControls,
+  title,
+  onTitleChange,
+  onShareClick,
 }: EditorFrameProps) {
   return (
     <div
@@ -42,10 +51,13 @@ export default function EditorFrame({
       {/* Floating controls (toolbars, layer pickers) rendered over the map */}
       {floatingControls}
 
-      {/* Right-hand collapsible sidebar — overlays map */}
+      {/* Right-hand overlay sidebar */}
       <SidebarShell
-        collapsed={sidebarCollapsed}
-        onToggle={onSidebarToggle}
+        open={sidebarOpen}
+        onToggle={onSidebarToggle ?? (() => {})}
+        title={title}
+        onTitleChange={onTitleChange}
+        onShareClick={onShareClick}
       >
         {sidebarChildren}
       </SidebarShell>
