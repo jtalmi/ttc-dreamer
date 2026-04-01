@@ -38,6 +38,8 @@ const HISTORY_ACTIONS = new Set<string>([
   "moveStation",
   "moveWaypoint",
   "clearProposal",
+  "updateTitle",
+  "loadDraft",
 ]);
 
 /**

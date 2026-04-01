@@ -170,6 +170,18 @@ type ToggleComparisonModeAction = {
   type: "toggleComparisonMode";
 };
 
+type UpdateTitleAction = {
+  type: "updateTitle";
+  /** New title, trimmed and clamped to 80 chars by the caller. Reducer also clamps defensively. */
+  payload: string;
+};
+
+type LoadDraftAction = {
+  type: "loadDraft";
+  /** Replaces the entire draft and resets chrome to a clean state. */
+  payload: ProposalDraft;
+};
+
 /** All action variants the editor shell reducer handles. */
 export type EditorShellAction =
   | SetBaselineModeAction
@@ -203,7 +215,9 @@ export type EditorShellAction =
   | ClearProposalAction
   | InspectElementAction
   | CloseInspectorAction
-  | ToggleComparisonModeAction;
+  | ToggleComparisonModeAction
+  | UpdateTitleAction
+  | LoadDraftAction;
 
 /** Returns the default draft for the Toronto sandbox shell. */
 export function createInitialProposalDraft(): EditorShellState {
@@ -775,6 +789,31 @@ export function proposalEditorReducer(
         chrome: {
           ...state.chrome,
           comparisonMode: !state.chrome.comparisonMode,
+        },
+      };
+
+    case "updateTitle": {
+      const clamped = action.payload.trim().slice(0, 80);
+      return {
+        ...state,
+        draft: { ...state.draft, title: clamped || "Untitled Proposal" },
+      };
+    }
+
+    case "loadDraft":
+      return {
+        ...state,
+        draft: action.payload,
+        chrome: {
+          ...state.chrome,
+          selectedElementId: null,
+          inspectedElementId: null,
+          sidebarPanel: "list",
+          drawingSession: null,
+          pendingDeletion: null,
+          pendingInterchangeSuggestion: null,
+          snapPosition: null,
+          comparisonMode: false,
         },
       };
 
