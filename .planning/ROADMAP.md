@@ -15,7 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Editor Shell and Proposal State** - Establish the desktop-first editor frame, baseline mode shell, and proposal foundation (completed 2026-04-01)
 - [x] **Phase 2: Toronto Baseline and Context Layers** - Make the map feel unmistakably local with TTC, GO, and city context (completed 2026-04-01)
 - [x] **Phase 3: Editing Core** - Deliver the fun proposal-building loop for lines, stations, branches, and styling (gap closure in progress) (completed 2026-04-01)
-- [ ] **Phase 4: Stats, Inspectors, and Comparison** - Add descriptive insight without drifting into realism-heavy tooling
+- [x] **Phase 4: Stats, Inspectors, and Comparison** - Add descriptive insight without drifting into realism-heavy tooling (completed 2026-04-01)
 - [ ] **Phase 5: Sharing, Export, and Polish** - Make proposals externally shareable and viewer-friendly
 
 ## Phase Details
@@ -90,7 +90,7 @@ Plans:
 Plans:
 - [x] 04-01-PLAN.md — Build stat computation layer (TDD) and extend proposal state with inspector/comparison types
 - [x] 04-02-PLAN.md — Create inspector and stats panel components, wire inspect tool and sidebar routing
-- [ ] 04-03-PLAN.md — Add before/after comparison toggle with proposal opacity control and verification checkpoint
+- [x] 04-03-PLAN.md — Add before/after comparison toggle with proposal opacity control and verification checkpoint
 
 ### Phase 5: Sharing, Export, and Polish
 **Goal**: Make proposals externally shareable through image export, unlisted links, read-only viewing, and edit-as-copy
@@ -120,5 +120,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | 1. Editor Shell and Proposal State | 3/3 | Complete   | 2026-04-01 |
 | 2. Toronto Baseline and Context Layers | 3/3 | Complete   | 2026-04-01 |
 | 3. Editing Core | 6/6 | Complete   | 2026-04-01 |
-| 4. Stats, Inspectors, and Comparison | 2/3 | In Progress|  |
+| 4. Stats, Inspectors, and Comparison | 3/3 | Complete   | 2026-04-01 |
 | 5. Sharing, Export, and Polish | 0/3 | Not started | - |

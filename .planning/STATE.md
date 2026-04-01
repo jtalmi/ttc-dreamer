@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: executing
-stopped_at: Completed 04-02-PLAN.md
-last_updated: "2026-04-01T06:48:14.640Z"
+status: verifying
+stopped_at: Completed 04-03-PLAN.md
+last_updated: "2026-04-01T06:54:29.084Z"
 last_activity: 2026-04-01
 progress:
   total_phases: 5
-  completed_phases: 3
+  completed_phases: 4
   total_plans: 15
-  completed_plans: 14
+  completed_plans: 15
   percent: 0
 ---
 
@@ -27,7 +27,7 @@ See: .planning/PROJECT.md (updated 2026-03-31)
 
 Phase: 04 (stats-inspectors-and-comparison) — EXECUTING
 Plan: 3 of 3
-Status: Ready to execute
+Status: Phase complete — ready for verification
 Last activity: 2026-04-01
 
 Progress: ░░░░░░░░░░ 0%
@@ -66,6 +66,7 @@ Progress: ░░░░░░░░░░ 0%
 | Phase 03-editing-core P04 | 20 | 2 tasks | 5 files |
 | Phase 04 P01 | 182 | 2 tasks | 6 files |
 | Phase 04 P02 | 8 | 2 tasks | 6 files |
+| Phase 04 P03 | 3 | 1 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -112,6 +113,9 @@ Recent decisions affecting current work:
 - [Phase 04]: inspectElement is a dedicated action that atomically sets sidebarPanel and inspectedElementId; setSidebarPanel payload stays at the original 3-value union
 - [Phase 04]: New chrome actions (inspectElement, closeInspector, toggleComparisonMode) NOT added to HISTORY_ACTIONS — chrome-only, not draft mutations
 - [Phase 04]: LineList onInspectLine takes priority over onSelectLine when both are provided — keeps inspect-in-any-mode spec without breaking existing select behavior
+- [Phase 04]: proposalOpacity is numeric (not boolean) so future phases can use intermediate values
+- [Phase 04]: MapStage receives banner as ReactNode slot so EditorShell owns banner DOM and styling
+- [Phase 04]: Selection glow scales with proposalOpacity (not *= 0.25) to preserve normal-mode glow visibility
 
 ### Pending Todos
 
@@ -124,6 +128,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-01T06:48:14.637Z
-Stopped at: Completed 04-02-PLAN.md
+Last session: 2026-04-01T06:54:29.079Z
+Stopped at: Completed 04-03-PLAN.md
 Resume file: None
