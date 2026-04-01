@@ -65,6 +65,41 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ## v2 Requirements
 
+Requirements for v2.0 milestone: UI Revamp & Data Accuracy.
+
+### Layout & Controls
+
+- [ ] **LAYOUT-01**: User sees a full-screen map canvas with no fixed header or nav bar
+- [ ] **LAYOUT-02**: User can switch drawing tools via a floating toolbar overlaid on the map
+- [ ] **LAYOUT-03**: User can toggle map layers (baseline mode, corridors) via a floating layer picker
+
+### Drawing Model
+
+- [ ] **DRAW-01**: User can click on the map to place a station; consecutive stations auto-connect via a line
+- [ ] **DRAW-02**: User can click on an existing line to insert a new station mid-line
+- [ ] **DRAW-03**: User can click on a line terminus to extend or branch that line
+- [ ] **DRAW-04**: When a new station is placed near an existing station (proposal or baseline), an interchange is auto-created
+
+### Station Interaction
+
+- [ ] **STATION-01**: User can drag a newly created proposal station to reposition it, and connected line geometry updates
+- [ ] **STATION-02**: When a station is placed, a name is auto-suggested based on nearest street/intersection data
+- [ ] **STATION-03**: User sees an inline name popover on station creation pre-filled with the street-based suggestion
+
+### Sidebar
+
+- [ ] **SIDE-01**: Sidebar defaults to a line list view showing all proposal lines with colors
+- [ ] **SIDE-02**: Clicking a station on the map loads station info (name, address, connected lines) in the sidebar
+- [ ] **SIDE-03**: Clicking a line on the map loads line info (name, color, stations, stats) in the sidebar
+
+### Baseline Data
+
+- [ ] **BASE-01**: TTC line coordinates are accurate and lines pass directly through station dots
+- [ ] **BASE-02**: Eglinton Crosstown and Finch West LRT shown as operational; Ontario Line shown as under construction
+- [ ] **BASE-03**: All current TTC rapid transit lines are represented in the baseline
+
+## v3 Requirements
+
 Deferred to future release. Tracked but not in current roadmap.
 
 ### Deferred Expansion
@@ -73,6 +108,7 @@ Deferred to future release. Tracked but not in current roadmap.
 - **TEXT-01**: User can attach richer written rationale or annotations to a proposal
 - **AI-01**: User can start from prompt-driven challenges or generated proposal ideas
 - **COMM-01**: User can publish to an in-app gallery or community surface
+- **KBD-01**: User sees keyboard shortcut hints in toolbar tooltips on hover
 
 ## Out of Scope
 
@@ -80,12 +116,16 @@ Explicitly excluded. Documented to prevent scope creep.
 
 | Feature | Reason |
 |---------|--------|
-| Official planning-grade forecasting | Conflicts with the fun-first v1 goal and would dominate scope |
-| Strict realism warnings or constraints | Manual creativity should not be blocked in v1 |
-| In-app public social network in v1 | Unlisted sharing is the v1 validation path |
+| Official planning-grade forecasting | Conflicts with the fun-first goal and would dominate scope |
+| Strict realism warnings or constraints | Manual creativity should not be blocked |
+| In-app public social network | Unlisted sharing is the validation path |
 | Mobile-first editor | Creation target is explicitly desktop-first |
 | Blank-canvas start | The core promise begins from Toronto's existing network |
-| Editable baseline TTC renames or arbitrary deletions | Baseline infrastructure should stay fixed except for extensions/branches |
+| Editable baseline TTC renames or arbitrary deletions | Baseline infrastructure stays fixed except for extensions/branches |
+| Dragging baseline TTC stations | Baseline is read-only by design |
+| Auto-routing lines along streets | Removes user control; contradicts manual-first principle |
+| Real-time collaboration | Requires backend; client-only is intentional |
+| Floating sidebar | Figma reversed this after backlash; anchored is better |
 
 ## Traceability
 
@@ -132,11 +172,16 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SHARE-06 | Phase 5 | Complete |
 | SHARE-07 | Phase 5 | Complete |
 
-**Coverage:**
+**v1 Coverage:**
 - v1 requirements: 38 total
 - Mapped to phases: 38
 - Unmapped: 0 ✓
 
+**v2 Coverage:**
+- v2 requirements: 16 total
+- Mapped to phases: 0
+- Unmapped: 16 ⚠️
+
 ---
 *Requirements defined: 2026-03-31*
-*Last updated: 2026-03-31 after initial definition*
+*Last updated: 2026-04-01 after v2.0 milestone requirements definition*
