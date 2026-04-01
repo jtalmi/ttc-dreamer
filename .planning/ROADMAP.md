@@ -138,7 +138,7 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 06-01-PLAN.md — Add status properties to route GeoJSON, fix Line 6 color, add Ontario Line to future baseline, remove Scarborough RT stations, update types
+- [x] 06-01-PLAN.md — Add status properties to route GeoJSON, fix Line 6 color, add Ontario Line to future baseline, remove Scarborough RT stations, update types
 - [ ] 06-02-PLAN.md — Replace Line 5/6 station coordinates with GTFS data, add Ontario Line stations, update ttc-layers.tsx rendering
 
 ### Phase 7: Full-Screen Layout and Floating Toolbars
@@ -198,7 +198,7 @@ Phases execute in numeric order: 6 -> 7 -> 8 -> 9 -> 10
 | 3. Editing Core | v1.0 | 6/6 | Complete | 2026-04-01 |
 | 4. Stats, Inspectors, and Comparison | v1.0 | 3/3 | Complete | 2026-04-01 |
 | 5. Sharing, Export, and Polish | v1.0 | 3/3 | Complete | 2026-04-01 |
-| 6. Baseline Data Correction | v2.0 | 0/2 | Not started | - |
+| 6. Baseline Data Correction | v2.0 | 1/2 | In Progress|  |
 | 7. Full-Screen Layout and Floating Toolbars | v2.0 | 0/TBD | Not started | - |
 | 8. Station-First Drawing Model | v2.0 | 0/TBD | Not started | - |
 | 9. Station Drag, Auto-Interchange, and Sidebar Panels | v2.0 | 0/TBD | Not started | - |

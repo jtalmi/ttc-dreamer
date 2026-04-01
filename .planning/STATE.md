@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: UI Revamp & Data Accuracy
-status: roadmap-ready
-stopped_at: null
-last_updated: "2026-04-01T20:00:00.000Z"
+status: executing
+stopped_at: Completed 06-01-PLAN.md
+last_updated: "2026-04-01T21:25:02.524Z"
 last_activity: 2026-04-01
 progress:
   total_phases: 5
   completed_phases: 0
-  total_plans: 0
-  completed_plans: 0
+  total_plans: 2
+  completed_plans: 1
   percent: 0
 ---
 
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-01)
 
 **Core value:** Make it fast and satisfying for Toronto transit nerds to sketch a TTC-flavoured proposal they want to share
-**Current focus:** Phase 6 — Baseline Data Correction (ready to plan)
+**Current focus:** Phase 06 — baseline-data-correction
 
 ## Current Position
 
-Phase: 6 of 10 (Baseline Data Correction)
-Plan: — (not yet planned)
-Status: Ready to plan
-Last activity: 2026-04-01 — v2.0 roadmap created (phases 6-10)
+Phase: 06 (baseline-data-correction) — EXECUTING
+Plan: 2 of 2
+Status: Ready to execute
+Last activity: 2026-04-01
 
 Progress: ░░░░░░░░░░ 0%
 
@@ -52,6 +52,7 @@ Progress: ░░░░░░░░░░ 0%
 - Trend: Stable
 
 *Updated after each plan completion*
+| Phase 06 P01 | 5 | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -65,6 +66,8 @@ Key v2.0 constraints from research:
 - [v2.0 Roadmap]: Floating toolbar wrappers must use `pointer-events: none`; only interactive children restore it
 - [v2.0 Roadmap]: Station drag throttled to 30ms; preview decoupled from committed state to avoid MapLibre worker queue blowup
 - [v2.0 Roadmap]: Nominatim reverse geocoding for auto-names; Photon wired as fallback from the start; in-memory cache keyed by rounded coordinate
+- [Phase 06]: Ontario Line geometry hand-authored with 57 coordinates (15 stations + intermediate points) since no official GTFS/ArcGIS source exists for this under-construction line
+- [Phase 06]: Status property is optional in TtcRouteProperties to avoid breaking existing callers without status field
 
 ### Pending Todos
 
@@ -77,6 +80,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-01T20:00:00.000Z
-Stopped at: v2.0 roadmap created — phases 6-10 defined
+Last session: 2026-04-01T21:25:02.520Z
+Stopped at: Completed 06-01-PLAN.md
 Resume file: None

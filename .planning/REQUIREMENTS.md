@@ -94,9 +94,9 @@ Requirements for v2.0 milestone: UI Revamp & Data Accuracy.
 
 ### Baseline Data
 
-- [ ] **BASE-01**: TTC line coordinates are accurate and lines pass directly through station dots
-- [ ] **BASE-02**: Eglinton Crosstown and Finch West LRT shown as operational; Ontario Line shown as under construction
-- [ ] **BASE-03**: All current TTC rapid transit lines are represented in the baseline
+- [x] **BASE-01**: TTC line coordinates are accurate and lines pass directly through station dots
+- [x] **BASE-02**: Eglinton Crosstown and Finch West LRT shown as operational; Ontario Line shown as under construction
+- [x] **BASE-03**: All current TTC rapid transit lines are represented in the baseline
 
 ## v3 Requirements
 
@@ -171,9 +171,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SHARE-05 | Phase 5 | Complete |
 | SHARE-06 | Phase 5 | Complete |
 | SHARE-07 | Phase 5 | Complete |
-| BASE-01 | Phase 6 | Pending |
-| BASE-02 | Phase 6 | Pending |
-| BASE-03 | Phase 6 | Pending |
+| BASE-01 | Phase 6 | Complete |
+| BASE-02 | Phase 6 | Complete |
+| BASE-03 | Phase 6 | Complete |
 | LAYOUT-01 | Phase 7 | Pending |
 | LAYOUT-02 | Phase 7 | Pending |
 | LAYOUT-03 | Phase 7 | Pending |
