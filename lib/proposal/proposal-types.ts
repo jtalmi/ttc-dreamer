@@ -93,11 +93,13 @@ export type EditorChromeState = {
   /** Active drawing session when in draw-line mode. */
   drawingSession: DrawingSession | null;
   /** Pending interchange suggestion waiting for user confirmation. */
-  pendingInterchangeSuggestion: InterchangeSuggestion | null;
+  pendingInterchangeSuggestion: (InterchangeSuggestion & { stationName: string }) | null;
   /** Currently selected element ID (line or station). */
   selectedElementId: string | null;
   /** Which panel the sidebar is showing. */
   sidebarPanel: "list" | "create" | "drawing-status";
+  /** Current snap target position for rendering the snap cue ring. */
+  snapPosition: [number, number] | null;
 };
 
 /** Combined state held by the editor shell reducer. */

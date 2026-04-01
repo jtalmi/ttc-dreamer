@@ -35,6 +35,9 @@ export {
   findSnapTarget,
   detectLineHitType,
   dist2D,
+  snapToSegment,
+  findNearbyStation,
+  buildSnapCueGeoJSON,
 } from "./proposal-geometry";
 
 // History wrapper from proposal-history.ts

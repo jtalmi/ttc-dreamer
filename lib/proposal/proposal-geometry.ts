@@ -219,5 +219,94 @@ export function detectLineHitType(
   return null;
 }
 
+/**
+ * Snaps a click position to the nearest point on a given line's waypoints.
+ * Uses Turf's nearestPointOnLine for geodetic precision.
+ * Returns the snapped position and segment index, or null if beyond pixelThreshold.
+ */
+export function snapToSegment(
+  clickLngLat: [number, number],
+  lineWaypoints: [number, number][],
+  map: { project: (lngLat: [number, number]) => { x: number; y: number } },
+  pixelThreshold = 12,
+): { position: [number, number]; segmentIndex: number } | null {
+  if (lineWaypoints.length < 2) return null;
+
+  const turfLine = lineString(lineWaypoints as [number, number][]);
+  const turfPt = point(clickLngLat);
+  const nearest = nearestPointOnLine(turfLine, turfPt);
+  const nearestCoords = nearest.geometry.coordinates as [number, number];
+  const nearestScreen = map.project(nearestCoords);
+  const clickScreen = map.project(clickLngLat);
+
+  if (dist2D(clickScreen, nearestScreen) > pixelThreshold) return null;
+
+  // Determine segment index from turf's index property
+  const segmentIndex = (nearest.properties?.index as number | undefined) ?? 0;
+  return { position: nearestCoords, segmentIndex };
+}
+
+/**
+ * Finds an existing station (proposal or TTC baseline) within pixelThreshold
+ * of the given position using screen-space distance.
+ */
+export function findNearbyStation(
+  position: [number, number],
+  proposalStations: Array<{ id: string; name: string; position: [number, number] }>,
+  ttcStations: FeatureCollection,
+  map: { project: (lngLat: [number, number]) => { x: number; y: number } },
+  pixelThreshold = 20,
+): { id: string; name: string; type: "proposal" | "ttc" } | null {
+  const posScreen = map.project(position);
+
+  // Check proposal stations first
+  for (const station of proposalStations) {
+    const stationScreen = map.project(station.position);
+    if (dist2D(posScreen, stationScreen) <= pixelThreshold) {
+      return { id: station.id, name: station.name, type: "proposal" };
+    }
+  }
+
+  // Check TTC baseline stations from FeatureCollection
+  for (const feature of ttcStations.features) {
+    if (feature.geometry.type !== "Point") continue;
+    const coords = feature.geometry.coordinates as [number, number];
+    const stationScreen = map.project(coords);
+    if (dist2D(posScreen, stationScreen) <= pixelThreshold) {
+      const props = feature.properties as Record<string, unknown>;
+      const id = String(props["OBJECTID"] ?? props["id"] ?? "");
+      const name = String(
+        props["PT_NAME"] ?? props["PLACE_NAME"] ?? props["STATION"] ?? "TTC Station",
+      );
+      return { id, name, type: "ttc" };
+    }
+  }
+
+  return null;
+}
+
+/**
+ * Builds a GeoJSON FeatureCollection containing a single Point for the snap cue ring.
+ * Returns null if snapPosition is null.
+ */
+export function buildSnapCueGeoJSON(
+  snapPosition: [number, number] | null,
+): FeatureCollection | null {
+  if (!snapPosition) return null;
+  return {
+    type: "FeatureCollection",
+    features: [
+      {
+        type: "Feature" as const,
+        geometry: {
+          type: "Point" as const,
+          coordinates: snapPosition,
+        },
+        properties: {},
+      },
+    ],
+  };
+}
+
 // Re-export Feature types for use in ProposalLayers
 export type { FeatureCollection, Feature, LineString, Point };
