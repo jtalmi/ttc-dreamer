@@ -171,6 +171,22 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SHARE-05 | Phase 5 | Complete |
 | SHARE-06 | Phase 5 | Complete |
 | SHARE-07 | Phase 5 | Complete |
+| BASE-01 | Phase 6 | Pending |
+| BASE-02 | Phase 6 | Pending |
+| BASE-03 | Phase 6 | Pending |
+| LAYOUT-01 | Phase 7 | Pending |
+| LAYOUT-02 | Phase 7 | Pending |
+| LAYOUT-03 | Phase 7 | Pending |
+| SIDE-01 | Phase 7 | Pending |
+| DRAW-01 | Phase 8 | Pending |
+| DRAW-02 | Phase 8 | Pending |
+| DRAW-03 | Phase 8 | Pending |
+| STATION-01 | Phase 9 | Pending |
+| DRAW-04 | Phase 9 | Pending |
+| SIDE-02 | Phase 9 | Pending |
+| SIDE-03 | Phase 9 | Pending |
+| STATION-02 | Phase 10 | Pending |
+| STATION-03 | Phase 10 | Pending |
 
 **v1 Coverage:**
 - v1 requirements: 38 total
@@ -179,9 +195,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 **v2 Coverage:**
 - v2 requirements: 16 total
-- Mapped to phases: 0
-- Unmapped: 16 ⚠️
+- Mapped to phases: 16
+- Unmapped: 0 ✓
 
 ---
 *Requirements defined: 2026-03-31*
-*Last updated: 2026-04-01 after v2.0 milestone requirements definition*
+*Last updated: 2026-04-01 after v2.0 roadmap creation*

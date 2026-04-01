@@ -1,10 +1,14 @@
 # Roadmap: Toronto Transit Sandbox
 
-## Overview
+## Milestones
 
-This roadmap turns the current scaffold into a desktop-first Toronto transit sandbox in five small, coherent phases. It starts by establishing the editor shell and proposal model, makes the city feel unmistakably Toronto, unlocks the core editing loop, adds lightweight descriptive insight, and closes by making proposals shareable outside the app.
+- ✅ **v1.0 MVP** - Phases 1-5 (shipped 2026-04-01)
+- 🚧 **v2.0 UI Revamp & Data Accuracy** - Phases 6-10 (in progress)
 
 ## Phases
+
+<details>
+<summary>✅ v1.0 MVP (Phases 1-5) - SHIPPED 2026-04-01</summary>
 
 **Phase Numbering:**
 - Integer phases (1, 2, 3): Planned milestone work
@@ -17,8 +21,6 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 3: Editing Core** - Deliver the fun proposal-building loop for lines, stations, branches, and styling (gap closure in progress) (completed 2026-04-01)
 - [x] **Phase 4: Stats, Inspectors, and Comparison** - Add descriptive insight without drifting into realism-heavy tooling (completed 2026-04-01)
 - [x] **Phase 5: Sharing, Export, and Polish** - Make proposals externally shareable and viewer-friendly (completed 2026-04-01)
-
-## Phase Details
 
 ### Phase 1: Editor Shell and Proposal State
 **Goal**: Boot a usable desktop-first editor shell around a preloaded Toronto map and baseline toggle, with the structural foundation for proposal editing
@@ -110,15 +112,90 @@ Plans:
 - [x] 05-02-PLAN.md — Build Share modal, inline title editing, image export, and share link generation
 - [x] 05-03-PLAN.md — Add shared view mode, edit-as-copy flow, and onboarding tooltips
 
+</details>
+
+### 🚧 v2.0 UI Revamp & Data Accuracy (In Progress)
+
+**Milestone Goal:** Transform the sandbox into a full-screen, Excalidraw-style map editor with intuitive station-first drawing, floating toolbars, and corrected baseline transit data.
+
+- [ ] **Phase 6: Baseline Data Correction** - Replace GeoJSON files with accurate TTC geometry and updated line statuses
+- [ ] **Phase 7: Full-Screen Layout and Floating Toolbars** - Remove fixed header, float drawing and layer controls over the map, default sidebar to line list
+- [ ] **Phase 8: Station-First Drawing Model** - Rewrite drawing session so stations are the atomic unit and lines auto-connect between them
+- [ ] **Phase 9: Station Drag, Auto-Interchange, and Sidebar Panels** - Enable station repositioning with live geometry, auto-interchanges at proposal crossings, and click-to-inspect panels
+- [ ] **Phase 10: Auto-Generated Station Names** - Suggest street-based names via Nominatim reverse geocoding at station placement time
+
+## Phase Details
+
+### Phase 6: Baseline Data Correction
+**Goal**: Users see an accurate TTC baseline where lines pass through station dots, operational lines appear in service colors, and construction-phase lines are visually distinct
+**Depends on**: Phase 5
+**Requirements**: BASE-01, BASE-02, BASE-03
+**Success Criteria** (what must be TRUE):
+  1. TTC line paths visually run through their station dots with no visible offset or gap
+  2. Eglinton Crosstown and Finch West LRT appear in the same operational style as Lines 1 and 2
+  3. Ontario Line appears with a dashed or visually distinct under-construction style
+  4. All current TTC rapid transit lines (Lines 1, 2, 3, 4, 5, Ontario Line) are present in the baseline
+**Plans**: TBD
+
+### Phase 7: Full-Screen Layout and Floating Toolbars
+**Goal**: Users experience a map-first editor with no fixed header — drawing tools and layer controls float over the canvas, and the sidebar defaults to showing all proposal lines
+**Depends on**: Phase 6
+**Requirements**: LAYOUT-01, LAYOUT-02, LAYOUT-03, SIDE-01
+**UI hint**: yes
+**Success Criteria** (what must be TRUE):
+  1. The map canvas fills the entire viewport with no fixed header or nav bar visible
+  2. User can switch drawing tools (select, draw, add station) via a floating toolbar on the map
+  3. User can toggle baseline mode and corridor overlays via a floating layer picker on the map
+  4. The sidebar shows a list of proposal lines with colors when no element is selected
+**Plans**: TBD
+
+### Phase 8: Station-First Drawing Model
+**Goal**: Users draw lines by clicking to place stations, with lines auto-connecting between consecutive stations and existing line termini acting as natural extension or branch points
+**Depends on**: Phase 7
+**Requirements**: DRAW-01, DRAW-02, DRAW-03
+**Success Criteria** (what must be TRUE):
+  1. Clicking on the map in draw mode places a station and the line auto-connects from the previous station
+  2. Clicking on an existing line segment inserts a new station at that point, splitting the segment
+  3. Clicking on a line terminus starts an extension or branch from that endpoint
+  4. Undo steps back through station placements one at a time without breaking line geometry
+**Plans**: TBD
+
+### Phase 9: Station Drag, Auto-Interchange, and Sidebar Panels
+**Goal**: Users can reposition stations by dragging, crossing proposal lines auto-create interchanges, and clicking any station or line on the map loads its details in the sidebar
+**Depends on**: Phase 8
+**Requirements**: STATION-01, DRAW-04, SIDE-02, SIDE-03
+**UI hint**: yes
+**Success Criteria** (what must be TRUE):
+  1. Dragging a proposal station moves it and all connected line segments update to follow
+  2. Placing a station near an existing proposal or baseline station automatically creates an interchange without a confirmation prompt
+  3. Clicking a station on the map shows its name, address, and connected lines in the sidebar
+  4. Clicking a line on the map shows its name, color, stations, and stats in the sidebar
+**Plans**: TBD
+
+### Phase 10: Auto-Generated Station Names
+**Goal**: Users see a street-based name pre-filled in the station name popover at placement time, reducing manual naming effort while keeping full control
+**Depends on**: Phase 8
+**Requirements**: STATION-02, STATION-03
+**Success Criteria** (what must be TRUE):
+  1. When a station is placed, a name derived from the nearest street or intersection appears automatically
+  2. An inline name popover opens at placement time with the street-based suggestion pre-filled
+  3. The auto-name gracefully falls back to a placeholder when the geocoder is unavailable or rate-limited
+**Plans**: TBD
+
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
+Phases execute in numeric order: 6 → 7 → 8 → 9 → 10
 
-| Phase | Plans Complete | Status | Completed |
-|-------|----------------|--------|-----------|
-| 1. Editor Shell and Proposal State | 3/3 | Complete   | 2026-04-01 |
-| 2. Toronto Baseline and Context Layers | 3/3 | Complete   | 2026-04-01 |
-| 3. Editing Core | 6/6 | Complete   | 2026-04-01 |
-| 4. Stats, Inspectors, and Comparison | 3/3 | Complete   | 2026-04-01 |
-| 5. Sharing, Export, and Polish | 3/3 | Complete   | 2026-04-01 |
+| Phase | Milestone | Plans Complete | Status | Completed |
+|-------|-----------|----------------|--------|-----------|
+| 1. Editor Shell and Proposal State | v1.0 | 3/3 | Complete | 2026-04-01 |
+| 2. Toronto Baseline and Context Layers | v1.0 | 3/3 | Complete | 2026-04-01 |
+| 3. Editing Core | v1.0 | 6/6 | Complete | 2026-04-01 |
+| 4. Stats, Inspectors, and Comparison | v1.0 | 3/3 | Complete | 2026-04-01 |
+| 5. Sharing, Export, and Polish | v1.0 | 3/3 | Complete | 2026-04-01 |
+| 6. Baseline Data Correction | v2.0 | 0/TBD | Not started | - |
+| 7. Full-Screen Layout and Floating Toolbars | v2.0 | 0/TBD | Not started | - |
+| 8. Station-First Drawing Model | v2.0 | 0/TBD | Not started | - |
+| 9. Station Drag, Auto-Interchange, and Sidebar Panels | v2.0 | 0/TBD | Not started | - |
+| 10. Auto-Generated Station Names | v2.0 | 0/TBD | Not started | - |
