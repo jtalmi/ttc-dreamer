@@ -3,6 +3,7 @@
 import { useReducer, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import type { FeatureCollection } from "geojson";
+import type { MapRef } from "@vis.gl/react-maplibre";
 import {
   historyReducer,
   createInitialHistoryState,
@@ -16,6 +17,7 @@ import { ConfirmationDialog } from "@/components/editor/sidebar/confirmation-dia
 import { LineInspectorPanel } from "@/components/editor/sidebar/line-inspector-panel";
 import { StationInspectorPanel } from "@/components/editor/sidebar/station-inspector-panel";
 import { ProposalStatsPanel } from "@/components/editor/sidebar/proposal-stats-panel";
+import { ShareModal } from "@/components/sharing/share-modal";
 
 // Dynamically import TorontoMap with ssr: false to guard against
 // window-is-undefined errors from maplibre-gl during server rendering.
@@ -62,6 +64,10 @@ export default function EditorShell() {
   );
 
   const { draft, chrome } = state.present;
+
+  // Share modal state
+  const [shareModalOpen, setShareModalOpen] = useState(false);
+  const [mapRefState, setMapRefState] = useState<MapRef | null>(null);
 
   // Neighbourhoods GeoJSON for station location resolution in StationInspectorPanel
   const [neighbourhoods, setNeighbourhoods] = useState<FeatureCollection | null>(null);
@@ -357,6 +363,7 @@ export default function EditorShell() {
       }
       onStartExtend={handleStartExtend}
       dispatch={dispatch}
+      onMapReady={(ref) => setMapRefState(ref)}
     />
   );
 
@@ -404,6 +411,9 @@ export default function EditorShell() {
         mapBanner={comparisonBanner}
         mapChildren={mapElement}
         sidebarChildren={sidebarContent}
+        title={draft.title}
+        onTitleChange={(title) => dispatch({ type: "updateTitle", payload: title })}
+        onShareClick={() => setShareModalOpen(true)}
       />
       {confirmationProps && (
         <ConfirmationDialog
@@ -412,6 +422,14 @@ export default function EditorShell() {
           cancelLabel={confirmationProps.cancelLabel}
           onConfirm={() => dispatch({ type: "confirmDeletion" })}
           onCancel={() => dispatch({ type: "cancelDeletion" })}
+        />
+      )}
+      {shareModalOpen && (
+        <ShareModal
+          draft={draft}
+          mapRef={mapRefState}
+          onTitleChange={(title) => dispatch({ type: "updateTitle", payload: title })}
+          onClose={() => setShareModalOpen(false)}
         />
       )}
     </>

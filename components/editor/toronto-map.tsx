@@ -99,6 +99,8 @@ type TorontoMapProps = Readonly<{
   onStartExtend?: (lineId: string, mode: "extend" | "branch", clickPoint: [number, number]) => void;
   /** Dispatch function for all editor actions */
   dispatch?: (action: EditorShellAction) => void;
+  /** Called once after the map finishes loading, passes the MapRef for canvas export. */
+  onMapReady?: (mapRef: MapRef) => void;
 }>;
 
 /**
@@ -123,6 +125,7 @@ export default function TorontoMap({
   onUpdateCursor,
   onStartExtend,
   dispatch,
+  onMapReady,
 }: TorontoMapProps) {
   const [data, setData] = useState<MapData | null>(null);
   const [error, setError] = useState(false);
@@ -615,6 +618,7 @@ export default function TorontoMap({
       mapStyle={mapStyle}
       style={{ width: "100%", height: "100%" }}
       attributionControl={{ compact: true }}
+      canvasContextAttributes={{ preserveDrawingBuffer: true }}
       interactiveLayerIds={[
         "ttc-stations-circle",
         "proposal-lines-stroke",
@@ -627,6 +631,9 @@ export default function TorontoMap({
       onMouseUp={handleMouseUp}
       onClick={handleClick}
       onDblClick={handleDblClick}
+      onLoad={() => {
+        if (mapRef.current) onMapReady?.(mapRef.current);
+      }}
     >
       {/*
         Layer stacking order (bottom to top):
