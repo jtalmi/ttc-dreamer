@@ -75,9 +75,9 @@ Requirements for v2.0 milestone: UI Revamp & Data Accuracy.
 
 ### Drawing Model
 
-- [ ] **DRAW-01**: User can click on the map to place a station; consecutive stations auto-connect via a line
-- [ ] **DRAW-02**: User can click on an existing line to insert a new station mid-line
-- [ ] **DRAW-03**: User can click on a line terminus to extend or branch that line
+- [x] **DRAW-01**: User can click on the map to place a station; consecutive stations auto-connect via a line
+- [x] **DRAW-02**: User can click on an existing line to insert a new station mid-line
+- [x] **DRAW-03**: User can click on a line terminus to extend or branch that line
 - [ ] **DRAW-04**: When a new station is placed near an existing station (proposal or baseline), an interchange is auto-created
 
 ### Station Interaction
@@ -178,9 +178,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | LAYOUT-02 | Phase 7 | Complete |
 | LAYOUT-03 | Phase 7 | Complete |
 | SIDE-01 | Phase 7 | Complete |
-| DRAW-01 | Phase 8 | Pending |
-| DRAW-02 | Phase 8 | Pending |
-| DRAW-03 | Phase 8 | Pending |
+| DRAW-01 | Phase 8 | Complete |
+| DRAW-02 | Phase 8 | Complete |
+| DRAW-03 | Phase 8 | Complete |
 | STATION-01 | Phase 9 | Pending |
 | DRAW-04 | Phase 9 | Pending |
 | SIDE-02 | Phase 9 | Pending |

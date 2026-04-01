@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: UI Revamp & Data Accuracy
-status: verifying
-stopped_at: "Checkpoint: Task 2 human-verify for 07-02-PLAN.md"
-last_updated: "2026-04-01T22:38:20.578Z"
+status: executing
+stopped_at: Completed 08-01-PLAN.md
+last_updated: "2026-04-01T23:13:54.098Z"
 last_activity: 2026-04-01
 progress:
   total_phases: 5
   completed_phases: 2
-  total_plans: 4
-  completed_plans: 4
+  total_plans: 6
+  completed_plans: 5
   percent: 0
 ---
 
@@ -21,13 +21,13 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-01)
 
 **Core value:** Make it fast and satisfying for Toronto transit nerds to sketch a TTC-flavoured proposal they want to share
-**Current focus:** Phase 07 — full-screen-layout-and-floating-toolbars
+**Current focus:** Phase 08 — station-first-drawing-model
 
 ## Current Position
 
-Phase: 8
-Plan: Not started
-Status: Phase complete — ready for verification
+Phase: 08 (station-first-drawing-model) — EXECUTING
+Plan: 2 of 2
+Status: Ready to execute
 Last activity: 2026-04-01
 
 Progress: ░░░░░░░░░░ 0%
@@ -56,6 +56,7 @@ Progress: ░░░░░░░░░░ 0%
 | Phase 06 P02 | 5 | 2 tasks | 3 files |
 | Phase 07 P01 | 3 | 2 tasks | 8 files |
 | Phase 07 P02 | 2 | 1 tasks | 4 files |
+| Phase 08-station-first-drawing-model P01 | 14 | 1 tasks | 16 files |
 
 ## Accumulated Context
 
@@ -78,6 +79,9 @@ Key v2.0 constraints from research:
 - [Phase 07]: EditorFrame simplified to pure layout shell with no tool state management
 - [Phase 07]: SidebarShell rewritten as absolute overlay with translateX transition; ChevronRight=open, ChevronLeft=closed for toggle button direction
 - [Phase 07]: FloatingLayerPicker right offset transitions with sidebar open state to avoid overlap
+- [Phase 08]: DrawingSession.waypoints replaced with placedStationIds: string[] — stations are canonical geometry source
+- [Phase 08]: decodeSharePayload always returns SharePayloadV2 — v1 payloads migrated on decode via migrateV1toV2
+- [Phase 08]: finishDrawing requires 2+ placed stations; line removed if session ends with fewer
 
 ### Pending Todos
 
@@ -90,6 +94,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-01T22:12:21.077Z
-Stopped at: Checkpoint: Task 2 human-verify for 07-02-PLAN.md
+Last session: 2026-04-01T23:13:54.095Z
+Stopped at: Completed 08-01-PLAN.md
 Resume file: None
