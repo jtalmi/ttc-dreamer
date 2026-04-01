@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 04-01-PLAN.md
-last_updated: "2026-04-01T06:42:08.579Z"
+stopped_at: Completed 04-02-PLAN.md
+last_updated: "2026-04-01T06:48:14.640Z"
 last_activity: 2026-04-01
 progress:
   total_phases: 5
   completed_phases: 3
   total_plans: 15
-  completed_plans: 13
+  completed_plans: 14
   percent: 0
 ---
 
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-03-31)
 ## Current Position
 
 Phase: 04 (stats-inspectors-and-comparison) — EXECUTING
-Plan: 2 of 3
+Plan: 3 of 3
 Status: Ready to execute
 Last activity: 2026-04-01
 
@@ -65,6 +65,7 @@ Progress: ░░░░░░░░░░ 0%
 | Phase 03-editing-core P06 | 8 | 1 tasks | 2 files |
 | Phase 03-editing-core P04 | 20 | 2 tasks | 5 files |
 | Phase 04 P01 | 182 | 2 tasks | 6 files |
+| Phase 04 P02 | 8 | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -110,6 +111,7 @@ Recent decisions affecting current work:
 - [Phase 04]: Stat functions are pure (take ProposalLineDraft/ProposalDraft, return numbers/null) — no side effects
 - [Phase 04]: inspectElement is a dedicated action that atomically sets sidebarPanel and inspectedElementId; setSidebarPanel payload stays at the original 3-value union
 - [Phase 04]: New chrome actions (inspectElement, closeInspector, toggleComparisonMode) NOT added to HISTORY_ACTIONS — chrome-only, not draft mutations
+- [Phase 04]: LineList onInspectLine takes priority over onSelectLine when both are provided — keeps inspect-in-any-mode spec without breaking existing select behavior
 
 ### Pending Todos
 
@@ -122,6 +124,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-01T06:42:08.576Z
-Stopped at: Completed 04-01-PLAN.md
+Last session: 2026-04-01T06:48:14.637Z
+Stopped at: Completed 04-02-PLAN.md
 Resume file: None
