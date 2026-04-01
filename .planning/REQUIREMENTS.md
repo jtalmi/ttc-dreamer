@@ -29,12 +29,12 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **EDIT-03**: User can branch an existing TTC line
 - [x] **EDIT-04**: User can build a multi-line proposal, not just a single isolated line
 - [x] **EDIT-05**: Existing TTC infrastructure stays fixed except for allowed extensions and branches
-- [ ] **EDIT-06**: User can draw a route and then clean up or adjust its geometry afterward
-- [ ] **EDIT-07**: User can place stations manually
-- [ ] **EDIT-08**: User can use shared stations across multiple lines
-- [ ] **EDIT-09**: Crossing lines do not auto-connect unless the user confirms an interchange
-- [ ] **EDIT-10**: When a new station is near an existing one, the app can suggest an interchange for the user to confirm or reject
-- [ ] **EDIT-11**: Editing offers light snapping and guidance without forcing geometry or station placement
+- [x] **EDIT-06**: User can draw a route and then clean up or adjust its geometry afterward
+- [x] **EDIT-07**: User can place stations manually
+- [x] **EDIT-08**: User can use shared stations across multiple lines
+- [x] **EDIT-09**: Crossing lines do not auto-connect unless the user confirms an interchange
+- [x] **EDIT-10**: When a new station is near an existing one, the app can suggest an interchange for the user to confirm or reject
+- [x] **EDIT-11**: Editing offers light snapping and guidance without forcing geometry or station placement
 - [ ] **EDIT-12**: User can undo, redo, and delete editing actions
 
 ### Naming & Styling
@@ -107,12 +107,12 @@ Which phases cover which requirements. Updated during roadmap creation.
 | EDIT-03 | Phase 3 | Complete |
 | EDIT-04 | Phase 3 | Complete |
 | EDIT-05 | Phase 3 | Complete |
-| EDIT-06 | Phase 3 | Pending |
-| EDIT-07 | Phase 3 | Pending |
-| EDIT-08 | Phase 3 | Pending |
-| EDIT-09 | Phase 3 | Pending |
-| EDIT-10 | Phase 3 | Pending |
-| EDIT-11 | Phase 3 | Pending |
+| EDIT-06 | Phase 3 | Complete |
+| EDIT-07 | Phase 3 | Complete |
+| EDIT-08 | Phase 3 | Complete |
+| EDIT-09 | Phase 3 | Complete |
+| EDIT-10 | Phase 3 | Complete |
+| EDIT-11 | Phase 3 | Complete |
 | EDIT-12 | Phase 3 | Pending |
 | STYLE-01 | Phase 3 | Pending |
 | STYLE-02 | Phase 3 | Pending |

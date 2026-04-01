@@ -69,7 +69,7 @@ Plans:
 
 Plans:
 - [x] 03-01: Implement new-line creation plus extension/branch flows against the proposal model
-- [ ] 03-02: Implement route shaping, manual station placement, shared stations, and explicit interchange logic
+- [x] 03-02: Implement route shaping, manual station placement, shared stations, and explicit interchange logic
 - [ ] 03-03: Add naming, coloring, snapping/suggestion polish, and undo/redo/delete support
 
 ### Phase 4: Stats, Inspectors, and Comparison
@@ -116,6 +116,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 |-------|----------------|--------|-----------|
 | 1. Editor Shell and Proposal State | 3/3 | Complete   | 2026-04-01 |
 | 2. Toronto Baseline and Context Layers | 3/3 | Complete   | 2026-04-01 |
-| 3. Editing Core | 1/3 | In Progress|  |
+| 3. Editing Core | 2/3 | In Progress|  |
 | 4. Stats, Inspectors, and Comparison | 0/3 | Not started | - |
 | 5. Sharing, Export, and Polish | 0/3 | Not started | - |
