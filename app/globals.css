@@ -37,6 +37,16 @@
   --neighbourhood-label: rgba(24, 50, 74, 0.70);
   --station-dot-ttc: #FFFFFF;
   --station-dot-go: #FFFFFF;
+
+  /* Phase 3 proposal and editing tokens */
+  --proposal-line-default: #7B61FF;
+  --proposal-line-pending: rgba(123, 97, 255, 0.55);
+  --proposal-station-dot: #FFFFFF;
+  --snap-cue-ring: rgba(216, 90, 42, 0.45);
+  --interchange-badge-bg: #18324A;
+  --interchange-badge-text: #F3EEE5;
+  --selected-element: rgba(216, 90, 42, 0.25);
+  --drawing-cursor-dot: #D85A2A;
 }
 
 /* Full-height desktop shell foundation */
