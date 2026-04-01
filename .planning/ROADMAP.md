@@ -166,7 +166,11 @@ Plans:
   2. Clicking on an existing line segment inserts a new station at that point, splitting the segment
   3. Clicking on a line terminus starts an extension or branch from that endpoint
   4. Undo steps back through station placements one at a time without breaking line geometry
-**Plans**: TBD
+**Plans**: 2 plans
+
+Plans:
+- [ ] 08-01-PLAN.md — Freeze v1 share fixture, rewrite DrawingSession/reducer/geometry for station-first model, bump share payload to v2 with migration
+- [ ] 08-02-PLAN.md — Wire station-first click handlers in toronto-map.tsx and editor-shell.tsx, human verification
 
 ### Phase 9: Station Drag, Auto-Interchange, and Sidebar Panels
 **Goal**: Users can reposition stations by dragging, crossing proposal lines auto-create interchanges, and clicking any station or line on the map loads its details in the sidebar
@@ -204,6 +208,6 @@ Phases execute in numeric order: 6 -> 7 -> 8 -> 9 -> 10
 | 5. Sharing, Export, and Polish | v1.0 | 3/3 | Complete | 2026-04-01 |
 | 6. Baseline Data Correction | v2.0 | 2/2 | Complete   | 2026-04-01 |
 | 7. Full-Screen Layout and Floating Toolbars | v2.0 | 2/2 | Complete   | 2026-04-01 |
-| 8. Station-First Drawing Model | v2.0 | 0/TBD | Not started | - |
+| 8. Station-First Drawing Model | v2.0 | 0/2 | Not started | - |
 | 9. Station Drag, Auto-Interchange, and Sidebar Panels | v2.0 | 0/TBD | Not started | - |
 | 10. Auto-Generated Station Names | v2.0 | 0/TBD | Not started | - |
