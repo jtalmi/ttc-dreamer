@@ -33,7 +33,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans**: 3 plans
 
 Plans:
-- [ ] 01-01: Replace the placeholder page with the editor shell, toolbar scaffold, and sidebar scaffold
+- [x] 01-01: Replace the placeholder page with the editor shell, toolbar scaffold, and sidebar scaffold
 - [x] 01-02: Establish proposal/baseline state foundations and wire the Today/Future committed toggle
 - [ ] 01-03: Refine desktop-first layout behavior, empty states, and shell-level UX framing
 
@@ -114,7 +114,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Editor Shell and Proposal State | 1/3 | In Progress|  |
+| 1. Editor Shell and Proposal State | 2/3 | In Progress|  |
 | 2. Toronto Baseline and Context Layers | 0/3 | Not started | - |
 | 3. Editing Core | 0/3 | Not started | - |
 | 4. Stats, Inspectors, and Comparison | 0/3 | Not started | - |

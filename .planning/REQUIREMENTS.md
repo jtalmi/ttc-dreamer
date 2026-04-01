@@ -12,8 +12,8 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **EDTR-01**: User can open a desktop-first full-screen editor workspace
 - [x] **EDTR-02**: User sees a map-first workspace with visible core editing tools
 - [x] **EDTR-03**: User can open and collapse a sidebar for inspectors and stats without losing the map
-- [ ] **EDTR-04**: User can switch the baseline between Today and Future committed
-- [ ] **EDTR-05**: Every proposal starts from a preloaded Toronto map instead of a blank canvas
+- [x] **EDTR-04**: User can switch the baseline between Today and Future committed
+- [x] **EDTR-05**: Every proposal starts from a preloaded Toronto map instead of a blank canvas
 
 ### Toronto Context
 
@@ -96,8 +96,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | EDTR-01 | Phase 1 | Complete |
 | EDTR-02 | Phase 1 | Complete |
 | EDTR-03 | Phase 1 | Complete |
-| EDTR-04 | Phase 1 | Pending |
-| EDTR-05 | Phase 1 | Pending |
+| EDTR-04 | Phase 1 | Complete |
+| EDTR-05 | Phase 1 | Complete |
 | MAP-01 | Phase 2 | Pending |
 | MAP-02 | Phase 2 | Pending |
 | MAP-03 | Phase 2 | Pending |
