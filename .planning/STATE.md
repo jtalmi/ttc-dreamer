@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: UI Revamp & Data Accuracy
-status: executing
-stopped_at: Completed 06-01-PLAN.md
-last_updated: "2026-04-01T21:25:02.524Z"
+status: verifying
+stopped_at: Completed 06-02-PLAN.md
+last_updated: "2026-04-01T21:35:46.852Z"
 last_activity: 2026-04-01
 progress:
   total_phases: 5
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 2
-  completed_plans: 1
+  completed_plans: 2
   percent: 0
 ---
 
@@ -27,7 +27,7 @@ See: .planning/PROJECT.md (updated 2026-04-01)
 
 Phase: 06 (baseline-data-correction) — EXECUTING
 Plan: 2 of 2
-Status: Ready to execute
+Status: Phase complete — ready for verification
 Last activity: 2026-04-01
 
 Progress: ░░░░░░░░░░ 0%
@@ -53,6 +53,7 @@ Progress: ░░░░░░░░░░ 0%
 
 *Updated after each plan completion*
 | Phase 06 P01 | 5 | 2 tasks | 4 files |
+| Phase 06 P02 | 5 | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -68,6 +69,8 @@ Key v2.0 constraints from research:
 - [v2.0 Roadmap]: Nominatim reverse geocoding for auto-names; Photon wired as fallback from the start; in-memory cache keyed by rounded coordinate
 - [Phase 06]: Ontario Line geometry hand-authored with 57 coordinates (15 stations + intermediate points) since no official GTFS/ArcGIS source exists for this under-construction line
 - [Phase 06]: Status property is optional in TtcRouteProperties to avoid breaking existing callers without status field
+- [Phase 06]: GTFS platform midpoint averaging used for Line 5/6 station coordinates (15-95m from route vs 300-1600m ArcGIS)
+- [Phase 06]: Under-construction line styling uses two MapLibre layers (solid base + dashed overlay) due to line-dasharray not supporting data-driven expressions
 
 ### Pending Todos
 
@@ -80,6 +83,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-01T21:25:02.520Z
-Stopped at: Completed 06-01-PLAN.md
+Last session: 2026-04-01T21:35:46.850Z
+Stopped at: Completed 06-02-PLAN.md
 Resume file: None

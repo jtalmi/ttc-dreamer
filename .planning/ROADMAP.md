@@ -118,7 +118,7 @@ Plans:
 
 **Milestone Goal:** Transform the sandbox into a full-screen, Excalidraw-style map editor with intuitive station-first drawing, floating toolbars, and corrected baseline transit data.
 
-- [ ] **Phase 6: Baseline Data Correction** - Replace GeoJSON files with accurate TTC geometry and updated line statuses
+- [x] **Phase 6: Baseline Data Correction** - Replace GeoJSON files with accurate TTC geometry and updated line statuses (completed 2026-04-01)
 - [ ] **Phase 7: Full-Screen Layout and Floating Toolbars** - Remove fixed header, float drawing and layer controls over the map, default sidebar to line list
 - [ ] **Phase 8: Station-First Drawing Model** - Rewrite drawing session so stations are the atomic unit and lines auto-connect between them
 - [ ] **Phase 9: Station Drag, Auto-Interchange, and Sidebar Panels** - Enable station repositioning with live geometry, auto-interchanges at proposal crossings, and click-to-inspect panels
@@ -139,7 +139,7 @@ Plans:
 
 Plans:
 - [x] 06-01-PLAN.md — Add status properties to route GeoJSON, fix Line 6 color, add Ontario Line to future baseline, remove Scarborough RT stations, update types
-- [ ] 06-02-PLAN.md — Replace Line 5/6 station coordinates with GTFS data, add Ontario Line stations, update ttc-layers.tsx rendering
+- [x] 06-02-PLAN.md — Replace Line 5/6 station coordinates with GTFS data, add Ontario Line stations, update ttc-layers.tsx rendering
 
 ### Phase 7: Full-Screen Layout and Floating Toolbars
 **Goal**: Users experience a map-first editor with no fixed header — drawing tools and layer controls float over the canvas, and the sidebar defaults to showing all proposal lines
@@ -198,7 +198,7 @@ Phases execute in numeric order: 6 -> 7 -> 8 -> 9 -> 10
 | 3. Editing Core | v1.0 | 6/6 | Complete | 2026-04-01 |
 | 4. Stats, Inspectors, and Comparison | v1.0 | 3/3 | Complete | 2026-04-01 |
 | 5. Sharing, Export, and Polish | v1.0 | 3/3 | Complete | 2026-04-01 |
-| 6. Baseline Data Correction | v2.0 | 1/2 | In Progress|  |
+| 6. Baseline Data Correction | v2.0 | 2/2 | Complete   | 2026-04-01 |
 | 7. Full-Screen Layout and Floating Toolbars | v2.0 | 0/TBD | Not started | - |
 | 8. Station-First Drawing Model | v2.0 | 0/TBD | Not started | - |
 | 9. Station Drag, Auto-Interchange, and Sidebar Panels | v2.0 | 0/TBD | Not started | - |
