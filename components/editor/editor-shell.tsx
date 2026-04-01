@@ -1,7 +1,8 @@
 "use client";
 
-import { useReducer, useEffect } from "react";
+import { useReducer, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
+import type { FeatureCollection } from "geojson";
 import {
   historyReducer,
   createInitialHistoryState,
@@ -12,6 +13,9 @@ import EditorFrame from "@/components/editor/editor-frame";
 import { LineList } from "@/components/editor/sidebar/line-list";
 import { LineCreationPanel } from "@/components/editor/sidebar/line-creation-panel";
 import { ConfirmationDialog } from "@/components/editor/sidebar/confirmation-dialog";
+import { LineInspectorPanel } from "@/components/editor/sidebar/line-inspector-panel";
+import { StationInspectorPanel } from "@/components/editor/sidebar/station-inspector-panel";
+import { ProposalStatsPanel } from "@/components/editor/sidebar/proposal-stats-panel";
 
 // Dynamically import TorontoMap with ssr: false to guard against
 // window-is-undefined errors from maplibre-gl during server rendering.
@@ -58,6 +62,15 @@ export default function EditorShell() {
   );
 
   const { draft, chrome } = state.present;
+
+  // Neighbourhoods GeoJSON for station location resolution in StationInspectorPanel
+  const [neighbourhoods, setNeighbourhoods] = useState<FeatureCollection | null>(null);
+  useEffect(() => {
+    fetch("/data/neighbourhoods.geojson")
+      .then((r) => r.json())
+      .then((data: FeatureCollection) => setNeighbourhoods(data))
+      .catch(() => {});
+  }, []);
 
   // Determine the next default color based on how many lines exist
   const nextDefaultColor = DEFAULT_LINE_COLORS[draft.lines.length % DEFAULT_LINE_COLORS.length];
@@ -117,13 +130,17 @@ export default function EditorShell() {
         dispatch({ type: "deleteSelected" });
         return;
       }
+      if (e.key === "Escape" && chrome.sidebarPanel.startsWith("inspect-")) {
+        dispatch({ type: "closeInspector" });
+        return;
+      }
       if (e.key === "Escape" && chrome.drawingSession) {
         dispatch({ type: "cancelDrawing" });
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [dispatch, chrome.selectedElementId, chrome.drawingSession]);
+  }, [dispatch, chrome.selectedElementId, chrome.drawingSession, chrome.sidebarPanel]);
 
   // Build confirmation dialog message from pendingDeletion
   function buildConfirmationProps() {
@@ -163,7 +180,38 @@ export default function EditorShell() {
   // Render sidebar content based on current panel state
   let sidebarContent: React.ReactNode;
 
-  if (chrome.sidebarPanel === "create") {
+  if (chrome.sidebarPanel === "inspect-line") {
+    const inspectedLine = draft.lines.find((l) => l.id === chrome.inspectedElementId);
+    if (inspectedLine) {
+      sidebarContent = (
+        <LineInspectorPanel
+          line={inspectedLine}
+          draft={draft}
+          onClose={() => dispatch({ type: "closeInspector" })}
+        />
+      );
+    } else {
+      // Inspected line was deleted — return to list
+      dispatch({ type: "closeInspector" });
+      sidebarContent = null;
+    }
+  } else if (chrome.sidebarPanel === "inspect-station") {
+    const inspectedStation = draft.stations.find((s) => s.id === chrome.inspectedElementId);
+    if (inspectedStation) {
+      sidebarContent = (
+        <StationInspectorPanel
+          station={inspectedStation}
+          draft={draft}
+          neighbourhoods={neighbourhoods}
+          onClose={() => dispatch({ type: "closeInspector" })}
+        />
+      );
+    } else {
+      // Inspected station was deleted — return to list
+      dispatch({ type: "closeInspector" });
+      sidebarContent = null;
+    }
+  } else if (chrome.sidebarPanel === "create") {
     sidebarContent = (
       <LineCreationPanel
         lineCount={draft.lines.length}
@@ -248,27 +296,43 @@ export default function EditorShell() {
       </div>
     );
   } else {
-    // Default "list" panel
+    // Default "list" panel — line list + stats panel below
     sidebarContent = (
-      <LineList
-        lines={draft.lines}
-        onAddLine={() => dispatch({ type: "setSidebarPanel", payload: "create" })}
-        activeDrawingLineId={chrome.drawingSession?.lineId ?? null}
-        selectedLineId={selectedLineId}
-        onUpdateName={(lineId, name) =>
-          dispatch({ type: "updateLineName", payload: { lineId, name } })
-        }
-        onUpdateColor={(lineId, color) =>
-          dispatch({ type: "updateLineColor", payload: { lineId, color } })
-        }
-        onSelectLine={(lineId) =>
-          dispatch({ type: "setSelectedElement", payload: lineId })
-        }
-        onDeleteLine={(lineId) => {
-          dispatch({ type: "setSelectedElement", payload: lineId });
-          dispatch({ type: "deleteSelected" });
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          height: "100%",
         }}
-      />
+      >
+        <div style={{ flex: 1, minHeight: 0, overflowY: "auto" }}>
+          <LineList
+            lines={draft.lines}
+            onAddLine={() => dispatch({ type: "setSidebarPanel", payload: "create" })}
+            activeDrawingLineId={chrome.drawingSession?.lineId ?? null}
+            selectedLineId={selectedLineId}
+            onUpdateName={(lineId, name) =>
+              dispatch({ type: "updateLineName", payload: { lineId, name } })
+            }
+            onUpdateColor={(lineId, color) =>
+              dispatch({ type: "updateLineColor", payload: { lineId, color } })
+            }
+            onSelectLine={(lineId) =>
+              dispatch({ type: "setSelectedElement", payload: lineId })
+            }
+            onDeleteLine={(lineId) => {
+              dispatch({ type: "setSelectedElement", payload: lineId });
+              dispatch({ type: "deleteSelected" });
+            }}
+            onInspectLine={(lineId) =>
+              dispatch({ type: "inspectElement", payload: { id: lineId, elementType: "line" } })
+            }
+          />
+        </div>
+        <div style={{ flexShrink: 0 }}>
+          <ProposalStatsPanel draft={draft} />
+        </div>
+      </div>
     );
   }
 

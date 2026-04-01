@@ -446,6 +446,31 @@ export default function TorontoMap({
       return;
     }
 
+    if (activeTool === "inspect") {
+      const features = e.features;
+      if (features && features.length > 0) {
+        const feature = features[0];
+        const props = feature.properties as Record<string, unknown>;
+        // Waypoint click resolves to parent line
+        if (feature.layer?.id === "proposal-waypoints-circle") {
+          const lineId = props["lineId"] as string;
+          if (lineId) {
+            dispatch?.({ type: "inspectElement", payload: { id: lineId, elementType: "line" } });
+            return;
+          }
+        }
+        const id = props["id"] as string | null;
+        if (id) {
+          const elementType = feature.layer?.id === "proposal-stations-circle" ? "station" : "line";
+          dispatch?.({ type: "inspectElement", payload: { id, elementType } });
+          return;
+        }
+      }
+      // Empty click — close inspector
+      dispatch?.({ type: "closeInspector" });
+      return;
+    }
+
     if (activeTool === "select") {
       // Check if click hit a proposal element via interactive layers
       const features = e.features;
@@ -528,7 +553,7 @@ export default function TorontoMap({
     switch (activeTool) {
       case "draw-line": return "crosshair";
       case "add-station": return isOverSegment ? "cell" : "not-allowed";
-      case "inspect": return "zoom-in";
+      case "inspect": return "pointer";
       case "select": return "default";
       default: return "default";
     }

@@ -22,6 +22,8 @@ type LineListProps = Readonly<{
   onUpdateColor?: (lineId: string, color: string) => void;
   onDeleteLine?: (lineId: string) => void;
   onSelectLine?: (lineId: string) => void;
+  /** When provided, clicking a line row opens the line inspector instead of selecting. */
+  onInspectLine?: (lineId: string) => void;
 }>;
 
 /**
@@ -37,6 +39,7 @@ export function LineList({
   onUpdateColor,
   onDeleteLine,
   onSelectLine,
+  onInspectLine,
 }: LineListProps) {
   // Track which line is being edited inline
   const [editingLineId, setEditingLineId] = useState<string | null>(null);
@@ -131,7 +134,11 @@ export function LineList({
                 <div
                   onClick={() => {
                     if (!isEditingThis) {
-                      onSelectLine?.(line.id);
+                      if (onInspectLine) {
+                        onInspectLine(line.id);
+                      } else {
+                        onSelectLine?.(line.id);
+                      }
                     }
                   }}
                   style={{
