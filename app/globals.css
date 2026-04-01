@@ -22,6 +22,21 @@
 
   /* Typography */
   --font-sans: "IBM Plex Sans", system-ui, sans-serif;
+
+  /* Phase 2 map layer tokens */
+  --ttc-line-1: #FFC41F;
+  --ttc-line-2: #009A44;
+  --ttc-line-3: #0033A0;
+  --ttc-line-4: #800080;
+  --ttc-line-5: #DF6C2B;
+  --go-line-surface: #007A3D;
+  --go-station-surface: #007A3D;
+  --go-secondary: #005A2B;
+  --bus-corridor-surface: #E05A2A;
+  --street-surface: #C8BFB0;
+  --neighbourhood-label: rgba(24, 50, 74, 0.70);
+  --station-dot-ttc: #FFFFFF;
+  --station-dot-go: #FFFFFF;
 }
 
 /* Full-height desktop shell foundation */
