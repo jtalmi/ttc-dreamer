@@ -1,0 +1,65 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-79.3871, 43.6426] },
+      "properties": { "name": "CN Tower" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-79.3806, 43.6452] },
+      "properties": { "name": "Union Station" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-79.3893, 43.6414] },
+      "properties": { "name": "Rogers Centre" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-79.6306, 43.6777] },
+      "properties": { "name": "Pearson Airport" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-79.2568, 43.7739] },
+      "properties": { "name": "Scarborough Town Centre" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-79.3804, 43.6561] },
+      "properties": { "name": "Yonge-Dundas Square" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-79.3814, 43.6381] },
+      "properties": { "name": "Harbourfront Centre" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-79.4080, 43.7615] },
+      "properties": { "name": "North York Centre" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-79.4163, 43.6348] },
+      "properties": { "name": "Exhibition Place" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-79.4118, 43.6282] },
+      "properties": { "name": "Ontario Place" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-79.3944, 43.6680] },
+      "properties": { "name": "Royal Ontario Museum" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-79.4588, 43.6467] },
+      "properties": { "name": "High Park" }
+    }
+  ]
+}

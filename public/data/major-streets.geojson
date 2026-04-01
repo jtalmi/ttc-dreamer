@@ -1,0 +1,167 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-79.3802, 43.6452],
+          [-79.3876, 43.6705],
+          [-79.3968, 43.7265],
+          [-79.3996, 43.7615]
+        ]
+      },
+      "properties": { "name": "Yonge Street" }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-79.5408, 43.6550],
+          [-79.4788, 43.6540],
+          [-79.3985, 43.6646],
+          [-79.3200, 43.6727],
+          [-79.2900, 43.6784]
+        ]
+      },
+      "properties": { "name": "Bloor Street" }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-79.5420, 43.6510],
+          [-79.4600, 43.6505],
+          [-79.3800, 43.6513],
+          [-79.3100, 43.6540],
+          [-79.2700, 43.6557]
+        ]
+      },
+      "properties": { "name": "Queen Street" }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-79.4550, 43.6450],
+          [-79.3950, 43.6445],
+          [-79.3500, 43.6456],
+          [-79.3100, 43.6472]
+        ]
+      },
+      "properties": { "name": "King Street" }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-79.5400, 43.6553],
+          [-79.4300, 43.6553],
+          [-79.3805, 43.6561],
+          [-79.3100, 43.6579],
+          [-79.2750, 43.6590]
+        ]
+      },
+      "properties": { "name": "Dundas Street" }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-79.4850, 43.6602],
+          [-79.4200, 43.6598],
+          [-79.3970, 43.6604],
+          [-79.3200, 43.6620]
+        ]
+      },
+      "properties": { "name": "College Street" }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-79.5400, 43.6880],
+          [-79.4620, 43.6876],
+          [-79.3940, 43.6886],
+          [-79.3300, 43.6899],
+          [-79.2800, 43.6910]
+        ]
+      },
+      "properties": { "name": "St Clair Avenue" }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-79.5600, 43.7088],
+          [-79.4740, 43.7083],
+          [-79.3987, 43.7093],
+          [-79.3100, 43.7118],
+          [-79.2600, 43.7128]
+        ]
+      },
+      "properties": { "name": "Eglinton Avenue" }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-79.5600, 43.7282],
+          [-79.4800, 43.7280],
+          [-79.3970, 43.7290],
+          [-79.3200, 43.7308],
+          [-79.2700, 43.7316]
+        ]
+      },
+      "properties": { "name": "Lawrence Avenue" }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-79.3531, 43.6782],
+          [-79.3200, 43.6782],
+          [-79.2900, 43.6795],
+          [-79.2700, 43.6800]
+        ]
+      },
+      "properties": { "name": "Danforth Avenue" }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-79.4110, 43.6430],
+          [-79.4107, 43.6640],
+          [-79.4105, 43.6900],
+          [-79.4103, 43.7200]
+        ]
+      },
+      "properties": { "name": "Bathurst Street" }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-79.4312, 43.6380],
+          [-79.4310, 43.6600],
+          [-79.4308, 43.6880],
+          [-79.4305, 43.7150]
+        ]
+      },
+      "properties": { "name": "Dufferin Street" }
+    }
+  ]
+}

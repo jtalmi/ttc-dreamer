@@ -1,0 +1,135 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-79.3832, 43.6465] },
+      "properties": { "name": "Downtown Core" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-79.3802, 43.6481] },
+      "properties": { "name": "Financial District" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-79.3776, 43.6395] },
+      "properties": { "name": "Harbourfront" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-79.3590, 43.6503] },
+      "properties": { "name": "Distillery District" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-79.4050, 43.6659] },
+      "properties": { "name": "The Annex" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-79.3938, 43.6703] },
+      "properties": { "name": "Yorkville" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-79.3734, 43.6795] },
+      "properties": { "name": "Rosedale" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-79.3628, 43.6627] },
+      "properties": { "name": "Cabbagetown" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-79.4017, 43.6553] },
+      "properties": { "name": "Kensington Market" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-79.3970, 43.6527] },
+      "properties": { "name": "Chinatown" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-79.4180, 43.6558] },
+      "properties": { "name": "Little Italy" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-79.4348, 43.6487] },
+      "properties": { "name": "Little Portugal" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-79.4182, 43.6470] },
+      "properties": { "name": "Queen West" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-79.4440, 43.6432] },
+      "properties": { "name": "Parkdale" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-79.4195, 43.6390] },
+      "properties": { "name": "Liberty Village" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-79.3968, 43.6440] },
+      "properties": { "name": "King West" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-79.3291, 43.6604] },
+      "properties": { "name": "Leslieville" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-79.2992, 43.6694] },
+      "properties": { "name": "The Beaches" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-79.3531, 43.6782] },
+      "properties": { "name": "Danforth / Greektown" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-79.2569, 43.7290] },
+      "properties": { "name": "Scarborough" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-79.4142, 43.7615] },
+      "properties": { "name": "North York" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-79.5418, 43.6834] },
+      "properties": { "name": "Etobicoke" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-79.3323, 43.6980] },
+      "properties": { "name": "East York" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-79.4628, 43.6528] },
+      "properties": { "name": "High Park" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-79.4753, 43.6636] },
+      "properties": { "name": "Junction" }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-79.4788, 43.6536] },
+      "properties": { "name": "Bloor West Village" }
+    }
+  ]
+}
