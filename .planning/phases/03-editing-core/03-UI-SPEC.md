@@ -96,7 +96,7 @@ Base tokens are unchanged from Phases 1 and 2. Phase 3 introduces proposal-layer
 | Accent (10%) | `#D85A2A` | Active tool pill, primary CTA, focus ring, active panel header |
 | Destructive | `#A83232` | Delete line, delete station, clear all proposal confirmations only |
 
-Accent reserved for: active toolbar tool pill, primary CTA ("Add Line"), active panel header stripe, keyboard focus ring. No other elements.
+Accent reserved for: active toolbar tool pill, primary CTA ("Add Line"), active panel header stripe, keyboard focus ring, canvas affordances: drawing cursor dot (`--drawing-cursor-dot`), snap cue ring (`--snap-cue-ring`), and selection overlay (`--selected-element`, accent-derived at reduced opacity for canvas legibility). No other elements.
 
 **Phase 3 proposal and editing-state tokens (new additions to globals.css):**
 
@@ -105,11 +105,11 @@ Accent reserved for: active toolbar tool pill, primary CTA ("Add Line"), active 
 | `--proposal-line-default` | `#7B61FF` | Default color for the first new proposal line before user picks a custom color |
 | `--proposal-line-pending` | `rgba(123, 97, 255, 0.55)` | In-progress drawing segment (same hue, lower opacity) |
 | `--proposal-station-dot` | `#FFFFFF` | Proposed station dot fill (same as TTC station dot pattern) |
-| `--snap-cue-ring` | `rgba(216, 90, 42, 0.45)` | Snapping cue ring around snap target (accent-derived, muted) |
+| `--snap-cue-ring` | `rgba(216, 90, 42, 0.45)` | Snapping cue ring around snap target (accent-derived, reduced opacity for canvas legibility) |
 | `--interchange-badge-bg` | `#18324A` | Interchange suggestion badge background |
 | `--interchange-badge-text` | `#F3EEE5` | Interchange suggestion badge text |
-| `--selected-element` | `rgba(216, 90, 42, 0.25)` | Selection highlight overlay on a selected proposed line or station |
-| `--drawing-cursor-dot` | `#D85A2A` | Live cursor dot during Draw Line mode |
+| `--selected-element` | `rgba(216, 90, 42, 0.25)` | Selection highlight overlay on a selected proposed line or station (accent-derived, reduced opacity for canvas legibility) |
+| `--drawing-cursor-dot` | `#D85A2A` | Live cursor dot during Draw Line mode (accent value, full opacity) |
 
 **Proposed line rendering rules:**
 
@@ -144,7 +144,7 @@ The existing toolbar from Phase 1 carries forward. Phase 3 activates the previou
 |------------|----------|------------------|
 | `Select` | `select` | Click a proposed line or station to select it; drag to move; shows selection highlight |
 | `Draw Line` | `draw-line` | Click to place route waypoints; double-click to finish; draws in-progress segment from last waypoint to cursor |
-| `Add Station` | `add-station` | Click on a proposed line segment to place a station; triggers snapping and interchange suggestions |
+| `Add Station` | `add-station` | Click on a proposed line segment to place a station at that point on the segment; triggers snapping and interchange suggestions |
 | `Inspect` | `inspect` | Scaffolded — not fully active in Phase 3; clicking shows no-op (inspector lands in Phase 4) |
 
 - The active tool pill uses `--shell-accent` background, white text, as established in Phase 1.
@@ -216,8 +216,8 @@ The existing toolbar from Phase 1 carries forward. Phase 3 activates the previou
 ### Station Naming
 
 - When a station is placed, a **station name popover** appears immediately (attached to the station dot, above it by 8px).
-- Popover contains: a single text field prefilled with "Station" + sequential number (e.g. "Station 1"), and a `Done` button.
-- User can accept the default or type a custom name. Press Enter or click `Done` to confirm.
+- Popover contains: a single text field prefilled with "Station" + sequential number (e.g. "Station 1"), and a `Save Name` button.
+- User can accept the default or type a custom name. Press Enter or click `Save Name` to confirm.
 - Popover closes on confirm. The station label updates on the map.
 - If user clicks away without confirming, the name defaults to the prefilled value.
 
@@ -270,7 +270,7 @@ The sidebar shell (320px expanded, 64px collapsed rail) is now active content:
 | Finish drawing button | Finish Line |
 | Station name popover heading | Name this station |
 | Station name field placeholder | Station 1 |
-| Station name confirm button | Done |
+| Station name confirm button | Save Name |
 | Interchange suggestion badge | Make interchange? |
 | Interchange confirm button | Yes |
 | Interchange reject button | No |
@@ -282,15 +282,23 @@ The sidebar shell (320px expanded, 64px collapsed rail) is now active content:
 | Error: branch on locked baseline (non-endpoint, not a valid branch point) | You can only extend or branch from this line's existing endpoints. |
 | Extend mode indicator (screen reader) | Extending from endpoint |
 | Branch mode indicator (screen reader) | Branching from line |
-| Destructive: delete line confirmation | Delete Line: Remove "{Line Name}" and all its stations? This cannot be undone. |
-| Destructive: delete station confirmation | Delete Station: Remove "{Station Name}"? This cannot be undone. |
-| Destructive: delete shared station warning | Delete Station: "{Station Name}" is shared by {N} lines. Removing it will also remove all interchange links. |
-| Destructive: clear all proposal | Clear Proposal: Remove all lines and stations and start fresh? This cannot be undone. |
-| Destructive action confirm button label | Delete |
-| Destructive action cancel button label | Cancel |
+| Destructive: delete line confirmation | Delete "{Line Name}" and all its stations? This cannot be undone. |
+| Destructive: delete line confirm button | Delete Line |
+| Destructive: delete line cancel button | Keep Line |
+| Destructive: delete station confirmation | Remove "{Station Name}"? This cannot be undone. |
+| Destructive: delete station confirm button | Delete Station |
+| Destructive: delete station cancel button | Keep Station |
+| Destructive: delete shared station warning | "{Station Name}" is shared by {N} lines. Removing it will also remove all interchange links. This cannot be undone. |
+| Destructive: delete shared station confirm button | Delete Station |
+| Destructive: delete shared station cancel button | Keep Station |
+| Destructive: clear all proposal | Remove all lines and stations and start fresh? This cannot be undone. |
+| Destructive: clear all proposal confirm button | Clear Proposal |
+| Destructive: clear all proposal cancel button | Keep Proposal |
 
 Copy rules:
-- Use imperative verbs for all action buttons: "Add", "Start", "Finish", "Done", "Delete", "Cancel"
+- Use imperative verbs for all action buttons: "Add", "Start", "Finish", "Save", "Delete", "Clear"
+- Safe-exit (cancel) buttons use contextual "Keep [thing]" labels — never the bare word "Cancel"
+- Destructive confirm buttons name the specific action and target: "Delete Line", "Delete Station", "Clear Proposal"
 - Line names appear in quotation marks in confirmation copy
 - Station count in shared station warning uses the exact number of lines sharing the station
 - "This cannot be undone" appears in every destructive confirmation
