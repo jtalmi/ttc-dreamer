@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: verifying
-stopped_at: Completed 03-06-PLAN.md
-last_updated: "2026-04-01T06:07:38.396Z"
+stopped_at: Completed 03-04-PLAN.md
+last_updated: "2026-04-01T06:09:57.998Z"
 last_activity: 2026-04-01
 progress:
   total_phases: 5
-  completed_phases: 2
+  completed_phases: 3
   total_plans: 12
-  completed_plans: 11
+  completed_plans: 12
   percent: 0
 ---
 
@@ -63,6 +63,7 @@ Progress: ░░░░░░░░░░ 0%
 | Phase 03 P03 | 24 | 1 tasks | 7 files |
 | Phase 03-editing-core P05 | 12 | 2 tasks | 2 files |
 | Phase 03-editing-core P06 | 8 | 1 tasks | 2 files |
+| Phase 03-editing-core P04 | 20 | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -102,6 +103,9 @@ Recent decisions affecting current work:
 - [Phase 03]: Baseline TTC elements silently ignored on Delete key (not found in draft.lines or draft.stations) - no error shown
 - [Phase 03-editing-core]: waypointsGeoJSON useMemo returns empty FeatureCollection when not in select mode; waypoint click detection comes before station check in handleClick
 - [Phase 03-editing-core]: confirmInterchange disambiguates proposal vs TTC station by checking draft.stations array; merge path avoids creating duplicate station entity
+- [Phase 03-editing-core]: detectLineHitType checked per-feature in handleClick before fallthrough to onAddWaypoint, guarded by drawingSession null check
+- [Phase 03-editing-core]: onStartExtend receives TTC feature OBJECTID as parentLineId — not a proposal UUID
+- [Phase 03-editing-core]: vitest added as test infrastructure to enable TDD for domain layer tests
 
 ### Pending Todos
 
@@ -114,6 +118,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-01T06:07:38.393Z
-Stopped at: Completed 03-06-PLAN.md
+Last session: 2026-04-01T06:09:57.996Z
+Stopped at: Completed 03-04-PLAN.md
 Resume file: None

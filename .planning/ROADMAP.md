@@ -14,7 +14,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Editor Shell and Proposal State** - Establish the desktop-first editor frame, baseline mode shell, and proposal foundation (completed 2026-04-01)
 - [x] **Phase 2: Toronto Baseline and Context Layers** - Make the map feel unmistakably local with TTC, GO, and city context (completed 2026-04-01)
-- [ ] **Phase 3: Editing Core** - Deliver the fun proposal-building loop for lines, stations, branches, and styling (gap closure in progress)
+- [x] **Phase 3: Editing Core** - Deliver the fun proposal-building loop for lines, stations, branches, and styling (gap closure in progress) (completed 2026-04-01)
 - [ ] **Phase 4: Stats, Inspectors, and Comparison** - Add descriptive insight without drifting into realism-heavy tooling
 - [ ] **Phase 5: Sharing, Export, and Polish** - Make proposals externally shareable and viewer-friendly
 
@@ -71,7 +71,7 @@ Plans:
 - [x] 03-01: Implement new-line creation plus extension/branch flows against the proposal model
 - [x] 03-02: Implement route shaping, manual station placement, shared stations, and explicit interchange logic
 - [x] 03-03: Add naming, coloring, snapping/suggestion polish, and undo/redo/delete support
-- [ ] 03-04-PLAN.md — Wire extend/branch detection (EDIT-02, EDIT-03): import detectLineHitType, pass onStartExtend from editor-shell
+- [x] 03-04-PLAN.md — Wire extend/branch detection (EDIT-02, EDIT-03): import detectLineHitType, pass onStartExtend from editor-shell
 - [x] 03-05-PLAN.md — Wire waypoint drag for geometry adjustment (EDIT-06): waypoint vertex layer + drag dispatch moveWaypoint
 - [x] 03-06-PLAN.md — Fix shared station merging in confirmInterchange (EDIT-08): merge lineIds instead of creating duplicate
 
@@ -119,6 +119,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 |-------|----------------|--------|-----------|
 | 1. Editor Shell and Proposal State | 3/3 | Complete   | 2026-04-01 |
 | 2. Toronto Baseline and Context Layers | 3/3 | Complete   | 2026-04-01 |
-| 3. Editing Core | 5/6 | In Progress|  |
+| 3. Editing Core | 6/6 | Complete   | 2026-04-01 |
 | 4. Stats, Inspectors, and Comparison | 0/3 | Not started | - |
 | 5. Sharing, Export, and Polish | 0/3 | Not started | - |
