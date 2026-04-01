@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: UI Revamp & Data Accuracy
-status: verifying
-stopped_at: Completed 06-02-PLAN.md
-last_updated: "2026-04-01T21:40:15.865Z"
+status: executing
+stopped_at: Completed 07-01-PLAN.md
+last_updated: "2026-04-01T22:08:45.344Z"
 last_activity: 2026-04-01
 progress:
   total_phases: 5
   completed_phases: 1
-  total_plans: 2
-  completed_plans: 2
+  total_plans: 4
+  completed_plans: 3
   percent: 0
 ---
 
@@ -21,13 +21,13 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-01)
 
 **Core value:** Make it fast and satisfying for Toronto transit nerds to sketch a TTC-flavoured proposal they want to share
-**Current focus:** Phase 06 — baseline-data-correction
+**Current focus:** Phase 07 — full-screen-layout-and-floating-toolbars
 
 ## Current Position
 
-Phase: 7
-Plan: Not started
-Status: Phase complete — ready for verification
+Phase: 07 (full-screen-layout-and-floating-toolbars) — EXECUTING
+Plan: 2 of 2
+Status: Ready to execute
 Last activity: 2026-04-01
 
 Progress: ░░░░░░░░░░ 0%
@@ -54,6 +54,7 @@ Progress: ░░░░░░░░░░ 0%
 *Updated after each plan completion*
 | Phase 06 P01 | 5 | 2 tasks | 4 files |
 | Phase 06 P02 | 5 | 2 tasks | 3 files |
+| Phase 07 P01 | 3 | 2 tasks | 8 files |
 
 ## Accumulated Context
 
@@ -71,6 +72,9 @@ Key v2.0 constraints from research:
 - [Phase 06]: Status property is optional in TtcRouteProperties to avoid breaking existing callers without status field
 - [Phase 06]: GTFS platform midpoint averaging used for Line 5/6 station coordinates (15-95m from route vs 300-1600m ArcGIS)
 - [Phase 06]: Under-construction line styling uses two MapLibre layers (solid base + dashed overlay) due to line-dasharray not supporting data-driven expressions
+- [Phase 07]: Select mode auto-opens inspector (inspectElement dispatch) - inspect tool removed from ToolMode
+- [Phase 07]: FloatingDrawingToolbar uses pointer-events:none wrapper with auto on interactive children
+- [Phase 07]: EditorFrame simplified to pure layout shell with no tool state management
 
 ### Pending Todos
 
@@ -83,6 +87,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-01T21:35:46.850Z
-Stopped at: Completed 06-02-PLAN.md
+Last session: 2026-04-01T22:08:45.342Z
+Stopped at: Completed 07-01-PLAN.md
 Resume file: None

@@ -154,7 +154,7 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 07-01-PLAN.md — Remove TopToolbar, make map full-screen, install lucide-react, add CSS tokens, create floating drawing toolbar, merge inspect into select mode
+- [x] 07-01-PLAN.md — Remove TopToolbar, make map full-screen, install lucide-react, add CSS tokens, create floating drawing toolbar, merge inspect into select mode
 - [ ] 07-02-PLAN.md — Create floating layer picker, redesign sidebar as overlay with title/share header, add toggle chevron, human verification
 
 ### Phase 8: Station-First Drawing Model
@@ -203,7 +203,7 @@ Phases execute in numeric order: 6 -> 7 -> 8 -> 9 -> 10
 | 4. Stats, Inspectors, and Comparison | v1.0 | 3/3 | Complete | 2026-04-01 |
 | 5. Sharing, Export, and Polish | v1.0 | 3/3 | Complete | 2026-04-01 |
 | 6. Baseline Data Correction | v2.0 | 2/2 | Complete   | 2026-04-01 |
-| 7. Full-Screen Layout and Floating Toolbars | v2.0 | 0/2 | Not started | - |
+| 7. Full-Screen Layout and Floating Toolbars | v2.0 | 1/2 | In Progress|  |
 | 8. Station-First Drawing Model | v2.0 | 0/TBD | Not started | - |
 | 9. Station Drag, Auto-Interchange, and Sidebar Panels | v2.0 | 0/TBD | Not started | - |
 | 10. Auto-Generated Station Names | v2.0 | 0/TBD | Not started | - |
