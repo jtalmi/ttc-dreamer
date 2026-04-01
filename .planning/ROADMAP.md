@@ -50,7 +50,7 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 02-01-PLAN.md — Install MapLibre, create baseline data infrastructure, and render TTC + GO layers on interactive map
+- [x] 02-01-PLAN.md — Install MapLibre, create baseline data infrastructure, and render TTC + GO layers on interactive map
 - [ ] 02-02-PLAN.md — Add Toronto context labels (neighbourhoods, landmarks, streets, station names) and hover tooltips
 - [ ] 02-03-PLAN.md — Add bus/streetcar corridor toggle and verify complete Toronto-native map experience
 
@@ -115,7 +115,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Editor Shell and Proposal State | 3/3 | Complete   | 2026-04-01 |
-| 2. Toronto Baseline and Context Layers | 0/3 | Not started | - |
+| 2. Toronto Baseline and Context Layers | 1/3 | In Progress|  |
 | 3. Editing Core | 0/3 | Not started | - |
 | 4. Stats, Inspectors, and Comparison | 0/3 | Not started | - |
 | 5. Sharing, Export, and Polish | 0/3 | Not started | - |

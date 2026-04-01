@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: verifying
-stopped_at: Phase 2 UI-SPEC approved
-last_updated: "2026-04-01T02:33:41.953Z"
+status: executing
+stopped_at: Completed 02-01-PLAN.md
+last_updated: "2026-04-01T03:31:31.709Z"
 last_activity: 2026-04-01
 progress:
   total_phases: 5
   completed_phases: 1
-  total_plans: 3
-  completed_plans: 3
+  total_plans: 6
+  completed_plans: 4
   percent: 0
 ---
 
@@ -21,13 +21,13 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-31)
 
 **Core value:** Make it fast and satisfying for Toronto transit nerds to sketch a TTC-flavoured proposal they want to share
-**Current focus:** Phase 01 — editor-shell-and-proposal-state
+**Current focus:** Phase 02 — toronto-baseline-and-context-layers
 
 ## Current Position
 
-Phase: 2
-Plan: Not started
-Status: Phase complete — ready for verification
+Phase: 02 (toronto-baseline-and-context-layers) — EXECUTING
+Plan: 2 of 3
+Status: Ready to execute
 Last activity: 2026-04-01
 
 Progress: ░░░░░░░░░░ 0%
@@ -55,6 +55,7 @@ Progress: ░░░░░░░░░░ 0%
 | Phase 01 P02 | 2 | 2 tasks | 5 files |
 | Phase 01-editor-shell-and-proposal-state P01 | 15 | 2 tasks | 3 files |
 | Phase 01-editor-shell-and-proposal-state P03 | 1 | 2 tasks | 4 files |
+| Phase 02-toronto-baseline-and-context-layers P01 | 16 | 2 tasks | 14 files |
 
 ## Accumulated Context
 
@@ -76,6 +77,9 @@ Recent decisions affecting current work:
 - [Phase 01-editor-shell-and-proposal-state]: lib/proposal barrel index.ts is the single import target for editor shell components
 - [Phase 01-editor-shell-and-proposal-state]: EditorShell owns all Phase 1 interactive state via useReducer rather than lifting state into the route
 - [Phase 01-editor-shell-and-proposal-state]: EditorFrame extended with optional callback props (onToolSelect, onBaselineChange, onSidebarToggle) to support parent-controlled mode without removing uncontrolled fallback
+- [Phase 02-toronto-baseline-and-context-layers]: MapLibre GL via react-map-gl/maplibre is the map renderer; next/dynamic with ssr:false is the SSR guard
+- [Phase 02-toronto-baseline-and-context-layers]: City of Toronto ArcGIS GeoJSON endpoints used for TTC data; GO routes hand-authored with station coordinate anchors
+- [Phase 02-toronto-baseline-and-context-layers]: TTC station data from ArcGIS does not include ROUTE_ID so stations use a uniform dark border color (#18324A)
 
 ### Pending Todos
 
@@ -88,6 +92,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-01T02:33:41.950Z
-Stopped at: Phase 2 UI-SPEC approved
-Resume file: .planning/phases/02-toronto-baseline-and-context-layers/02-UI-SPEC.md
+Last session: 2026-04-01T03:31:31.707Z
+Stopped at: Completed 02-01-PLAN.md
+Resume file: None
