@@ -84,6 +84,11 @@ type TorontoMapProps = Readonly<{
   snapPosition?: [number, number] | null;
   /** Pending interchange suggestion from chrome state */
   pendingInterchangeSuggestion?: (InterchangeSuggestion & { stationName: string }) | null;
+  /**
+   * Opacity applied to committed proposal elements (lines, stations, labels).
+   * Set to 0.4 in comparison (Baseline View) mode. Defaults to 1.
+   */
+  proposalOpacity?: number;
   /** Called when user clicks to place a waypoint in draw-line mode */
   onAddWaypoint?: (lngLat: [number, number]) => void;
   /** Called when user double-clicks to finish drawing */
@@ -112,6 +117,7 @@ export default function TorontoMap({
   selectedElementId = null,
   snapPosition = null,
   pendingInterchangeSuggestion = null,
+  proposalOpacity = 1,
   onAddWaypoint,
   onFinishDrawing,
   onUpdateCursor,
@@ -651,6 +657,7 @@ export default function TorontoMap({
         selectedElementId={selectedElementId}
         snapCueGeoJSON={snapCueGeoJSON}
         waypointsGeoJSON={waypointsGeoJSON}
+        proposalOpacity={proposalOpacity}
       />
       <StationLabels
         ttcStations={data.ttcStations}

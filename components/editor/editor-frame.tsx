@@ -31,6 +31,14 @@ type EditorFrameProps = Readonly<{
   mapChildren?: React.ReactNode;
   /** Slot for injecting sidebar content (future phases) */
   sidebarChildren?: React.ReactNode;
+  /** Whether comparison (Baseline View) mode is active. */
+  comparisonMode?: boolean;
+  /** Called when the comparison toggle is clicked. */
+  onComparisonToggle?: () => void;
+  /** Whether the proposal has at least one line. When false, toggle is muted. */
+  hasLines?: boolean;
+  /** Optional banner to render at the bottom of the map canvas (e.g. comparison banner). */
+  mapBanner?: React.ReactNode;
 }>;
 
 export default function EditorFrame({
@@ -45,6 +53,10 @@ export default function EditorFrame({
   onAddLine,
   mapChildren,
   sidebarChildren,
+  comparisonMode,
+  onComparisonToggle,
+  hasLines,
+  mapBanner,
 }: EditorFrameProps) {
   // Internal state — only used when the corresponding prop is not controlled
   const [internalTool, setInternalTool] = useState<ToolName>("Select");
@@ -75,6 +87,9 @@ export default function EditorFrame({
         baseline={baseline}
         busCorridorVisible={busCorridorVisible}
         onAddLine={onAddLine}
+        comparisonMode={comparisonMode}
+        onComparisonToggle={onComparisonToggle}
+        hasLines={hasLines}
         onToolSelect={(tool) => {
           if (controlledOnToolSelect) {
             controlledOnToolSelect(tool);
@@ -107,7 +122,7 @@ export default function EditorFrame({
         }}
       >
         {/* Map stage — dominant surface */}
-        <MapStage>{mapChildren}</MapStage>
+        <MapStage banner={mapBanner}>{mapChildren}</MapStage>
 
         {/* Right-hand collapsible sidebar scaffold */}
         <SidebarShell

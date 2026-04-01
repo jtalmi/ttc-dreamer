@@ -12,6 +12,13 @@ type ProposalLayersProps = Readonly<{
   snapCueGeoJSON?: FeatureCollection | null;
   /** GeoJSON for waypoint vertex dots. Null when not in select mode. */
   waypointsGeoJSON?: FeatureCollection | null;
+  /**
+   * Opacity applied to committed proposal lines, stations, and labels.
+   * Used by comparison mode to dim proposal elements to 40%.
+   * Defaults to 1 (full opacity). Does NOT affect in-progress ghost lines,
+   * snap cues, or waypoint dots (those are transient editing artifacts).
+   */
+  proposalOpacity?: number;
 }>;
 
 /**
@@ -27,6 +34,7 @@ export function ProposalLayers({
   selectedElementId,
   snapCueGeoJSON = null,
   waypointsGeoJSON = null,
+  proposalOpacity = 1,
 }: ProposalLayersProps) {
   return (
     <>
@@ -38,13 +46,14 @@ export function ProposalLayers({
           paint={{
             "line-color": ["get", "color"],
             "line-width": 4,
+            "line-opacity": proposalOpacity,
           }}
           layout={{
             "line-cap": "round",
             "line-join": "round",
           }}
         />
-        {/* Selection glow for selected line */}
+        {/* Selection glow for selected line — scales with proposalOpacity */}
         <Layer
           id="proposal-lines-selected"
           type="line"
@@ -53,6 +62,7 @@ export function ProposalLayers({
             "line-color": "rgba(216, 90, 42, 0.25)",
             "line-width": 12,
             "line-blur": 8,
+            "line-opacity": proposalOpacity,
           }}
           layout={{
             "line-cap": "round",
@@ -63,7 +73,7 @@ export function ProposalLayers({
 
       {/* Proposal station dots */}
       <Source id="proposal-stations" type="geojson" data={stationsGeoJSON}>
-        {/* Selection halo for selected station */}
+        {/* Selection halo for selected station — scales with proposalOpacity */}
         <Layer
           id="proposal-stations-selected"
           type="circle"
@@ -72,6 +82,7 @@ export function ProposalLayers({
             "circle-radius": 10,
             "circle-color": "rgba(216, 90, 42, 0.25)",
             "circle-blur": 0.5,
+            "circle-opacity": proposalOpacity,
           }}
         />
         <Layer
@@ -82,6 +93,8 @@ export function ProposalLayers({
             "circle-color": "#FFFFFF",
             "circle-stroke-width": 2,
             "circle-stroke-color": ["get", "color"],
+            "circle-opacity": proposalOpacity,
+            "circle-stroke-opacity": proposalOpacity,
           }}
         />
         {/* Station labels */}
@@ -100,6 +113,7 @@ export function ProposalLayers({
             "text-color": "#18324A",
             "text-halo-color": "#F3EEE5",
             "text-halo-width": 1.5,
+            "text-opacity": proposalOpacity,
           }}
         />
       </Source>

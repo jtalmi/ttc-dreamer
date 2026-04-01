@@ -12,6 +12,12 @@ type TopToolbarProps = Readonly<{
   busCorridorVisible?: boolean;
   onCorridorToggle?: () => void;
   onAddLine?: () => void;
+  /** Whether comparison (Baseline View) mode is active. */
+  comparisonMode?: boolean;
+  /** Called when the comparison toggle is clicked. */
+  onComparisonToggle?: () => void;
+  /** Whether the proposal has at least one line. When false, toggle is muted. */
+  hasLines?: boolean;
 }>;
 
 const TOOLS: ToolName[] = ["Select", "Draw Line", "Add Station", "Inspect"];
@@ -24,6 +30,9 @@ export default function TopToolbar({
   busCorridorVisible = false,
   onCorridorToggle,
   onAddLine,
+  comparisonMode = false,
+  onComparisonToggle,
+  hasLines = false,
 }: TopToolbarProps) {
   return (
     <header
@@ -109,6 +118,32 @@ export default function TopToolbar({
           );
         })}
       </div>
+
+      {/* Before/after comparison toggle */}
+      <button
+        onClick={() => hasLines ? onComparisonToggle?.() : undefined}
+        aria-pressed={comparisonMode}
+        title={!hasLines ? "Add a line to use comparison mode." : undefined}
+        style={{
+          padding: "var(--space-xs) var(--space-sm)",
+          borderRadius: "4px",
+          border: "1px solid rgba(243, 238, 229, 0.3)",
+          cursor: hasLines ? "pointer" : "default",
+          fontSize: "14px",
+          fontWeight: 600,
+          lineHeight: 1.3,
+          fontFamily: "var(--font-sans)",
+          backgroundColor: comparisonMode
+            ? "var(--shell-accent)"
+            : "var(--shell-secondary)",
+          color: "var(--shell-dominant)",
+          transition: "background-color 0.15s",
+          opacity: hasLines ? 1 : 0.4,
+          pointerEvents: hasLines ? "auto" : "none",
+        }}
+      >
+        {comparisonMode ? "Baseline View" : "Proposal View"}
+      </button>
 
       {/* Bus + Streetcar Corridors toggle */}
       <button

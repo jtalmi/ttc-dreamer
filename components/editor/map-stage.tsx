@@ -2,9 +2,11 @@
 
 type MapStageProps = Readonly<{
   children?: React.ReactNode;
+  /** Optional banner rendered absolutely at the bottom of the map canvas. */
+  banner?: React.ReactNode;
 }>;
 
-export default function MapStage({ children }: MapStageProps) {
+export default function MapStage({ children, banner }: MapStageProps) {
   return (
     <div
       className="map-stage-surface"
@@ -52,6 +54,7 @@ export default function MapStage({ children }: MapStageProps) {
           </p>
         </div>
       )}
+      {banner}
     </div>
   );
 }

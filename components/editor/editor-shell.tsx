@@ -336,6 +336,8 @@ export default function EditorShell() {
     );
   }
 
+  const proposalOpacity = chrome.comparisonMode ? 0.4 : 1;
+
   const mapElement = (
     <TorontoMap
       busCorridorVisible={chrome.busCorridorVisible}
@@ -345,6 +347,7 @@ export default function EditorShell() {
       selectedElementId={chrome.selectedElementId}
       snapPosition={chrome.snapPosition}
       pendingInterchangeSuggestion={chrome.pendingInterchangeSuggestion}
+      proposalOpacity={proposalOpacity}
       onAddWaypoint={(lngLat) =>
         dispatch({ type: "addWaypoint", payload: lngLat })
       }
@@ -356,6 +359,28 @@ export default function EditorShell() {
       dispatch={dispatch}
     />
   );
+
+  const comparisonBanner = chrome.comparisonMode ? (
+    <div
+      style={{
+        position: "absolute",
+        bottom: 0,
+        left: 0,
+        right: 0,
+        padding: "var(--space-sm) var(--space-md)",
+        backgroundColor: "rgba(24, 50, 74, 0.85)",
+        color: "var(--shell-dominant)",
+        fontSize: "14px",
+        fontWeight: 400,
+        lineHeight: 1.5,
+        textAlign: "center",
+        fontFamily: "var(--font-sans)",
+        zIndex: 10,
+      }}
+    >
+      Comparing against baseline — click Proposal View to return
+    </div>
+  ) : undefined;
 
   return (
     <>
@@ -373,6 +398,10 @@ export default function EditorShell() {
         busCorridorVisible={chrome.busCorridorVisible}
         onCorridorToggle={() => dispatch({ type: "toggleCorridors" })}
         onAddLine={() => dispatch({ type: "setSidebarPanel", payload: "create" })}
+        comparisonMode={chrome.comparisonMode}
+        onComparisonToggle={() => dispatch({ type: "toggleComparisonMode" })}
+        hasLines={draft.lines.length > 0}
+        mapBanner={comparisonBanner}
         mapChildren={mapElement}
         sidebarChildren={sidebarContent}
       />
