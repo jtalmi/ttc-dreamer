@@ -18,6 +18,7 @@ Make it fast and satisfying for Toronto transit nerds to sketch a TTC-flavoured 
 - [x] Make the city itself prominent through TTC, GO, neighbourhood, street, and landmark context — Validated in Phase 2: Toronto Baseline and Context Layers (MapLibre map, TTC/GO layers, context labels, corridor toggle)
 - [x] Support playful but controlled proposal editing: new lines, extensions, branches, manual stations, naming, and styling — Validated in Phase 3: Editing Core (click-to-draw, extend/branch, station snapping, interchanges, naming/coloring, undo/redo/delete)
 - [x] Add lightweight descriptive stats and inspectors without turning the product into a realism-heavy planning tool — Validated in Phase 4: Stats, Inspectors, and Comparison (line/station inspectors, ~prefixed stats, before/after toggle)
+- [x] Let users share proposals externally through clean exports and unlisted links — Validated in Phase 5: Sharing, Export, and Polish (PNG export, URL hash share links, read-only view, edit-as-copy, onboarding)
 
 ### Active
 
@@ -42,7 +43,7 @@ Make it fast and satisfying for Toronto transit nerds to sketch a TTC-flavoured 
 
 ## Context
 
-The source-of-truth product inputs for this project are `docs/product/gsd-idea.md`, `docs/product/product-spec.md`, `docs/product/ui-vision.md`, `docs/product/phase-plan-notes.md`, and `AGENTS.md`. Phase 4 complete — the codebase has inspectors (line and station), live sidebar stats with ~prefixed descriptive metrics (speed, cost, ridership, spacing), and a before/after comparison toggle. 76+ vitest tests cover domain logic and stat functions.
+The source-of-truth product inputs for this project are `docs/product/gsd-idea.md`, `docs/product/product-spec.md`, `docs/product/ui-vision.md`, `docs/product/phase-plan-notes.md`, and `AGENTS.md`. All 5 phases complete — v1 milestone achieved. The codebase is a full Toronto transit sandbox with editor shell, MapLibre map with TTC/GO baseline, click-to-draw editing, station placement, inspectors, descriptive stats, before/after comparison, PNG export, URL hash sharing, read-only view mode, edit-as-copy, and onboarding tooltips. 69+ vitest tests cover domain logic.
 
 The product intent is consistent across the docs: Toronto-native context should be obvious, the editor should feel quick and satisfying, the map should stay visually primary, and the resulting proposals should be worth sharing externally. The first release should favour fun, clarity, and visible tools over realism, hidden controls, or enterprise-style dashboards.
 
@@ -88,4 +89,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-01 after Phase 4 completion*
+*Last updated: 2026-04-01 after Phase 5 completion — v1 milestone complete*
