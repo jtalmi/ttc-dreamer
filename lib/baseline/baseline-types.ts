@@ -16,6 +16,7 @@ export type TtcRouteProperties = {
   ROUTE_COLOR: string;
   ROUTE_TEXT_COLOR: string;
   Shape__Length: number;
+  status?: "operational" | "under_construction";
 };
 
 /** A single TTC route line feature. */
