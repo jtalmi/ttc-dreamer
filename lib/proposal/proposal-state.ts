@@ -277,20 +277,41 @@ export function proposalEditorReducer(
       };
 
     case "setActiveTool":
-      // Switching away from draw-line cancels the active drawing session
+      // Switching away from draw-line: auto-finish if 2+ stations, cancel if <2
       if (action.payload !== "draw-line" && state.chrome.drawingSession !== null) {
         const session = state.chrome.drawingSession;
-        // Remove all stations placed during this session
+        const derivedWaypoints = deriveWaypointsFromStations(
+          session.placedStationIds,
+          state.draft.stations,
+        );
+        // Auto-finish: 2+ stations means a valid line — commit it
+        if (derivedWaypoints.length >= 2) {
+          const updatedLines = state.draft.lines.map((l: ProposalLineDraft) =>
+            l.id === session.lineId
+              ? { ...l, waypoints: derivedWaypoints }
+              : l,
+          );
+          return {
+            ...state,
+            draft: { ...state.draft, lines: updatedLines },
+            chrome: {
+              ...state.chrome,
+              activeTool: action.payload,
+              drawingSession: null,
+              pendingInterchangeSuggestion: null,
+              sidebarPanel: "list",
+            },
+          };
+        }
+        // Cancel: <2 stations — remove session stations and the empty line
         const sessionStationIds = new Set(session.placedStationIds);
         const stationsToKeep = state.draft.stations.filter(
           (s) => !sessionStationIds.has(s.id),
         );
-        // Remove those station IDs from any line's stationIds
         const linesWithStationsRemoved = state.draft.lines.map((l: ProposalLineDraft) => ({
           ...l,
           stationIds: l.stationIds.filter((id) => !sessionStationIds.has(id)),
         }));
-        // If line has no committed waypoints, remove it
         const linesToKeep = linesWithStationsRemoved.filter(
           (l: ProposalLineDraft) =>
             l.id !== session.lineId || l.waypoints.length > 0,
