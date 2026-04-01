@@ -1,155 +1,54 @@
 "use client";
 
-import { useState } from "react";
-import TopToolbar from "@/components/editor/top-toolbar";
 import MapStage from "@/components/editor/map-stage";
 import SidebarShell from "@/components/editor/sidebar-shell";
 
-type ToolName = "Select" | "Draw Line" | "Add Station" | "Inspect";
-type BaselineMode = "today" | "future_committed";
-
 type EditorFrameProps = Readonly<{
-  /** Override active tool; pass undefined to let frame manage state internally */
-  activeTool?: ToolName;
-  /** Override baseline mode; pass undefined to let frame manage state internally */
-  baseline?: BaselineMode;
   /** Override sidebar collapsed state */
   sidebarCollapsed?: boolean;
-  /** Called when a tool button is clicked (used by parent-controlled mode) */
-  onToolSelect?: (tool: ToolName) => void;
-  /** Called when the baseline toggle changes (used by parent-controlled mode) */
-  onBaselineChange?: (mode: BaselineMode) => void;
-  /** Called when the sidebar toggle is clicked (used by parent-controlled mode) */
+  /** Called when the sidebar toggle is clicked */
   onSidebarToggle?: () => void;
-  /** Override bus corridor visibility; pass undefined to let frame manage state internally */
-  busCorridorVisible?: boolean;
-  /** Called when the corridor toggle is clicked (used by parent-controlled mode) */
-  onCorridorToggle?: () => void;
-  /** Called when the Add Line CTA is clicked */
-  onAddLine?: () => void;
-  /** Slot for injecting map content (future phases) */
+  /** Slot for injecting map content */
   mapChildren?: React.ReactNode;
-  /** Slot for injecting sidebar content (future phases) */
+  /** Slot for injecting sidebar content */
   sidebarChildren?: React.ReactNode;
-  /** Whether comparison (Baseline View) mode is active. */
-  comparisonMode?: boolean;
-  /** Called when the comparison toggle is clicked. */
-  onComparisonToggle?: () => void;
-  /** Whether the proposal has at least one line. When false, toggle is muted. */
-  hasLines?: boolean;
-  /** Optional banner to render at the bottom of the map canvas (e.g. comparison banner). */
+  /** Optional banner to render at the bottom of the map canvas */
   mapBanner?: React.ReactNode;
-  /** Current draft title for the inline title field. */
-  title?: string;
-  /** Called when the user commits a title change. */
-  onTitleChange?: (title: string) => void;
-  /** Called when the Share button is clicked. */
-  onShareClick?: () => void;
+  /** Slot for floating controls (toolbars, layer pickers) rendered over the map */
+  floatingControls?: React.ReactNode;
 }>;
 
 export default function EditorFrame({
-  activeTool: controlledTool,
-  baseline: controlledBaseline,
-  sidebarCollapsed: controlledCollapsed,
-  onToolSelect: controlledOnToolSelect,
-  onBaselineChange: controlledOnBaselineChange,
-  onSidebarToggle: controlledOnSidebarToggle,
-  busCorridorVisible: controlledCorridorVisible,
-  onCorridorToggle: controlledOnCorridorToggle,
-  onAddLine,
+  sidebarCollapsed,
+  onSidebarToggle,
   mapChildren,
   sidebarChildren,
-  comparisonMode,
-  onComparisonToggle,
-  hasLines,
   mapBanner,
-  title,
-  onTitleChange,
-  onShareClick,
+  floatingControls,
 }: EditorFrameProps) {
-  // Internal state — only used when the corresponding prop is not controlled
-  const [internalTool, setInternalTool] = useState<ToolName>("Select");
-  const [internalBaseline, setInternalBaseline] =
-    useState<BaselineMode>("today");
-  const [internalCollapsed, setInternalCollapsed] = useState(false);
-  const [internalCorridorVisible, setInternalCorridorVisible] = useState(false);
-
-  const activeTool = controlledTool ?? internalTool;
-  const baseline = controlledBaseline ?? internalBaseline;
-  const sidebarCollapsed = controlledCollapsed ?? internalCollapsed;
-  const busCorridorVisible = controlledCorridorVisible ?? internalCorridorVisible;
-
   return (
     <div
       style={{
-        display: "flex",
-        flexDirection: "column",
+        position: "relative",
         height: "100vh",
         width: "100vw",
         overflow: "hidden",
         fontFamily: "var(--font-sans)",
       }}
     >
-      {/* Top toolbar — pinned across the full width */}
-      <TopToolbar
-        activeTool={activeTool}
-        baseline={baseline}
-        busCorridorVisible={busCorridorVisible}
-        onAddLine={onAddLine}
-        comparisonMode={comparisonMode}
-        onComparisonToggle={onComparisonToggle}
-        hasLines={hasLines}
-        title={title}
-        onTitleChange={onTitleChange}
-        onShareClick={onShareClick}
-        onToolSelect={(tool) => {
-          if (controlledOnToolSelect) {
-            controlledOnToolSelect(tool);
-          } else if (!controlledTool) {
-            setInternalTool(tool);
-          }
-        }}
-        onBaselineChange={(mode) => {
-          if (controlledOnBaselineChange) {
-            controlledOnBaselineChange(mode);
-          } else if (!controlledBaseline) {
-            setInternalBaseline(mode);
-          }
-        }}
-        onCorridorToggle={() => {
-          if (controlledOnCorridorToggle) {
-            controlledOnCorridorToggle();
-          } else if (controlledCorridorVisible === undefined) {
-            setInternalCorridorVisible((prev) => !prev);
-          }
-        }}
-      />
+      {/* Map fills the entire viewport */}
+      <MapStage banner={mapBanner}>{mapChildren}</MapStage>
 
-      {/* Main content row: map + sidebar */}
-      <div
-        style={{
-          display: "flex",
-          flex: 1,
-          overflow: "hidden",
-        }}
+      {/* Floating controls (toolbars, layer pickers) rendered over the map */}
+      {floatingControls}
+
+      {/* Right-hand collapsible sidebar — overlays map */}
+      <SidebarShell
+        collapsed={sidebarCollapsed}
+        onToggle={onSidebarToggle}
       >
-        {/* Map stage — dominant surface */}
-        <MapStage banner={mapBanner}>{mapChildren}</MapStage>
-
-        {/* Right-hand collapsible sidebar scaffold */}
-        <SidebarShell
-          collapsed={sidebarCollapsed}
-          onToggle={() => {
-            if (controlledOnSidebarToggle) {
-              controlledOnSidebarToggle();
-            } else if (controlledCollapsed === undefined) {
-              setInternalCollapsed((prev) => !prev);
-            }
-          }}
-        >
-          {sidebarChildren}
-        </SidebarShell>
-      </div>
+        {sidebarChildren}
+      </SidebarShell>
     </div>
   );
 }

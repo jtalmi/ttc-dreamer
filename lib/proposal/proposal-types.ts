@@ -5,7 +5,7 @@
 export type BaselineMode = "today" | "future_committed";
 
 /** Active editing tool in the toolbar. */
-export type ToolMode = "select" | "draw-line" | "add-station" | "inspect";
+export type ToolMode = "select" | "draw-line" | "add-station";
 
 /** Transit mode for a proposed line. */
 export type TransitMode = "subway" | "lrt" | "brt";

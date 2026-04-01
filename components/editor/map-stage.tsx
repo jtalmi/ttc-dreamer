@@ -11,13 +11,9 @@ export default function MapStage({ children, banner }: MapStageProps) {
     <div
       className="map-stage-surface"
       style={{
-        flex: 1,
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
+        position: "absolute",
+        inset: "0",
         overflow: "hidden",
-        position: "relative",
       }}
     >
       {children ?? (
