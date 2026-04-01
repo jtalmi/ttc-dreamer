@@ -73,7 +73,7 @@ Plans:
 - [x] 03-03: Add naming, coloring, snapping/suggestion polish, and undo/redo/delete support
 - [ ] 03-04-PLAN.md — Wire extend/branch detection (EDIT-02, EDIT-03): import detectLineHitType, pass onStartExtend from editor-shell
 - [x] 03-05-PLAN.md — Wire waypoint drag for geometry adjustment (EDIT-06): waypoint vertex layer + drag dispatch moveWaypoint
-- [ ] 03-06-PLAN.md — Fix shared station merging in confirmInterchange (EDIT-08): merge lineIds instead of creating duplicate
+- [x] 03-06-PLAN.md — Fix shared station merging in confirmInterchange (EDIT-08): merge lineIds instead of creating duplicate
 
 ### Phase 4: Stats, Inspectors, and Comparison
 **Goal**: Make proposals feel richer than drawings through lightweight inspectors, live stats, and baseline comparison
@@ -119,6 +119,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 |-------|----------------|--------|-----------|
 | 1. Editor Shell and Proposal State | 3/3 | Complete   | 2026-04-01 |
 | 2. Toronto Baseline and Context Layers | 3/3 | Complete   | 2026-04-01 |
-| 3. Editing Core | 4/6 | In Progress|  |
+| 3. Editing Core | 5/6 | In Progress|  |
 | 4. Stats, Inspectors, and Comparison | 0/3 | Not started | - |
 | 5. Sharing, Export, and Polish | 0/3 | Not started | - |
