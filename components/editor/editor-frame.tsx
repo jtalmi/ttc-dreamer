@@ -25,6 +25,8 @@ type EditorFrameProps = Readonly<{
   busCorridorVisible?: boolean;
   /** Called when the corridor toggle is clicked (used by parent-controlled mode) */
   onCorridorToggle?: () => void;
+  /** Called when the Add Line CTA is clicked */
+  onAddLine?: () => void;
   /** Slot for injecting map content (future phases) */
   mapChildren?: React.ReactNode;
   /** Slot for injecting sidebar content (future phases) */
@@ -40,6 +42,7 @@ export default function EditorFrame({
   onSidebarToggle: controlledOnSidebarToggle,
   busCorridorVisible: controlledCorridorVisible,
   onCorridorToggle: controlledOnCorridorToggle,
+  onAddLine,
   mapChildren,
   sidebarChildren,
 }: EditorFrameProps) {
@@ -71,6 +74,7 @@ export default function EditorFrame({
         activeTool={activeTool}
         baseline={baseline}
         busCorridorVisible={busCorridorVisible}
+        onAddLine={onAddLine}
         onToolSelect={(tool) => {
           if (controlledOnToolSelect) {
             controlledOnToolSelect(tool);

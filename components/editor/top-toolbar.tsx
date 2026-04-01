@@ -11,6 +11,7 @@ type TopToolbarProps = Readonly<{
   onBaselineChange?: (mode: BaselineMode) => void;
   busCorridorVisible?: boolean;
   onCorridorToggle?: () => void;
+  onAddLine?: () => void;
 }>;
 
 const TOOLS: ToolName[] = ["Select", "Draw Line", "Add Station", "Inspect"];
@@ -22,6 +23,7 @@ export default function TopToolbar({
   onBaselineChange,
   busCorridorVisible = false,
   onCorridorToggle,
+  onAddLine,
 }: TopToolbarProps) {
   return (
     <header
@@ -133,6 +135,7 @@ export default function TopToolbar({
 
       {/* Primary CTA */}
       <button
+        onClick={() => onAddLine?.()}
         style={{
           padding: "var(--space-xs) var(--space-md)",
           borderRadius: "4px",
@@ -146,7 +149,7 @@ export default function TopToolbar({
           color: "var(--shell-dominant)",
         }}
       >
-        Start Proposal
+        Add Line
       </button>
     </header>
   );
