@@ -54,6 +54,13 @@
   --stat-group-label: rgba(243, 238, 229, 0.70);
   --comparison-delta-positive: #4CAF50;
   --comparison-delta-neutral: rgba(243, 238, 229, 0.70);
+
+  /* Phase 5 sharing and view-mode tokens */
+  --share-modal-overlay: rgba(24, 50, 74, 0.55);
+  --view-mode-banner-bg: rgba(24, 50, 74, 0.92);
+  --copy-feedback-bg: rgba(216, 90, 42, 0.15);
+  --onboarding-tooltip-bg: rgba(24, 50, 74, 0.95);
+  --onboarding-tooltip-border: rgba(216, 90, 42, 0.40);
 }
 
 /* Full-height desktop shell foundation */

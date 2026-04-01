@@ -39,6 +39,12 @@ type EditorFrameProps = Readonly<{
   hasLines?: boolean;
   /** Optional banner to render at the bottom of the map canvas (e.g. comparison banner). */
   mapBanner?: React.ReactNode;
+  /** Current draft title for the inline title field. */
+  title?: string;
+  /** Called when the user commits a title change. */
+  onTitleChange?: (title: string) => void;
+  /** Called when the Share button is clicked. */
+  onShareClick?: () => void;
 }>;
 
 export default function EditorFrame({
@@ -57,6 +63,9 @@ export default function EditorFrame({
   onComparisonToggle,
   hasLines,
   mapBanner,
+  title,
+  onTitleChange,
+  onShareClick,
 }: EditorFrameProps) {
   // Internal state — only used when the corresponding prop is not controlled
   const [internalTool, setInternalTool] = useState<ToolName>("Select");
@@ -90,6 +99,9 @@ export default function EditorFrame({
         comparisonMode={comparisonMode}
         onComparisonToggle={onComparisonToggle}
         hasLines={hasLines}
+        title={title}
+        onTitleChange={onTitleChange}
+        onShareClick={onShareClick}
         onToolSelect={(tool) => {
           if (controlledOnToolSelect) {
             controlledOnToolSelect(tool);

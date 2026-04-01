@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+
 type ToolName = "Select" | "Draw Line" | "Add Station" | "Inspect";
 
 type BaselineMode = "today" | "future_committed";
@@ -18,6 +20,12 @@ type TopToolbarProps = Readonly<{
   onComparisonToggle?: () => void;
   /** Whether the proposal has at least one line. When false, toggle is muted. */
   hasLines?: boolean;
+  /** Current draft title shown in the inline title field. */
+  title?: string;
+  /** Called when the user commits a title change (blur or Enter). */
+  onTitleChange?: (title: string) => void;
+  /** Called when the Share button is clicked. */
+  onShareClick?: () => void;
 }>;
 
 const TOOLS: ToolName[] = ["Select", "Draw Line", "Add Station", "Inspect"];
@@ -33,7 +41,40 @@ export default function TopToolbar({
   comparisonMode = false,
   onComparisonToggle,
   hasLines = false,
+  title = "Untitled Proposal",
+  onTitleChange,
+  onShareClick,
 }: TopToolbarProps) {
+  const [editingTitle, setEditingTitle] = useState(false);
+  const [titleInput, setTitleInput] = useState(title);
+
+  function startEditing() {
+    setTitleInput(title);
+    setEditingTitle(true);
+  }
+
+  function commitTitle() {
+    const trimmed = titleInput.trim().slice(0, 80);
+    onTitleChange?.(trimmed);
+    setEditingTitle(false);
+  }
+
+  function cancelEditing() {
+    setEditingTitle(false);
+  }
+
+  function handleTitleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === "Enter") {
+      commitTitle();
+    } else if (e.key === "Escape") {
+      cancelEditing();
+    }
+  }
+
+  // Truncate title display to 24 chars with ellipsis
+  const displayTitle =
+    title.length > 24 ? title.slice(0, 24) + "..." : title;
+
   return (
     <header
       style={{
@@ -80,6 +121,52 @@ export default function TopToolbar({
           );
         })}
       </nav>
+
+      {/* Inline title field — between tool group and spacer */}
+      {editingTitle ? (
+        <input
+          type="text"
+          value={titleInput}
+          onChange={(e) => setTitleInput(e.target.value)}
+          onBlur={commitTitle}
+          onKeyDown={handleTitleKeyDown}
+          maxLength={80}
+          autoFocus
+          style={{
+            maxWidth: "200px",
+            fontSize: "14px",
+            fontWeight: 400,
+            lineHeight: 1.3,
+            fontFamily: "var(--font-sans)",
+            color: "var(--shell-dominant)",
+            backgroundColor: "transparent",
+            border: "none",
+            borderBottom: "1px solid var(--shell-dominant)",
+            outline: "none",
+            padding: "0 2px",
+          }}
+        />
+      ) : (
+        <span
+          onClick={startEditing}
+          title={title}
+          style={{
+            fontSize: "14px",
+            fontWeight: 400,
+            lineHeight: 1.3,
+            fontFamily: "var(--font-sans)",
+            color: "var(--shell-dominant)",
+            opacity: 0.7,
+            cursor: "pointer",
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            maxWidth: "200px",
+          }}
+        >
+          {displayTitle}
+        </span>
+      )}
 
       {/* Spacer */}
       <div style={{ flex: 1 }} />
@@ -168,7 +255,7 @@ export default function TopToolbar({
         Bus + Streetcar Corridors
       </button>
 
-      {/* Primary CTA */}
+      {/* Primary CTA — Add Line */}
       <button
         onClick={() => onAddLine?.()}
         style={{
@@ -185,6 +272,25 @@ export default function TopToolbar({
         }}
       >
         Add Line
+      </button>
+
+      {/* Share CTA — rightmost */}
+      <button
+        onClick={() => onShareClick?.()}
+        style={{
+          padding: "var(--space-xs) var(--space-md)",
+          borderRadius: "4px",
+          border: "none",
+          cursor: "pointer",
+          fontSize: "14px",
+          fontWeight: 600,
+          lineHeight: 1.3,
+          fontFamily: "var(--font-sans)",
+          backgroundColor: "var(--shell-accent)",
+          color: "var(--shell-dominant)",
+        }}
+      >
+        Share
       </button>
     </header>
   );
