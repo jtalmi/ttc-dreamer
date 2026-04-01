@@ -3332,6 +3332,694 @@
         "PT_EXTRA1": null,
         "PT_EXTRA2": null
       }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.485789,
+          43.688025
+        ]
+      },
+      "properties": {
+        "PT_NAME": "Mount Dennis Station",
+        "ROUTE_ID": 5,
+        "TRANSIT_LINE": "Line 5 Eglinton",
+        "status": "operational"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.474676,
+          43.690513
+        ]
+      },
+      "properties": {
+        "PT_NAME": "Keelesdale Station",
+        "ROUTE_ID": 5,
+        "TRANSIT_LINE": "Line 5 Eglinton",
+        "status": "operational"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.465389,
+          43.692348
+        ]
+      },
+      "properties": {
+        "PT_NAME": "Caledonia Station",
+        "ROUTE_ID": 5,
+        "TRANSIT_LINE": "Line 5 Eglinton",
+        "status": "operational"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.449443,
+          43.695767
+        ]
+      },
+      "properties": {
+        "PT_NAME": "Fairbank Station",
+        "ROUTE_ID": 5,
+        "TRANSIT_LINE": "Line 5 Eglinton",
+        "status": "operational"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.442958,
+          43.697485
+        ]
+      },
+      "properties": {
+        "PT_NAME": "Oakwood Station",
+        "ROUTE_ID": 5,
+        "TRANSIT_LINE": "Line 5 Eglinton",
+        "status": "operational"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.436008,
+          43.698959
+        ]
+      },
+      "properties": {
+        "PT_NAME": "Cedarvale Station",
+        "ROUTE_ID": 5,
+        "TRANSIT_LINE": "Line 5 Eglinton",
+        "status": "operational"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.425302,
+          43.701199
+        ]
+      },
+      "properties": {
+        "PT_NAME": "Forest Hill Station",
+        "ROUTE_ID": 5,
+        "TRANSIT_LINE": "Line 5 Eglinton",
+        "status": "operational"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.417404,
+          43.702961
+        ]
+      },
+      "properties": {
+        "PT_NAME": "Chaplin Station",
+        "ROUTE_ID": 5,
+        "TRANSIT_LINE": "Line 5 Eglinton",
+        "status": "operational"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.408895,
+          43.704813
+        ]
+      },
+      "properties": {
+        "PT_NAME": "Avenue Station",
+        "ROUTE_ID": 5,
+        "TRANSIT_LINE": "Line 5 Eglinton",
+        "status": "operational"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.398976,
+          43.706435
+        ]
+      },
+      "properties": {
+        "PT_NAME": "Eglinton Station",
+        "ROUTE_ID": 5,
+        "TRANSIT_LINE": "Line 5 Eglinton",
+        "status": "operational"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.390435,
+          43.708585
+        ]
+      },
+      "properties": {
+        "PT_NAME": "Mount Pleasant Station",
+        "ROUTE_ID": 5,
+        "TRANSIT_LINE": "Line 5 Eglinton",
+        "status": "operational"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.376689,
+          43.710876
+        ]
+      },
+      "properties": {
+        "PT_NAME": "Leaside Station",
+        "ROUTE_ID": 5,
+        "TRANSIT_LINE": "Line 5 Eglinton",
+        "status": "operational"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.365031,
+          43.713269
+        ]
+      },
+      "properties": {
+        "PT_NAME": "Laird Station",
+        "ROUTE_ID": 5,
+        "TRANSIT_LINE": "Line 5 Eglinton",
+        "status": "operational"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.349134,
+          43.717309
+        ]
+      },
+      "properties": {
+        "PT_NAME": "Sunnybrook Park Station",
+        "ROUTE_ID": 5,
+        "TRANSIT_LINE": "Line 5 Eglinton",
+        "status": "operational"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.339178,
+          43.720012
+        ]
+      },
+      "properties": {
+        "PT_NAME": "Don Valley Station",
+        "ROUTE_ID": 5,
+        "TRANSIT_LINE": "Line 5 Eglinton",
+        "status": "operational"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.332692,
+          43.722419
+        ]
+      },
+      "properties": {
+        "PT_NAME": "Aga Khan Park & Museum Station",
+        "ROUTE_ID": 5,
+        "TRANSIT_LINE": "Line 5 Eglinton",
+        "status": "operational"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.32666,
+          43.724083
+        ]
+      },
+      "properties": {
+        "PT_NAME": "Wynford Station",
+        "ROUTE_ID": 5,
+        "TRANSIT_LINE": "Line 5 Eglinton",
+        "status": "operational"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.31268,
+          43.72592
+        ]
+      },
+      "properties": {
+        "PT_NAME": "Sloane Station",
+        "ROUTE_ID": 5,
+        "TRANSIT_LINE": "Line 5 Eglinton",
+        "status": "operational"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.301785,
+          43.724826
+        ]
+      },
+      "properties": {
+        "PT_NAME": "O'Connor Station",
+        "ROUTE_ID": 5,
+        "TRANSIT_LINE": "Line 5 Eglinton",
+        "status": "operational"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.296742,
+          43.725841
+        ]
+      },
+      "properties": {
+        "PT_NAME": "Pharmacy Station",
+        "ROUTE_ID": 5,
+        "TRANSIT_LINE": "Line 5 Eglinton",
+        "status": "operational"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.291555,
+          43.726997
+        ]
+      },
+      "properties": {
+        "PT_NAME": "Hakimi Lebovic Station",
+        "ROUTE_ID": 5,
+        "TRANSIT_LINE": "Line 5 Eglinton",
+        "status": "operational"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.287626,
+          43.727866
+        ]
+      },
+      "properties": {
+        "PT_NAME": "Golden Mile Station",
+        "ROUTE_ID": 5,
+        "TRANSIT_LINE": "Line 5 Eglinton",
+        "status": "operational"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.277054,
+          43.730181
+        ]
+      },
+      "properties": {
+        "PT_NAME": "Birchmount Station",
+        "ROUTE_ID": 5,
+        "TRANSIT_LINE": "Line 5 Eglinton",
+        "status": "operational"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.272093,
+          43.731312
+        ]
+      },
+      "properties": {
+        "PT_NAME": "Ionview Station",
+        "ROUTE_ID": 5,
+        "TRANSIT_LINE": "Line 5 Eglinton",
+        "status": "operational"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.26448,
+          43.732791
+        ]
+      },
+      "properties": {
+        "PT_NAME": "Kennedy Station",
+        "ROUTE_ID": 5,
+        "TRANSIT_LINE": "Line 5 Eglinton",
+        "status": "operational"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.60153,
+          43.729898
+        ]
+      },
+      "properties": {
+        "PT_NAME": "Humber College Station",
+        "ROUTE_ID": 6,
+        "TRANSIT_LINE": "Line 6 Finch West",
+        "status": "operational"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.600709,
+          43.73475
+        ]
+      },
+      "properties": {
+        "PT_NAME": "Westmore Station",
+        "ROUTE_ID": 6,
+        "TRANSIT_LINE": "Line 6 Finch West",
+        "status": "operational"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.591918,
+          43.736739
+        ]
+      },
+      "properties": {
+        "PT_NAME": "Martin Grove Station",
+        "ROUTE_ID": 6,
+        "TRANSIT_LINE": "Line 6 Finch West",
+        "status": "operational"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.589183,
+          43.741171
+        ]
+      },
+      "properties": {
+        "PT_NAME": "Albion Station",
+        "ROUTE_ID": 6,
+        "TRANSIT_LINE": "Line 6 Finch West",
+        "status": "operational"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.586949,
+          43.743219
+        ]
+      },
+      "properties": {
+        "PT_NAME": "Stevenson Station",
+        "ROUTE_ID": 6,
+        "TRANSIT_LINE": "Line 6 Finch West",
+        "status": "operational"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.581782,
+          43.743302
+        ]
+      },
+      "properties": {
+        "PT_NAME": "Mount Olive Station",
+        "ROUTE_ID": 6,
+        "TRANSIT_LINE": "Line 6 Finch West",
+        "status": "operational"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.568579,
+          43.746311
+        ]
+      },
+      "properties": {
+        "PT_NAME": "Rowntree Mills Station",
+        "ROUTE_ID": 6,
+        "TRANSIT_LINE": "Line 6 Finch West",
+        "status": "operational"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.562497,
+          43.747743
+        ]
+      },
+      "properties": {
+        "PT_NAME": "Pearldale Station",
+        "ROUTE_ID": 6,
+        "TRANSIT_LINE": "Line 6 Finch West",
+        "status": "operational"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.557553,
+          43.748827
+        ]
+      },
+      "properties": {
+        "PT_NAME": "Duncanwoods Station",
+        "ROUTE_ID": 6,
+        "TRANSIT_LINE": "Line 6 Finch West",
+        "status": "operational"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.552309,
+          43.749971
+        ]
+      },
+      "properties": {
+        "PT_NAME": "Milvan Rumike Station",
+        "ROUTE_ID": 6,
+        "TRANSIT_LINE": "Line 6 Finch West",
+        "status": "operational"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.542392,
+          43.752081
+        ]
+      },
+      "properties": {
+        "PT_NAME": "Emery Station",
+        "ROUTE_ID": 6,
+        "TRANSIT_LINE": "Line 6 Finch West",
+        "status": "operational"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.536226,
+          43.753293
+        ]
+      },
+      "properties": {
+        "PT_NAME": "Signet Arrow Station",
+        "ROUTE_ID": 6,
+        "TRANSIT_LINE": "Line 6 Finch West",
+        "status": "operational"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.524252,
+          43.755943
+        ]
+      },
+      "properties": {
+        "PT_NAME": "Norfinch Oakdale Station",
+        "ROUTE_ID": 6,
+        "TRANSIT_LINE": "Line 6 Finch West",
+        "status": "operational"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.517713,
+          43.757248
+        ]
+      },
+      "properties": {
+        "PT_NAME": "Jane and Finch Station",
+        "ROUTE_ID": 6,
+        "TRANSIT_LINE": "Line 6 Finch West",
+        "status": "operational"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.513354,
+          43.758068
+        ]
+      },
+      "properties": {
+        "PT_NAME": "Driftwood Station",
+        "ROUTE_ID": 6,
+        "TRANSIT_LINE": "Line 6 Finch West",
+        "status": "operational"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.507918,
+          43.759332
+        ]
+      },
+      "properties": {
+        "PT_NAME": "Tobermory Station",
+        "ROUTE_ID": 6,
+        "TRANSIT_LINE": "Line 6 Finch West",
+        "status": "operational"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.500039,
+          43.761081
+        ]
+      },
+      "properties": {
+        "PT_NAME": "Sentinel Station",
+        "ROUTE_ID": 6,
+        "TRANSIT_LINE": "Line 6 Finch West",
+        "status": "operational"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.490746,
+          43.763244
+        ]
+      },
+      "properties": {
+        "PT_NAME": "Finch West Station",
+        "ROUTE_ID": 6,
+        "TRANSIT_LINE": "Line 6 Finch West",
+        "status": "operational"
+      }
     }
   ]
 }
