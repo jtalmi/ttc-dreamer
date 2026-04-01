@@ -86,7 +86,17 @@ type SetSelectedElementAction = {
 
 type PlaceStationAction = {
   type: "placeStation";
-  payload: { id: string; position: [number, number]; lineId: string; name: string };
+  payload: {
+    id: string;
+    position: [number, number];
+    lineId: string;
+    name: string;
+    /**
+     * When provided, the station ID is spliced into line.stationIds at this index
+     * instead of appended. Used for mid-line station insertion (add-station tool).
+     */
+    insertAtIndex?: number;
+  };
 };
 
 type SuggestInterchangeAction = {
@@ -495,11 +505,15 @@ export function proposalEditorReducer(
         position: action.payload.position,
         lineIds: [action.payload.lineId],
       };
-      const updatedLines = state.draft.lines.map((l: ProposalLineDraft) =>
-        l.id === action.payload.lineId
-          ? { ...l, stationIds: [...l.stationIds, action.payload.id] }
-          : l,
-      );
+      const updatedLines = state.draft.lines.map((l: ProposalLineDraft) => {
+        if (l.id !== action.payload.lineId) return l;
+        if (action.payload.insertAtIndex !== undefined) {
+          const newStationIds = [...l.stationIds];
+          newStationIds.splice(action.payload.insertAtIndex + 1, 0, action.payload.id);
+          return { ...l, stationIds: newStationIds };
+        }
+        return { ...l, stationIds: [...l.stationIds, action.payload.id] };
+      });
       // If a drawing session is active for this line, add the station ID to placedStationIds
       const session = state.chrome.drawingSession;
       const updatedSession =

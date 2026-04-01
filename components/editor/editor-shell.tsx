@@ -199,7 +199,15 @@ export default function EditorShell() {
 
       if (mod && e.key === "z" && !e.shiftKey) {
         e.preventDefault();
-        dispatch({ type: "undo" });
+        if (chrome.drawingSession) {
+          if (chrome.drawingSession.placedStationIds.length > 0) {
+            dispatch({ type: "undoPlaceStation" });
+          } else {
+            dispatch({ type: "cancelDrawing" });
+          }
+        } else {
+          dispatch({ type: "undo" });
+        }
         return;
       }
       if (mod && e.key === "z" && e.shiftKey) {
@@ -335,16 +343,17 @@ export default function EditorShell() {
             color: "var(--shell-dominant)",
           }}
         >
-          Click to place waypoints. Double-click to finish.
+          Click to place stations. Double-click to finish.
         </p>
         <button
           onClick={() => dispatch({ type: "finishDrawing" })}
+          disabled={(chrome.drawingSession?.placedStationIds.length ?? 0) < 2}
           style={{
             width: "100%",
             padding: "var(--space-sm) var(--space-md)",
             borderRadius: "4px",
             border: "none",
-            cursor: "pointer",
+            cursor: (chrome.drawingSession?.placedStationIds.length ?? 0) >= 2 ? "pointer" : "not-allowed",
             fontSize: "14px",
             fontWeight: 600,
             lineHeight: 1.3,
@@ -352,9 +361,10 @@ export default function EditorShell() {
             backgroundColor: "var(--shell-accent)",
             color: "var(--shell-dominant)",
             marginTop: "var(--space-xs)",
+            opacity: (chrome.drawingSession?.placedStationIds.length ?? 0) >= 2 ? 1 : 0.4,
           }}
         >
-          Finish Line
+          {`Finish Line${chrome.drawingSession && chrome.drawingSession.placedStationIds.length > 0 ? ` (${chrome.drawingSession.placedStationIds.length} station${chrome.drawingSession.placedStationIds.length === 1 ? "" : "s"})` : ""}`}
         </button>
         <button
           onClick={() => dispatch({ type: "cancelDrawing" })}

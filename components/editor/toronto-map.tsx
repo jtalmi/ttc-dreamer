@@ -45,6 +45,7 @@ import type {
   EditorShellAction,
   BaselineMode,
 } from "@/lib/proposal";
+import { DEFAULT_LINE_COLORS } from "@/lib/proposal";
 
 type MapData = {
   ttcRoutes: FeatureCollection;
@@ -96,8 +97,6 @@ type TorontoMapProps = Readonly<{
    * Set to 0.4 in comparison (Baseline View) mode. Defaults to 1.
    */
   proposalOpacity?: number;
-  /** Called when user clicks to place a waypoint in draw-line mode */
-  onAddWaypoint?: (lngLat: [number, number]) => void;
   /** Called when user double-clicks to finish drawing */
   onFinishDrawing?: () => void;
   /** Called on mouse move to update ghost segment cursor position */
@@ -128,7 +127,6 @@ export default function TorontoMap({
   snapPosition = null,
   pendingInterchangeSuggestion = null,
   proposalOpacity = 1,
-  onAddWaypoint,
   onFinishDrawing,
   onUpdateCursor,
   onStartExtend,
@@ -232,6 +230,9 @@ export default function TorontoMap({
     const map = getMap();
 
     if (activeTool === "draw-line") {
+      // Dispatch cursor position update directly
+      dispatch?.({ type: "updateCursorPosition", payload: lngLat });
+      // Also call legacy callback for any external usage
       onUpdateCursor?.(lngLat);
 
       // Compute snap target for snap cue ring
@@ -328,6 +329,7 @@ export default function TorontoMap({
     setHoverStation(null);
     setIsOverSegment(false);
     if (activeTool === "draw-line") {
+      dispatch?.({ type: "updateCursorPosition", payload: null });
       onUpdateCursor?.(null);
     }
     dispatch?.({ type: "setSnapPosition", payload: null });
@@ -347,10 +349,104 @@ export default function TorontoMap({
     const map = getMap();
 
     if (activeTool === "draw-line") {
-      // If a drawing session is already active, place a waypoint as normal
       if (drawingSession) {
-        onAddWaypoint?.(lngLat);
+        // Session is active — place a station at the click position
+        const stationId = crypto.randomUUID();
+        const stationName = `Station ${(draft?.stations.length ?? 0) + 1}`;
+
+        // Snap click to a nearby proposal line segment (mid-line context)
+        let stationPosition: [number, number] = lngLat;
+        if (map && draft) {
+          for (const line of draft.lines) {
+            const waypoints = line.stationIds.length >= 2
+              ? line.stationIds.map((id) => draft.stations.find((s) => s.id === id)?.position).filter(Boolean) as [number, number][]
+              : line.waypoints;
+            if (waypoints.length < 2) continue;
+            const snap = snapToSegment(lngLat, waypoints, map, 8);
+            if (snap && line.id !== drawingSession.lineId) {
+              stationPosition = snap.position;
+              break;
+            }
+          }
+        }
+
+        // Check for nearby existing stations before placing
+        if (map && draft && data?.ttcStations) {
+          const nearby = findNearbyStation(
+            stationPosition,
+            draft.stations,
+            data.ttcStations,
+            map,
+            20,
+          );
+          if (nearby) {
+            dispatch?.({
+              type: "suggestInterchange",
+              payload: {
+                newStationPosition: stationPosition,
+                nearbyStationId: nearby.id,
+                nearbyStationName: nearby.name,
+                lineId: drawingSession.lineId,
+                stationName,
+              },
+            });
+            return;
+          }
+        }
+
+        dispatch?.({
+          type: "placeStation",
+          payload: {
+            id: stationId,
+            position: stationPosition,
+            lineId: drawingSession.lineId,
+            name: stationName,
+          },
+        });
+        setPendingStationName({
+          stationId,
+          position: stationPosition,
+          defaultName: stationName,
+        });
         return;
+      }
+
+      // No active session — check if click is near a proposal line terminus (extend from proposal line)
+      if (map && draft && draft.lines.length > 0) {
+        for (const line of draft.lines) {
+          if (line.stationIds.length < 1) continue;
+          const firstStation = draft.stations.find((s) => s.id === line.stationIds[0]);
+          const lastStation = draft.stations.find((s) => s.id === line.stationIds[line.stationIds.length - 1]);
+          if (!firstStation || !lastStation) continue;
+
+          const firstScreen = map.project(firstStation.position);
+          const lastScreen = map.project(lastStation.position);
+          const clickScreen = map.project(lngLat);
+
+          const dx1 = clickScreen.x - firstScreen.x;
+          const dy1 = clickScreen.y - firstScreen.y;
+          const dx2 = clickScreen.x - lastScreen.x;
+          const dy2 = clickScreen.y - lastScreen.y;
+          const distFirst = Math.sqrt(dx1 * dx1 + dy1 * dy1);
+          const distLast = Math.sqrt(dx2 * dx2 + dy2 * dy2);
+
+          if (distLast <= 20) {
+            // Extend from the last station of this proposal line
+            dispatch?.({
+              type: "startDrawing",
+              payload: { lineId: line.id, mode: "extend", initialStationId: lastStation.id },
+            });
+            return;
+          }
+          if (distFirst <= 20) {
+            // Extend from the first station of this proposal line
+            dispatch?.({
+              type: "startDrawing",
+              payload: { lineId: line.id, mode: "extend", initialStationId: firstStation.id },
+            });
+            return;
+          }
+        }
       }
 
       // No active session — check if click is near a TTC line to extend or branch
@@ -394,8 +490,26 @@ export default function TorontoMap({
         }
       }
 
-      // Not near any TTC line — normal free waypoint placement
-      onAddWaypoint?.(lngLat);
+      // Click on empty map — auto-create a new line and place first station
+      if (draft && dispatch) {
+        const newLineId = crypto.randomUUID();
+        const newStationId = crypto.randomUUID();
+        const nextColor = DEFAULT_LINE_COLORS[draft.lines.length % DEFAULT_LINE_COLORS.length];
+        const lineName = `Line ${draft.lines.length + 1}`;
+        const stationName = `Station ${draft.stations.length + 1}`;
+
+        dispatch({ type: "addLine", payload: { id: newLineId, name: lineName, mode: "subway", color: nextColor } });
+        dispatch({ type: "startDrawing", payload: { lineId: newLineId, mode: "new" } });
+        dispatch({
+          type: "placeStation",
+          payload: { id: newStationId, position: lngLat, lineId: newLineId, name: stationName },
+        });
+        setPendingStationName({
+          stationId: newStationId,
+          position: lngLat,
+          defaultName: stationName,
+        });
+      }
       return;
     }
 
@@ -405,13 +519,20 @@ export default function TorontoMap({
       // Find which proposal line the click is near (12px threshold)
       let snappedPosition: [number, number] | null = null;
       let targetLineId: string | null = null;
+      let insertAtIndex: number | undefined;
 
       for (const line of draft.lines) {
-        if (line.waypoints.length < 2) continue;
-        const snap = snapToSegment(lngLat, line.waypoints, map, 12);
+        // Use derived station waypoints for snap detection
+        const waypoints = line.stationIds.length >= 2
+          ? line.stationIds.map((id) => draft.stations.find((s) => s.id === id)?.position).filter(Boolean) as [number, number][]
+          : line.waypoints;
+        if (waypoints.length < 2) continue;
+        const snap = snapToSegment(lngLat, waypoints, map, 12);
         if (snap) {
           snappedPosition = snap.position;
           targetLineId = line.id;
+          // segmentIndex refers to the waypoint index; map it to stationIds index
+          insertAtIndex = snap.segmentIndex;
           break;
         }
       }
@@ -459,6 +580,7 @@ export default function TorontoMap({
           position: snappedPosition,
           lineId: targetLineId,
           name: stationName,
+          insertAtIndex,
         },
       });
       setPendingStationName({
@@ -499,14 +621,30 @@ export default function TorontoMap({
       // Click on empty space — return to line list (do NOT close sidebar)
       dispatch?.({ type: "closeInspector" });
     }
-  }, [activeTool, onAddWaypoint, onStartExtend, drawingSession, draft, data, dispatch]);
+  }, [activeTool, onStartExtend, drawingSession, draft, data, dispatch]);
 
   const handleDblClick = useCallback((e: MapMouseEvent) => {
     if (activeTool !== "draw-line" || !drawingSession) return;
     // Prevent the default map zoom on double-click
     e.preventDefault();
+
+    // Place a final station at the double-click position, then finish drawing
+    const lngLat: [number, number] = [e.lngLat.lng, e.lngLat.lat];
+    const stationId = crypto.randomUUID();
+    const stationName = `Station ${(draft?.stations.length ?? 0) + 1}`;
+    dispatch?.({
+      type: "placeStation",
+      payload: {
+        id: stationId,
+        position: lngLat,
+        lineId: drawingSession.lineId,
+        name: stationName,
+      },
+    });
+    // Finish drawing after placing the final station
+    dispatch?.({ type: "finishDrawing" });
     onFinishDrawing?.();
-  }, [activeTool, drawingSession, onFinishDrawing]);
+  }, [activeTool, drawingSession, draft, dispatch, onFinishDrawing]);
 
   // Handle station name save
   const handleStationNameSave = useCallback((name: string) => {
