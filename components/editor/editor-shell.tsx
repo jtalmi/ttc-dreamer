@@ -436,6 +436,7 @@ export default function EditorShell() {
     const viewMapElement = (
       <TorontoMap
         busCorridorVisible={false}
+        baselineMode={sharedPayload.draft.baselineMode}
         draft={sharedPayload.draft}
         drawingSession={null}
         activeTool="select"
@@ -460,6 +461,7 @@ export default function EditorShell() {
   const mapElement = (
     <TorontoMap
       busCorridorVisible={chrome.busCorridorVisible}
+      baselineMode={draft.baselineMode}
       draft={draft}
       drawingSession={chrome.drawingSession}
       activeTool={chrome.activeTool}

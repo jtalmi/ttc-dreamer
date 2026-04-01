@@ -17,6 +17,8 @@ import {
   TORONTO_VIEW,
   loadTtcRoutes,
   loadTtcStations,
+  loadFutureTtcRoutes,
+  loadFutureTtcStations,
   loadGoRoutes,
   loadGoStations,
   loadNeighbourhoods,
@@ -41,11 +43,14 @@ import type {
   ToolMode,
   InterchangeSuggestion,
   EditorShellAction,
+  BaselineMode,
 } from "@/lib/proposal";
 
 type MapData = {
   ttcRoutes: FeatureCollection;
   ttcStations: FeatureCollection;
+  futureTtcRoutes: FeatureCollection;
+  futureTtcStations: FeatureCollection;
   goRoutes: FeatureCollection;
   goStations: FeatureCollection;
   neighbourhoods: FeatureCollection;
@@ -72,6 +77,8 @@ type PendingStationName = {
 type TorontoMapProps = Readonly<{
   /** Controls visibility of bus and streetcar corridor overlay */
   busCorridorVisible?: boolean;
+  /** Controls which baseline TTC dataset is shown (today vs future committed) */
+  baselineMode?: BaselineMode;
   /** Current proposal draft for rendering proposal layers */
   draft?: ProposalDraft;
   /** Active drawing session for ghost segment rendering */
@@ -113,6 +120,7 @@ type TorontoMapProps = Readonly<{
  */
 export default function TorontoMap({
   busCorridorVisible = false,
+  baselineMode = "today",
   draft,
   drawingSession = null,
   activeTool = "select",
@@ -157,6 +165,8 @@ export default function TorontoMap({
     Promise.all([
       loadTtcRoutes(),
       loadTtcStations(),
+      loadFutureTtcRoutes(),
+      loadFutureTtcStations(),
       loadGoRoutes(),
       loadGoStations(),
       loadNeighbourhoods(),
@@ -165,8 +175,8 @@ export default function TorontoMap({
       loadBusCorridors(),
       loadStreetcarCorridors(),
     ])
-      .then(([ttcRoutes, ttcStations, goRoutes, goStations, neighbourhoods, landmarks, streets, busCorridors, streetcarCorridors]) => {
-        setData({ ttcRoutes, ttcStations, goRoutes, goStations, neighbourhoods, landmarks, streets, busCorridors, streetcarCorridors });
+      .then(([ttcRoutes, ttcStations, futureTtcRoutes, futureTtcStations, goRoutes, goStations, neighbourhoods, landmarks, streets, busCorridors, streetcarCorridors]) => {
+        setData({ ttcRoutes, ttcStations, futureTtcRoutes, futureTtcStations, goRoutes, goStations, neighbourhoods, landmarks, streets, busCorridors, streetcarCorridors });
       })
       .catch((err) => {
         console.error("[TorontoMap] Failed to load baseline data:", err);
@@ -299,11 +309,15 @@ export default function TorontoMap({
         ?? (props["STATION"] as string | null)
         ?? "Unknown";
 
+      // Determine station type from the layer the feature came from
+      const layerId = feature.layer?.id;
+      const stationType: "ttc" | "go" = layerId === "go-stations-circle" ? "go" : "ttc";
+
       setHoverStation({
         name,
         lng: coords[0],
         lat: coords[1],
-        type: "ttc",
+        type: stationType,
       });
     } else {
       setHoverStation(null);
@@ -621,6 +635,7 @@ export default function TorontoMap({
       canvasContextAttributes={{ preserveDrawingBuffer: true }}
       interactiveLayerIds={[
         "ttc-stations-circle",
+        "go-stations-circle",
         "proposal-lines-stroke",
         "proposal-stations-circle",
         "proposal-waypoints-circle",
@@ -656,7 +671,10 @@ export default function TorontoMap({
         visible={busCorridorVisible}
       />
       <GoLayers routes={data.goRoutes} stations={data.goStations} />
-      <TtcLayers routes={data.ttcRoutes} stations={data.ttcStations} />
+      <TtcLayers
+        routes={baselineMode === "future_committed" ? data.futureTtcRoutes : data.ttcRoutes}
+        stations={baselineMode === "future_committed" ? data.futureTtcStations : data.ttcStations}
+      />
       <ProposalLayers
         linesGeoJSON={linesGeoJSON}
         stationsGeoJSON={stationsGeoJSON}
@@ -667,11 +685,11 @@ export default function TorontoMap({
         proposalOpacity={proposalOpacity}
       />
       <StationLabels
-        ttcStations={data.ttcStations}
+        ttcStations={baselineMode === "future_committed" ? data.futureTtcStations : data.ttcStations}
         goStations={data.goStations}
       />
 
-      {/* TTC station hover tooltip */}
+      {/* Station hover tooltip */}
       {hoverStation && (
         <Popup
           longitude={hoverStation.lng}
@@ -682,7 +700,7 @@ export default function TorontoMap({
           offset={10}
           style={{ fontSize: "14px" }}
         >
-          {hoverStation.name} &mdash; TTC
+          {hoverStation.name} &mdash; {hoverStation.type === "go" ? "GO" : "TTC"}
         </Popup>
       )}
 

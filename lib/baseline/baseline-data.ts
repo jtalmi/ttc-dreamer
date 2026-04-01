@@ -28,6 +28,24 @@ export async function loadTtcStations(): Promise<FeatureCollection> {
   return res.json() as Promise<FeatureCollection>;
 }
 
+/** Fetches future-committed TTC rapid transit route lines (includes Lines 5 and 6). */
+export async function loadFutureTtcRoutes(): Promise<FeatureCollection> {
+  const res = await fetch("/data/ttc-routes-future.geojson");
+  if (!res.ok) {
+    throw new Error(`Failed to load future TTC routes: ${res.status} ${res.statusText}`);
+  }
+  return res.json() as Promise<FeatureCollection>;
+}
+
+/** Fetches future-committed TTC station points (includes Line 5 and Line 6 stops). */
+export async function loadFutureTtcStations(): Promise<FeatureCollection> {
+  const res = await fetch("/data/ttc-stations-future.geojson");
+  if (!res.ok) {
+    throw new Error(`Failed to load future TTC stations: ${res.status} ${res.statusText}`);
+  }
+  return res.json() as Promise<FeatureCollection>;
+}
+
 /** Fetches GO rail corridor lines from the public data directory. */
 export async function loadGoRoutes(): Promise<FeatureCollection> {
   const res = await fetch("/data/go-routes.geojson");

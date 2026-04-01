@@ -488,7 +488,39 @@ export function proposalEditorReducer(
         };
       }
 
-      // TTC baseline station path (original behavior): create a new station with link
+      // TTC baseline station path: check if a proposal station already links to this baseline station.
+      // If so, reuse it (merge the new line) rather than creating a duplicate.
+      const existingLinkedStation = state.draft.stations.find(
+        (s) => s.linkedBaselineStationId === suggestion.nearbyStationId,
+      );
+
+      if (existingLinkedStation) {
+        // Reuse path: add suggestion.lineId to the existing linked station's lineIds
+        const updatedStations = state.draft.stations.map((s) =>
+          s.id === existingLinkedStation.id
+            ? { ...s, lineIds: [...s.lineIds, suggestion.lineId] }
+            : s,
+        );
+        const updatedLines = state.draft.lines.map((l: ProposalLineDraft) =>
+          l.id === suggestion.lineId
+            ? { ...l, stationIds: [...l.stationIds, existingLinkedStation.id] }
+            : l,
+        );
+        return {
+          ...state,
+          draft: {
+            ...state.draft,
+            stations: updatedStations,
+            lines: updatedLines,
+          },
+          chrome: {
+            ...state.chrome,
+            pendingInterchangeSuggestion: null,
+          },
+        };
+      }
+
+      // No existing linked station — create a new proposal station with the baseline link
       const newStationId = crypto.randomUUID();
       const newStation: ProposalStationDraft = {
         id: newStationId,

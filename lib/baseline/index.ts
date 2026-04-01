@@ -20,6 +20,8 @@ export {
   TORONTO_VIEW,
   loadTtcRoutes,
   loadTtcStations,
+  loadFutureTtcRoutes,
+  loadFutureTtcStations,
   loadGoRoutes,
   loadGoStations,
   loadNeighbourhoods,
