@@ -75,7 +75,7 @@ Each task was committed atomically:
 1. **Task 1: Download TTC GTFS data and replace Line 5/6 station coordinates** - `44a0076` (feat)
 2. **Task 2: Update ttc-layers.tsx with Ontario Line dashed rendering and Line 5/6 color fixes** - `c0c96fe` (feat)
 
-**Plan metadata:** (to be added after final commit)
+**Plan metadata:** `33a05c2` (docs: complete plan)
 
 ## Files Created/Modified
 - `public/data/ttc-stations.geojson` - 68→111 features: added 25 Line 5 + 18 Line 6 GTFS stations
