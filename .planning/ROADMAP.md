@@ -88,9 +88,9 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 04-01: Build line and station inspector surfaces in the sidebar
-- [ ] 04-02: Implement descriptive stats formulas and live stat presentation
-- [ ] 04-03: Add before/after comparison behavior and polish the insights UX tone
+- [ ] 04-01-PLAN.md — Build stat computation layer (TDD) and extend proposal state with inspector/comparison types
+- [ ] 04-02-PLAN.md — Create inspector and stats panel components, wire inspect tool and sidebar routing
+- [ ] 04-03-PLAN.md — Add before/after comparison toggle with proposal opacity control and verification checkpoint
 
 ### Phase 5: Sharing, Export, and Polish
 **Goal**: Make proposals externally shareable through image export, unlisted links, read-only viewing, and edit-as-copy
