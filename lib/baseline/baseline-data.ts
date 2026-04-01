@@ -72,3 +72,21 @@ export async function loadMajorStreets(): Promise<FeatureCollection> {
   }
   return res.json() as Promise<FeatureCollection>;
 }
+
+/** Fetches TTC bus corridor lines from the public data directory. */
+export async function loadBusCorridors(): Promise<FeatureCollection> {
+  const res = await fetch("/data/bus-corridors.geojson");
+  if (!res.ok) {
+    throw new Error(`Failed to load bus corridors: ${res.status} ${res.statusText}`);
+  }
+  return res.json() as Promise<FeatureCollection>;
+}
+
+/** Fetches TTC streetcar corridor lines from the public data directory. */
+export async function loadStreetcarCorridors(): Promise<FeatureCollection> {
+  const res = await fetch("/data/streetcar-corridors.geojson");
+  if (!res.ok) {
+    throw new Error(`Failed to load streetcar corridors: ${res.status} ${res.statusText}`);
+  }
+  return res.json() as Promise<FeatureCollection>;
+}

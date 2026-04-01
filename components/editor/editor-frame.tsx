@@ -21,6 +21,10 @@ type EditorFrameProps = Readonly<{
   onBaselineChange?: (mode: BaselineMode) => void;
   /** Called when the sidebar toggle is clicked (used by parent-controlled mode) */
   onSidebarToggle?: () => void;
+  /** Override bus corridor visibility; pass undefined to let frame manage state internally */
+  busCorridorVisible?: boolean;
+  /** Called when the corridor toggle is clicked (used by parent-controlled mode) */
+  onCorridorToggle?: () => void;
   /** Slot for injecting map content (future phases) */
   mapChildren?: React.ReactNode;
   /** Slot for injecting sidebar content (future phases) */
@@ -34,6 +38,8 @@ export default function EditorFrame({
   onToolSelect: controlledOnToolSelect,
   onBaselineChange: controlledOnBaselineChange,
   onSidebarToggle: controlledOnSidebarToggle,
+  busCorridorVisible: controlledCorridorVisible,
+  onCorridorToggle: controlledOnCorridorToggle,
   mapChildren,
   sidebarChildren,
 }: EditorFrameProps) {
@@ -42,10 +48,12 @@ export default function EditorFrame({
   const [internalBaseline, setInternalBaseline] =
     useState<BaselineMode>("today");
   const [internalCollapsed, setInternalCollapsed] = useState(false);
+  const [internalCorridorVisible, setInternalCorridorVisible] = useState(false);
 
   const activeTool = controlledTool ?? internalTool;
   const baseline = controlledBaseline ?? internalBaseline;
   const sidebarCollapsed = controlledCollapsed ?? internalCollapsed;
+  const busCorridorVisible = controlledCorridorVisible ?? internalCorridorVisible;
 
   return (
     <div
@@ -62,6 +70,7 @@ export default function EditorFrame({
       <TopToolbar
         activeTool={activeTool}
         baseline={baseline}
+        busCorridorVisible={busCorridorVisible}
         onToolSelect={(tool) => {
           if (controlledOnToolSelect) {
             controlledOnToolSelect(tool);
@@ -74,6 +83,13 @@ export default function EditorFrame({
             controlledOnBaselineChange(mode);
           } else if (!controlledBaseline) {
             setInternalBaseline(mode);
+          }
+        }}
+        onCorridorToggle={() => {
+          if (controlledOnCorridorToggle) {
+            controlledOnCorridorToggle();
+          } else if (controlledCorridorVisible === undefined) {
+            setInternalCorridorVisible((prev) => !prev);
           }
         }}
       />

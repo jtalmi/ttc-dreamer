@@ -66,7 +66,9 @@ export default function EditorShell() {
         dispatch({ type: "setBaselineMode", payload: mode })
       }
       onSidebarToggle={() => dispatch({ type: "toggleSidebar" })}
-      mapChildren={<TorontoMap />}
+      busCorridorVisible={chrome.busCorridorVisible}
+      onCorridorToggle={() => dispatch({ type: "toggleCorridors" })}
+      mapChildren={<TorontoMap busCorridorVisible={chrome.busCorridorVisible} />}
     />
   );
 }

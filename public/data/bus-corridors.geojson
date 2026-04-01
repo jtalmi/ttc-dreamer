@@ -1,0 +1,190 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": { "name": "Finch West", "route": "36" },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-79.5395, 43.7527],
+          [-79.5100, 43.7527],
+          [-79.4760, 43.7527],
+          [-79.4480, 43.7527],
+          [-79.4150, 43.7530],
+          [-79.3900, 43.7527]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name": "Finch East", "route": "39" },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-79.3900, 43.7527],
+          [-79.3600, 43.7527],
+          [-79.3300, 43.7525],
+          [-79.3030, 43.7540],
+          [-79.2700, 43.7560]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name": "Steeles West", "route": "60" },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-79.5395, 43.7735],
+          [-79.5100, 43.7738],
+          [-79.4760, 43.7740],
+          [-79.4480, 43.7740],
+          [-79.4150, 43.7742],
+          [-79.3900, 43.7740]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name": "Lawrence West", "route": "52" },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-79.5395, 43.7217],
+          [-79.5100, 43.7220],
+          [-79.4760, 43.7222],
+          [-79.4480, 43.7225],
+          [-79.4150, 43.7225]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name": "Lawrence East", "route": "54" },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-79.3900, 43.7225],
+          [-79.3600, 43.7230],
+          [-79.3300, 43.7238],
+          [-79.3050, 43.7255],
+          [-79.2800, 43.7280]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name": "Eglinton West", "route": "32" },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-79.5395, 43.6984],
+          [-79.5100, 43.6984],
+          [-79.4760, 43.6984],
+          [-79.4480, 43.6984],
+          [-79.4150, 43.6984]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name": "Eglinton East", "route": "34" },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-79.3900, 43.6984],
+          [-79.3600, 43.6984],
+          [-79.3300, 43.6990],
+          [-79.3050, 43.7010],
+          [-79.2800, 43.7050]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name": "Dufferin", "route": "29" },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-79.4335, 43.7735],
+          [-79.4335, 43.7527],
+          [-79.4335, 43.7225],
+          [-79.4335, 43.6984],
+          [-79.4335, 43.6750],
+          [-79.4335, 43.6400]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name": "Wilson", "route": "96" },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-79.5100, 43.7345],
+          [-79.4760, 43.7345],
+          [-79.4480, 43.7350],
+          [-79.4150, 43.7355],
+          [-79.3900, 43.7355]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name": "Don Mills", "route": "25" },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-79.3384, 43.7735],
+          [-79.3384, 43.7527],
+          [-79.3384, 43.7225],
+          [-79.3384, 43.6984],
+          [-79.3384, 43.6800]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name": "Bathurst", "route": "7" },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-79.4113, 43.7735],
+          [-79.4113, 43.7527],
+          [-79.4113, 43.7225],
+          [-79.4113, 43.6984],
+          [-79.4113, 43.6750],
+          [-79.4113, 43.6400]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name": "Pape", "route": "72" },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-79.3533, 43.7527],
+          [-79.3533, 43.7225],
+          [-79.3533, 43.6984],
+          [-79.3533, 43.6750],
+          [-79.3533, 43.6600]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name": "Weston", "route": "89" },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-79.5160, 43.7527],
+          [-79.5060, 43.7400],
+          [-79.4960, 43.7225],
+          [-79.4900, 43.6984]
+        ]
+      }
+    }
+  ]
+}

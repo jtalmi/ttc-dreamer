@@ -24,12 +24,17 @@ type ResetShellStateAction = {
   type: "resetShellState";
 };
 
+type ToggleCorridorsAction = {
+  type: "toggleCorridors";
+};
+
 /** All action variants the editor shell reducer handles in Phase 1. */
 export type EditorShellAction =
   | SetBaselineModeAction
   | ToggleSidebarAction
   | SetActiveToolAction
-  | ResetShellStateAction;
+  | ResetShellStateAction
+  | ToggleCorridorsAction;
 
 /** Returns the default draft for the Toronto sandbox shell. */
 export function createInitialProposalDraft(): EditorShellState {
@@ -46,6 +51,7 @@ export function createInitialProposalDraft(): EditorShellState {
     chrome: {
       activeTool: "select",
       sidebarOpen: true,
+      busCorridorVisible: false,
     },
   };
 }
@@ -72,6 +78,12 @@ export function proposalEditorReducer(
       return {
         ...state,
         chrome: { ...state.chrome, activeTool: action.payload },
+      };
+
+    case "toggleCorridors":
+      return {
+        ...state,
+        chrome: { ...state.chrome, busCorridorVisible: !state.chrome.busCorridorVisible },
       };
 
     case "resetShellState":

@@ -36,6 +36,7 @@ export type ProposalDraft = {
 export type EditorChromeState = {
   activeTool: ToolMode;
   sidebarOpen: boolean;
+  busCorridorVisible: boolean;
 };
 
 /** Combined state held by the editor shell reducer. */

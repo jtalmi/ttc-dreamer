@@ -25,4 +25,6 @@ export {
   loadNeighbourhoods,
   loadLandmarks,
   loadMajorStreets,
+  loadBusCorridors,
+  loadStreetcarCorridors,
 } from "./baseline-data";

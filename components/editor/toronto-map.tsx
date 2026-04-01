@@ -9,6 +9,7 @@ import { TtcLayers } from "@/components/map/ttc-layers";
 import { GoLayers } from "@/components/map/go-layers";
 import { ContextLabels } from "@/components/map/context-labels";
 import { StationLabels } from "@/components/map/station-labels";
+import { CorridorLayers } from "@/components/map/corridor-layers";
 import {
   TORONTO_VIEW,
   loadTtcRoutes,
@@ -18,6 +19,8 @@ import {
   loadNeighbourhoods,
   loadLandmarks,
   loadMajorStreets,
+  loadBusCorridors,
+  loadStreetcarCorridors,
 } from "@/lib/baseline";
 
 type MapData = {
@@ -28,6 +31,8 @@ type MapData = {
   neighbourhoods: FeatureCollection;
   landmarks: FeatureCollection;
   streets: FeatureCollection;
+  busCorridors: FeatureCollection;
+  streetcarCorridors: FeatureCollection;
 };
 
 type HoverStation = {
@@ -37,12 +42,17 @@ type HoverStation = {
   type: "ttc" | "go";
 };
 
+type TorontoMapProps = Readonly<{
+  /** Controls visibility of bus and streetcar corridor overlay */
+  busCorridorVisible?: boolean;
+}>;
+
 /**
  * Interactive MapLibre GL map showing TTC rapid transit routes and GO Transit
  * context layers. Loaded via next/dynamic with ssr: false to prevent
  * window-is-undefined errors during server rendering.
  */
-export default function TorontoMap() {
+export default function TorontoMap({ busCorridorVisible = false }: TorontoMapProps) {
   const [data, setData] = useState<MapData | null>(null);
   const [error, setError] = useState(false);
   const [hoverStation, setHoverStation] = useState<HoverStation | null>(null);
@@ -65,9 +75,11 @@ export default function TorontoMap() {
       loadNeighbourhoods(),
       loadLandmarks(),
       loadMajorStreets(),
+      loadBusCorridors(),
+      loadStreetcarCorridors(),
     ])
-      .then(([ttcRoutes, ttcStations, goRoutes, goStations, neighbourhoods, landmarks, streets]) => {
-        setData({ ttcRoutes, ttcStations, goRoutes, goStations, neighbourhoods, landmarks, streets });
+      .then(([ttcRoutes, ttcStations, goRoutes, goStations, neighbourhoods, landmarks, streets, busCorridors, streetcarCorridors]) => {
+        setData({ ttcRoutes, ttcStations, goRoutes, goStations, neighbourhoods, landmarks, streets, busCorridors, streetcarCorridors });
       })
       .catch((err) => {
         console.error("[TorontoMap] Failed to load baseline data:", err);
@@ -160,15 +172,21 @@ export default function TorontoMap() {
       {/*
         Layer stacking order (bottom to top):
         1. ContextLabels (streets, neighbourhoods, landmarks)
-        2. GoLayers (GO lines, GO station circles)
-        3. TtcLayers (TTC lines, TTC station circles)
-        4. StationLabels (TTC + GO station name text labels)
-        5. Popup tooltip (floats above everything)
+        2. CorridorLayers (bus + streetcar surface corridors, toggleable)
+        3. GoLayers (GO lines, GO station circles)
+        4. TtcLayers (TTC lines, TTC station circles)
+        5. StationLabels (TTC + GO station name text labels)
+        6. Popup tooltip (floats above everything)
       */}
       <ContextLabels
         neighbourhoods={data.neighbourhoods}
         landmarks={data.landmarks}
         streets={data.streets}
+      />
+      <CorridorLayers
+        busCorridors={data.busCorridors}
+        streetcarCorridors={data.streetcarCorridors}
+        visible={busCorridorVisible}
       />
       <GoLayers routes={data.goRoutes} stations={data.goStations} />
       <TtcLayers routes={data.ttcRoutes} stations={data.ttcStations} />

@@ -9,6 +9,8 @@ type TopToolbarProps = Readonly<{
   baseline?: BaselineMode;
   onToolSelect?: (tool: ToolName) => void;
   onBaselineChange?: (mode: BaselineMode) => void;
+  busCorridorVisible?: boolean;
+  onCorridorToggle?: () => void;
 }>;
 
 const TOOLS: ToolName[] = ["Select", "Draw Line", "Add Station", "Inspect"];
@@ -18,6 +20,8 @@ export default function TopToolbar({
   baseline = "today",
   onToolSelect,
   onBaselineChange,
+  busCorridorVisible = false,
+  onCorridorToggle,
 }: TopToolbarProps) {
   return (
     <header
@@ -103,6 +107,29 @@ export default function TopToolbar({
           );
         })}
       </div>
+
+      {/* Bus + Streetcar Corridors toggle */}
+      <button
+        onClick={() => onCorridorToggle?.()}
+        aria-pressed={busCorridorVisible}
+        style={{
+          padding: "var(--space-xs) var(--space-md)",
+          borderRadius: "4px",
+          border: "1px solid rgba(243, 238, 229, 0.3)",
+          cursor: "pointer",
+          fontSize: "14px",
+          fontWeight: 600,
+          lineHeight: 1.3,
+          fontFamily: "var(--font-sans)",
+          backgroundColor: busCorridorVisible
+            ? "var(--shell-accent)"
+            : "var(--shell-secondary)",
+          color: "var(--shell-dominant)",
+          transition: "background-color 0.15s",
+        }}
+      >
+        Bus + Streetcar Corridors
+      </button>
 
       {/* Primary CTA */}
       <button
