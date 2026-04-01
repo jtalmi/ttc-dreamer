@@ -35,7 +35,15 @@ type ToggleCorridorsAction = {
 
 type AddLineAction = {
   type: "addLine";
-  payload: { id: string; name: string; mode: TransitMode; color: string };
+  payload: {
+    id: string;
+    name: string;
+    mode: TransitMode;
+    color: string;
+    parentLineId?: string;
+    branchPoint?: [number, number];
+    isExtension?: boolean;
+  };
 };
 
 type StartDrawingAction = {
@@ -272,6 +280,9 @@ export function proposalEditorReducer(
         mode: action.payload.mode,
         waypoints: [],
         stationIds: [],
+        ...(action.payload.parentLineId !== undefined && { parentLineId: action.payload.parentLineId }),
+        ...(action.payload.isExtension !== undefined && { isExtension: action.payload.isExtension }),
+        ...(action.payload.branchPoint !== undefined && { branchPoint: action.payload.branchPoint }),
       };
       return {
         ...state,
@@ -412,17 +423,47 @@ export function proposalEditorReducer(
     case "confirmInterchange": {
       const suggestion = state.chrome.pendingInterchangeSuggestion;
       if (!suggestion) return state;
+
+      // Check if the nearby station is an existing proposal station (UUID match in draft)
+      const existingProposalStation = state.draft.stations.find(
+        (s) => s.id === suggestion.nearbyStationId,
+      );
+
+      if (existingProposalStation) {
+        // Merge path: add suggestion.lineId to the existing station's lineIds
+        // and add the existing station's id to the new line's stationIds
+        const updatedStations = state.draft.stations.map((s) =>
+          s.id === existingProposalStation.id
+            ? { ...s, lineIds: [...s.lineIds, suggestion.lineId] }
+            : s,
+        );
+        const updatedLines = state.draft.lines.map((l: ProposalLineDraft) =>
+          l.id === suggestion.lineId
+            ? { ...l, stationIds: [...l.stationIds, existingProposalStation.id] }
+            : l,
+        );
+        return {
+          ...state,
+          draft: {
+            ...state.draft,
+            stations: updatedStations,
+            lines: updatedLines,
+          },
+          chrome: {
+            ...state.chrome,
+            pendingInterchangeSuggestion: null,
+          },
+        };
+      }
+
+      // TTC baseline station path (original behavior): create a new station with link
       const newStationId = crypto.randomUUID();
-      // Create the new station with optional TTC link
       const newStation: ProposalStationDraft = {
         id: newStationId,
         name: suggestion.stationName,
         position: suggestion.newStationPosition,
         lineIds: [suggestion.lineId],
-        linkedBaselineStationId:
-          // We'll store the nearbyStationId regardless of type — TTC IDs are strings
-          // from ArcGIS OBJECTID, proposal IDs are UUIDs. The consumer can disambiguate.
-          suggestion.nearbyStationId,
+        linkedBaselineStationId: suggestion.nearbyStationId,
       };
       const updatedLines = state.draft.lines.map((l: ProposalLineDraft) =>
         l.id === suggestion.lineId
