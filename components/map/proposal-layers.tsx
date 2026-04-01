@@ -10,6 +10,8 @@ type ProposalLayersProps = Readonly<{
   selectedElementId: string | null;
   /** GeoJSON for the snap cue ring overlay. Null when no snap target. */
   snapCueGeoJSON?: FeatureCollection | null;
+  /** GeoJSON for waypoint vertex dots. Null when not in select mode. */
+  waypointsGeoJSON?: FeatureCollection | null;
 }>;
 
 /**
@@ -24,6 +26,7 @@ export function ProposalLayers({
   inProgressGeoJSON,
   selectedElementId,
   snapCueGeoJSON = null,
+  waypointsGeoJSON = null,
 }: ProposalLayersProps) {
   return (
     <>
@@ -130,6 +133,23 @@ export function ProposalLayers({
               "circle-color": "transparent",
               "circle-stroke-width": 1.5,
               "circle-stroke-color": "rgba(216, 90, 42, 0.45)",
+            }}
+          />
+        </Source>
+      )}
+
+      {/* Waypoint vertex dots — visible and draggable in select mode */}
+      {waypointsGeoJSON && (
+        <Source id="proposal-waypoints" type="geojson" data={waypointsGeoJSON}>
+          <Layer
+            id="proposal-waypoints-circle"
+            type="circle"
+            paint={{
+              "circle-radius": 5,
+              "circle-color": "#FFFFFF",
+              "circle-stroke-width": 2,
+              "circle-stroke-color": ["get", "color"],
+              "circle-opacity": 0.85,
             }}
           />
         </Source>
