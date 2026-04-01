@@ -30,12 +30,14 @@ const HISTORY_ACTIONS = new Set<string>([
   "rejectInterchange",
   "deleteStation",
   "deleteLine",
+  "confirmDeletion",
   "linkInterchange",
   "updateLineName",
   "updateLineColor",
   "updateStationName",
   "moveStation",
   "moveWaypoint",
+  "clearProposal",
 ]);
 
 /**

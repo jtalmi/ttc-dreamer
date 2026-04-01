@@ -85,6 +85,17 @@ export type ProposalDraft = {
   stations: ProposalStationDraft[];
 };
 
+/** Pending deletion state waiting for user confirmation. */
+export type PendingDeletion = {
+  type: "line" | "station";
+  id: string;
+  name: string;
+  /** True if this station is shared across multiple lines. */
+  isShared?: boolean;
+  /** Number of lines sharing this station (only set when isShared is true). */
+  sharedLineCount?: number;
+};
+
 /** UI-only state for the editor chrome (toolbar, sidebar). */
 export type EditorChromeState = {
   activeTool: ToolMode;
@@ -100,6 +111,8 @@ export type EditorChromeState = {
   sidebarPanel: "list" | "create" | "drawing-status";
   /** Current snap target position for rendering the snap cue ring. */
   snapPosition: [number, number] | null;
+  /** Pending deletion waiting for user confirmation via dialog. */
+  pendingDeletion: PendingDeletion | null;
 };
 
 /** Combined state held by the editor shell reducer. */

@@ -1,6 +1,6 @@
 "use client";
 
-import { useReducer } from "react";
+import { useReducer, useEffect } from "react";
 import dynamic from "next/dynamic";
 import {
   historyReducer,
@@ -11,6 +11,7 @@ import type { TransitMode } from "@/lib/proposal";
 import EditorFrame from "@/components/editor/editor-frame";
 import { LineList } from "@/components/editor/sidebar/line-list";
 import { LineCreationPanel } from "@/components/editor/sidebar/line-creation-panel";
+import { ConfirmationDialog } from "@/components/editor/sidebar/confirmation-dialog";
 
 // Dynamically import TorontoMap with ssr: false to guard against
 // window-is-undefined errors from maplibre-gl during server rendering.
@@ -67,6 +68,70 @@ export default function EditorShell() {
     dispatch({ type: "addLine", payload: { id: newLineId, ...config } });
     dispatch({ type: "startDrawing", payload: { lineId: newLineId, mode: "new" } });
   }
+
+  // Keyboard shortcuts: undo, redo, delete, escape
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const isMac = navigator.platform.startsWith("Mac");
+      const mod = isMac ? e.metaKey : e.ctrlKey;
+
+      if (mod && e.key === "z" && !e.shiftKey) {
+        e.preventDefault();
+        dispatch({ type: "undo" });
+        return;
+      }
+      if (mod && e.key === "z" && e.shiftKey) {
+        e.preventDefault();
+        dispatch({ type: "redo" });
+        return;
+      }
+      if ((e.key === "Backspace" || e.key === "Delete") && chrome.selectedElementId) {
+        e.preventDefault();
+        dispatch({ type: "deleteSelected" });
+        return;
+      }
+      if (e.key === "Escape" && chrome.drawingSession) {
+        dispatch({ type: "cancelDrawing" });
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [dispatch, chrome.selectedElementId, chrome.drawingSession]);
+
+  // Build confirmation dialog message from pendingDeletion
+  function buildConfirmationProps() {
+    const pending = chrome.pendingDeletion;
+    if (!pending) return null;
+
+    if (pending.type === "line") {
+      return {
+        message: `Delete "${pending.name}" and all its stations? This cannot be undone.`,
+        confirmLabel: "Delete Line",
+        cancelLabel: "Keep Line",
+      };
+    }
+    // Station
+    if (pending.isShared && pending.sharedLineCount) {
+      return {
+        message: `"${pending.name}" is shared by ${pending.sharedLineCount} lines. Removing it will also remove all interchange links. This cannot be undone.`,
+        confirmLabel: "Delete Station",
+        cancelLabel: "Keep Station",
+      };
+    }
+    return {
+      message: `Remove "${pending.name}"? This cannot be undone.`,
+      confirmLabel: "Delete Station",
+      cancelLabel: "Keep Station",
+    };
+  }
+
+  const confirmationProps = buildConfirmationProps();
+
+  // Determine selectedLineId for LineList
+  const selectedLineId = chrome.selectedElementId &&
+    draft.lines.some((l) => l.id === chrome.selectedElementId)
+    ? chrome.selectedElementId
+    : null;
 
   // Render sidebar content based on current panel state
   let sidebarContent: React.ReactNode;
@@ -162,6 +227,20 @@ export default function EditorShell() {
         lines={draft.lines}
         onAddLine={() => dispatch({ type: "setSidebarPanel", payload: "create" })}
         activeDrawingLineId={chrome.drawingSession?.lineId ?? null}
+        selectedLineId={selectedLineId}
+        onUpdateName={(lineId, name) =>
+          dispatch({ type: "updateLineName", payload: { lineId, name } })
+        }
+        onUpdateColor={(lineId, color) =>
+          dispatch({ type: "updateLineColor", payload: { lineId, color } })
+        }
+        onSelectLine={(lineId) =>
+          dispatch({ type: "setSelectedElement", payload: lineId })
+        }
+        onDeleteLine={(lineId) => {
+          dispatch({ type: "setSelectedElement", payload: lineId });
+          dispatch({ type: "deleteSelected" });
+        }}
       />
     );
   }
@@ -187,22 +266,33 @@ export default function EditorShell() {
   );
 
   return (
-    <EditorFrame
-      activeTool={TOOL_DISPLAY[chrome.activeTool]}
-      baseline={draft.baselineMode}
-      sidebarCollapsed={!chrome.sidebarOpen}
-      onToolSelect={(tool) =>
-        dispatch({ type: "setActiveTool", payload: TOOL_MODE[tool] })
-      }
-      onBaselineChange={(mode) =>
-        dispatch({ type: "setBaselineMode", payload: mode })
-      }
-      onSidebarToggle={() => dispatch({ type: "toggleSidebar" })}
-      busCorridorVisible={chrome.busCorridorVisible}
-      onCorridorToggle={() => dispatch({ type: "toggleCorridors" })}
-      onAddLine={() => dispatch({ type: "setSidebarPanel", payload: "create" })}
-      mapChildren={mapElement}
-      sidebarChildren={sidebarContent}
-    />
+    <>
+      <EditorFrame
+        activeTool={TOOL_DISPLAY[chrome.activeTool]}
+        baseline={draft.baselineMode}
+        sidebarCollapsed={!chrome.sidebarOpen}
+        onToolSelect={(tool) =>
+          dispatch({ type: "setActiveTool", payload: TOOL_MODE[tool] })
+        }
+        onBaselineChange={(mode) =>
+          dispatch({ type: "setBaselineMode", payload: mode })
+        }
+        onSidebarToggle={() => dispatch({ type: "toggleSidebar" })}
+        busCorridorVisible={chrome.busCorridorVisible}
+        onCorridorToggle={() => dispatch({ type: "toggleCorridors" })}
+        onAddLine={() => dispatch({ type: "setSidebarPanel", payload: "create" })}
+        mapChildren={mapElement}
+        sidebarChildren={sidebarContent}
+      />
+      {confirmationProps && (
+        <ConfirmationDialog
+          message={confirmationProps.message}
+          confirmLabel={confirmationProps.confirmLabel}
+          cancelLabel={confirmationProps.cancelLabel}
+          onConfirm={() => dispatch({ type: "confirmDeletion" })}
+          onCancel={() => dispatch({ type: "cancelDeletion" })}
+        />
+      )}
+    </>
   );
 }

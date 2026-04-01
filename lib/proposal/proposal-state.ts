@@ -2,6 +2,7 @@ import type {
   BaselineMode,
   EditorShellState,
   InterchangeSuggestion,
+  PendingDeletion,
   ProposalDraft,
   ProposalLineDraft,
   ProposalStationDraft,
@@ -112,6 +113,42 @@ type SetSnapPositionAction = {
   payload: [number, number] | null;
 };
 
+type DeleteLineAction = {
+  type: "deleteLine";
+  payload: { lineId: string };
+};
+
+type DeleteStationAction = {
+  type: "deleteStation";
+  payload: { stationId: string };
+};
+
+type DeleteSelectedAction = {
+  type: "deleteSelected";
+};
+
+type ConfirmDeletionAction = {
+  type: "confirmDeletion";
+};
+
+type CancelDeletionAction = {
+  type: "cancelDeletion";
+};
+
+type UpdateLineNameAction = {
+  type: "updateLineName";
+  payload: { lineId: string; name: string };
+};
+
+type UpdateLineColorAction = {
+  type: "updateLineColor";
+  payload: { lineId: string; color: string };
+};
+
+type ClearProposalAction = {
+  type: "clearProposal";
+};
+
 /** All action variants the editor shell reducer handles. */
 export type EditorShellAction =
   | SetBaselineModeAction
@@ -134,7 +171,15 @@ export type EditorShellAction =
   | MoveStationAction
   | MoveWaypointAction
   | UpdateStationNameAction
-  | SetSnapPositionAction;
+  | SetSnapPositionAction
+  | DeleteLineAction
+  | DeleteStationAction
+  | DeleteSelectedAction
+  | ConfirmDeletionAction
+  | CancelDeletionAction
+  | UpdateLineNameAction
+  | UpdateLineColorAction
+  | ClearProposalAction;
 
 /** Returns the default draft for the Toronto sandbox shell. */
 export function createInitialProposalDraft(): EditorShellState {
@@ -157,6 +202,7 @@ export function createInitialProposalDraft(): EditorShellState {
       selectedElementId: null,
       sidebarPanel: "list",
       snapPosition: null,
+      pendingDeletion: null,
     },
   };
 }
@@ -468,6 +514,179 @@ export function proposalEditorReducer(
       return {
         ...state,
         chrome: { ...state.chrome, snapPosition: action.payload },
+      };
+
+    case "deleteLine": {
+      const { lineId } = action.payload;
+      // Remove stations that only belong to this line
+      const updatedStations = state.draft.stations
+        .filter((s) => !(s.lineIds.length === 1 && s.lineIds[0] === lineId))
+        .map((s) => ({
+          ...s,
+          lineIds: s.lineIds.filter((id) => id !== lineId),
+        }));
+      const updatedLines = state.draft.lines.filter((l) => l.id !== lineId);
+      const newSelectedId =
+        state.chrome.selectedElementId === lineId
+          ? null
+          : state.chrome.selectedElementId;
+      return {
+        ...state,
+        draft: { ...state.draft, lines: updatedLines, stations: updatedStations },
+        chrome: {
+          ...state.chrome,
+          selectedElementId: newSelectedId,
+          pendingDeletion: null,
+        },
+      };
+    }
+
+    case "deleteStation": {
+      const { stationId } = action.payload;
+      const updatedStations = state.draft.stations.filter((s) => s.id !== stationId);
+      const updatedLines = state.draft.lines.map((l) => ({
+        ...l,
+        stationIds: l.stationIds.filter((id) => id !== stationId),
+      }));
+      const newSelectedId =
+        state.chrome.selectedElementId === stationId
+          ? null
+          : state.chrome.selectedElementId;
+      return {
+        ...state,
+        draft: { ...state.draft, stations: updatedStations, lines: updatedLines },
+        chrome: {
+          ...state.chrome,
+          selectedElementId: newSelectedId,
+          pendingDeletion: null,
+        },
+      };
+    }
+
+    case "deleteSelected": {
+      const selectedId = state.chrome.selectedElementId;
+      if (!selectedId) return state;
+
+      // Check if it's a proposal line
+      const matchedLine = state.draft.lines.find((l) => l.id === selectedId);
+      if (matchedLine) {
+        const pendingDeletion: PendingDeletion = {
+          type: "line",
+          id: matchedLine.id,
+          name: matchedLine.name,
+        };
+        return {
+          ...state,
+          chrome: { ...state.chrome, pendingDeletion },
+        };
+      }
+
+      // Check if it's a proposal station
+      const matchedStation = state.draft.stations.find((s) => s.id === selectedId);
+      if (matchedStation) {
+        const isShared = matchedStation.lineIds.length > 1;
+        const pendingDeletion: PendingDeletion = {
+          type: "station",
+          id: matchedStation.id,
+          name: matchedStation.name,
+          isShared,
+          sharedLineCount: isShared ? matchedStation.lineIds.length : undefined,
+        };
+        return {
+          ...state,
+          chrome: { ...state.chrome, pendingDeletion },
+        };
+      }
+
+      // Not a proposal element (baseline TTC) — do nothing silently
+      return state;
+    }
+
+    case "confirmDeletion": {
+      const pending = state.chrome.pendingDeletion;
+      if (!pending) return state;
+      if (pending.type === "line") {
+        // Inline the deleteLine logic directly to avoid recursive dispatch
+        const lineId = pending.id;
+        const updatedStations = state.draft.stations
+          .filter((s) => !(s.lineIds.length === 1 && s.lineIds[0] === lineId))
+          .map((s) => ({
+            ...s,
+            lineIds: s.lineIds.filter((id) => id !== lineId),
+          }));
+        const updatedLines = state.draft.lines.filter((l) => l.id !== lineId);
+        const newSelectedId =
+          state.chrome.selectedElementId === lineId ? null : state.chrome.selectedElementId;
+        return {
+          ...state,
+          draft: { ...state.draft, lines: updatedLines, stations: updatedStations },
+          chrome: {
+            ...state.chrome,
+            selectedElementId: newSelectedId,
+            pendingDeletion: null,
+          },
+        };
+      } else {
+        // station deletion
+        const stationId = pending.id;
+        const updatedStations = state.draft.stations.filter((s) => s.id !== stationId);
+        const updatedLines = state.draft.lines.map((l) => ({
+          ...l,
+          stationIds: l.stationIds.filter((id) => id !== stationId),
+        }));
+        const newSelectedId =
+          state.chrome.selectedElementId === stationId ? null : state.chrome.selectedElementId;
+        return {
+          ...state,
+          draft: { ...state.draft, stations: updatedStations, lines: updatedLines },
+          chrome: {
+            ...state.chrome,
+            selectedElementId: newSelectedId,
+            pendingDeletion: null,
+          },
+        };
+      }
+    }
+
+    case "cancelDeletion":
+      return {
+        ...state,
+        chrome: { ...state.chrome, pendingDeletion: null },
+      };
+
+    case "updateLineName": {
+      const updatedLines = state.draft.lines.map((l) =>
+        l.id === action.payload.lineId ? { ...l, name: action.payload.name } : l,
+      );
+      return {
+        ...state,
+        draft: { ...state.draft, lines: updatedLines },
+      };
+    }
+
+    case "updateLineColor": {
+      const updatedLines = state.draft.lines.map((l) =>
+        l.id === action.payload.lineId ? { ...l, color: action.payload.color } : l,
+      );
+      return {
+        ...state,
+        draft: { ...state.draft, lines: updatedLines },
+      };
+    }
+
+    case "clearProposal":
+      return {
+        ...state,
+        draft: { ...state.draft, lines: [], stations: [] },
+        chrome: {
+          ...state.chrome,
+          selectedElementId: null,
+          pendingDeletion: null,
+          drawingSession: null,
+          sidebarPanel: "list",
+          snapPosition: null,
+          pendingInterchangeSuggestion: null,
+        },
       };
 
     default:

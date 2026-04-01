@@ -7,6 +7,7 @@ export type {
   EditorChromeState,
   EditorShellState,
   InterchangeSuggestion,
+  PendingDeletion,
   ProposalDraft,
   ProposalLineDraft,
   ProposalStationDraft,
