@@ -35,13 +35,13 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **EDIT-09**: Crossing lines do not auto-connect unless the user confirms an interchange
 - [x] **EDIT-10**: When a new station is near an existing one, the app can suggest an interchange for the user to confirm or reject
 - [x] **EDIT-11**: Editing offers light snapping and guidance without forcing geometry or station placement
-- [ ] **EDIT-12**: User can undo, redo, and delete editing actions
+- [x] **EDIT-12**: User can undo, redo, and delete editing actions
 
 ### Naming & Styling
 
-- [ ] **STYLE-01**: User can name new lines
-- [ ] **STYLE-02**: User can name new stations
-- [ ] **STYLE-03**: User can customize proposal line colors
+- [x] **STYLE-01**: User can name new lines
+- [x] **STYLE-02**: User can name new stations
+- [x] **STYLE-03**: User can customize proposal line colors
 - [x] **STYLE-04**: New proposal lines start with a distinct default color while existing TTC names remain unchanged
 
 ### Stats & Inspectors
@@ -113,10 +113,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | EDIT-09 | Phase 3 | Complete |
 | EDIT-10 | Phase 3 | Complete |
 | EDIT-11 | Phase 3 | Complete |
-| EDIT-12 | Phase 3 | Pending |
-| STYLE-01 | Phase 3 | Pending |
-| STYLE-02 | Phase 3 | Pending |
-| STYLE-03 | Phase 3 | Pending |
+| EDIT-12 | Phase 3 | Complete |
+| STYLE-01 | Phase 3 | Complete |
+| STYLE-02 | Phase 3 | Complete |
+| STYLE-03 | Phase 3 | Complete |
 | STYLE-04 | Phase 3 | Complete |
 | STATS-01 | Phase 4 | Pending |
 | STATS-02 | Phase 4 | Pending |
