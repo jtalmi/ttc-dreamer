@@ -22,4 +22,7 @@ export {
   loadTtcStations,
   loadGoRoutes,
   loadGoStations,
+  loadNeighbourhoods,
+  loadLandmarks,
+  loadMajorStreets,
 } from "./baseline-data";

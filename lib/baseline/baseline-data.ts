@@ -45,3 +45,30 @@ export async function loadGoStations(): Promise<FeatureCollection> {
   }
   return res.json() as Promise<FeatureCollection>;
 }
+
+/** Fetches Toronto neighbourhood centroid points from the public data directory. */
+export async function loadNeighbourhoods(): Promise<FeatureCollection> {
+  const res = await fetch("/data/neighbourhoods.geojson");
+  if (!res.ok) {
+    throw new Error(`Failed to load neighbourhoods: ${res.status} ${res.statusText}`);
+  }
+  return res.json() as Promise<FeatureCollection>;
+}
+
+/** Fetches Toronto landmark points from the public data directory. */
+export async function loadLandmarks(): Promise<FeatureCollection> {
+  const res = await fetch("/data/landmarks.geojson");
+  if (!res.ok) {
+    throw new Error(`Failed to load landmarks: ${res.status} ${res.statusText}`);
+  }
+  return res.json() as Promise<FeatureCollection>;
+}
+
+/** Fetches major Toronto street lines from the public data directory. */
+export async function loadMajorStreets(): Promise<FeatureCollection> {
+  const res = await fetch("/data/major-streets.geojson");
+  if (!res.ok) {
+    throw new Error(`Failed to load major streets: ${res.status} ${res.statusText}`);
+  }
+  return res.json() as Promise<FeatureCollection>;
+}

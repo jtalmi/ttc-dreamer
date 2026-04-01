@@ -1,17 +1,23 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Map } from "react-map-gl/maplibre";
+import { useState, useEffect, useCallback } from "react";
+import { Map, Popup } from "react-map-gl/maplibre";
 import "maplibre-gl/dist/maplibre-gl.css";
+import type { MapLayerMouseEvent } from "react-map-gl/maplibre";
 import type { FeatureCollection } from "geojson";
 import { TtcLayers } from "@/components/map/ttc-layers";
 import { GoLayers } from "@/components/map/go-layers";
+import { ContextLabels } from "@/components/map/context-labels";
+import { StationLabels } from "@/components/map/station-labels";
 import {
   TORONTO_VIEW,
   loadTtcRoutes,
   loadTtcStations,
   loadGoRoutes,
   loadGoStations,
+  loadNeighbourhoods,
+  loadLandmarks,
+  loadMajorStreets,
 } from "@/lib/baseline";
 
 type MapData = {
@@ -19,6 +25,16 @@ type MapData = {
   ttcStations: FeatureCollection;
   goRoutes: FeatureCollection;
   goStations: FeatureCollection;
+  neighbourhoods: FeatureCollection;
+  landmarks: FeatureCollection;
+  streets: FeatureCollection;
+};
+
+type HoverStation = {
+  name: string;
+  lng: number;
+  lat: number;
+  type: "ttc" | "go";
 };
 
 /**
@@ -29,6 +45,7 @@ type MapData = {
 export default function TorontoMap() {
   const [data, setData] = useState<MapData | null>(null);
   const [error, setError] = useState(false);
+  const [hoverStation, setHoverStation] = useState<HoverStation | null>(null);
 
   useEffect(() => {
     const key = process.env.NEXT_PUBLIC_MAPTILER_KEY;
@@ -45,14 +62,46 @@ export default function TorontoMap() {
       loadTtcStations(),
       loadGoRoutes(),
       loadGoStations(),
+      loadNeighbourhoods(),
+      loadLandmarks(),
+      loadMajorStreets(),
     ])
-      .then(([ttcRoutes, ttcStations, goRoutes, goStations]) => {
-        setData({ ttcRoutes, ttcStations, goRoutes, goStations });
+      .then(([ttcRoutes, ttcStations, goRoutes, goStations, neighbourhoods, landmarks, streets]) => {
+        setData({ ttcRoutes, ttcStations, goRoutes, goStations, neighbourhoods, landmarks, streets });
       })
       .catch((err) => {
         console.error("[TorontoMap] Failed to load baseline data:", err);
         setError(true);
       });
+  }, []);
+
+  const handleMouseMove = useCallback((e: MapLayerMouseEvent) => {
+    const features = e.features;
+    if (features && features.length > 0) {
+      const feature = features[0];
+      const props = feature.properties as Record<string, unknown>;
+      const coords = feature.geometry.type === "Point"
+        ? (feature.geometry.coordinates as [number, number])
+        : null;
+
+      if (!coords) return;
+
+      const name = (props["PT_NAME"] as string | null)
+        ?? (props["PLACE_NAME"] as string | null)
+        ?? (props["STATION"] as string | null)
+        ?? "Unknown";
+
+      setHoverStation({
+        name,
+        lng: coords[0],
+        lat: coords[1],
+        type: "ttc",
+      });
+    }
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    setHoverStation(null);
   }, []);
 
   if (error) {
@@ -104,10 +153,43 @@ export default function TorontoMap() {
       mapStyle={mapStyle}
       style={{ width: "100%", height: "100%" }}
       attributionControl={{ compact: true }}
+      interactiveLayerIds={["ttc-stations-circle"]}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
     >
-      {/* Layer stacking order (bottom to top): GO lines → GO stations → TTC lines → TTC stations */}
+      {/*
+        Layer stacking order (bottom to top):
+        1. ContextLabels (streets, neighbourhoods, landmarks)
+        2. GoLayers (GO lines, GO station circles)
+        3. TtcLayers (TTC lines, TTC station circles)
+        4. StationLabels (TTC + GO station name text labels)
+        5. Popup tooltip (floats above everything)
+      */}
+      <ContextLabels
+        neighbourhoods={data.neighbourhoods}
+        landmarks={data.landmarks}
+        streets={data.streets}
+      />
       <GoLayers routes={data.goRoutes} stations={data.goStations} />
       <TtcLayers routes={data.ttcRoutes} stations={data.ttcStations} />
+      <StationLabels
+        ttcStations={data.ttcStations}
+        goStations={data.goStations}
+      />
+
+      {hoverStation && (
+        <Popup
+          longitude={hoverStation.lng}
+          latitude={hoverStation.lat}
+          anchor="bottom"
+          closeButton={false}
+          closeOnClick={false}
+          offset={10}
+          style={{ fontSize: "14px" }}
+        >
+          {hoverStation.name} &mdash; TTC
+        </Popup>
+      )}
     </Map>
   );
 }
