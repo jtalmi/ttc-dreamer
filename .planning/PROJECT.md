@@ -12,40 +12,38 @@ Make it fast and satisfying for Toronto transit nerds to sketch a TTC-flavoured 
 
 ### Validated
 
-<!-- Shipped and confirmed valuable. -->
+<!-- Shipped and confirmed in v1.0. -->
 
-- [x] Deliver a map-first desktop editor shell rooted in a preloaded Toronto transit map — Validated in Phase 1: Editor Shell and Proposal State (shell scaffold, baseline toggle, proposal state)
-- [x] Make the city itself prominent through TTC, GO, neighbourhood, street, and landmark context — Validated in Phase 2: Toronto Baseline and Context Layers (MapLibre map, TTC/GO layers, context labels, corridor toggle)
-- [x] Support playful but controlled proposal editing: new lines, extensions, branches, manual stations, naming, and styling — Validated in Phase 3: Editing Core (click-to-draw, extend/branch, station snapping, interchanges, naming/coloring, undo/redo/delete)
-- [x] Add lightweight descriptive stats and inspectors without turning the product into a realism-heavy planning tool — Validated in Phase 4: Stats, Inspectors, and Comparison (line/station inspectors, ~prefixed stats, before/after toggle)
-- [x] Let users share proposals externally through clean exports and unlisted links — Validated in Phase 5: Sharing, Export, and Polish (PNG export, URL hash share links, read-only view, edit-as-copy, onboarding)
+- ✓ Deliver a map-first desktop editor shell rooted in a preloaded Toronto transit map — v1.0
+- ✓ Make the city itself prominent through TTC, GO, neighbourhood, street, and landmark context — v1.0
+- ✓ Support playful but controlled proposal editing: new lines, extensions, branches, manual stations, naming, and styling — v1.0
+- ✓ Add lightweight descriptive stats and inspectors without turning the product into a realism-heavy planning tool — v1.0
+- ✓ Let users share proposals externally through clean exports and unlisted links — v1.0
 
 ### Active
 
-<!-- Current scope. Building toward these. -->
+<!-- Next milestone scope. -->
 
-- [ ] Deliver a map-first desktop editor shell rooted in a preloaded Toronto transit map
-- [ ] Make the city itself prominent through TTC, GO, neighbourhood, street, and landmark context
-- [ ] Support playful but controlled proposal editing: new lines, extensions, branches, manual stations, naming, and styling
-- [ ] Add lightweight descriptive stats and inspectors without turning the product into a realism-heavy planning tool
-- [ ] Let users share proposals externally through clean exports and unlisted links
+(None yet — run `/gsd:new-milestone` to define v1.1 requirements)
 
 ### Out of Scope
 
 <!-- Explicit boundaries. Includes reasoning to prevent re-adding. -->
 
 - Official planning-grade forecasting — conflicts with the fun-first v1 goal and would dominate scope
-- In-app public social network features in v1 — unlisted sharing is the default validation path, not community tooling
+- In-app public social network features — unlisted sharing is the v1 validation path, not community tooling
 - Mobile-first creation — the product is explicitly desktop-first for editing
-- Strict realism constraints or warnings — manual creativity should not be blocked by “planner mode” rules
+- Strict realism constraints or warnings — manual creativity should not be blocked by "planner mode" rules
 - Editable GO infrastructure in v1 — GO is context/connectivity only for the first release
-- Prompt-driven challenge mode or LLM map generation in v1 — not part of the initial core loop
+- Prompt-driven challenge mode or LLM map generation — not part of the initial core loop
 
 ## Context
 
-The source-of-truth product inputs for this project are `docs/product/gsd-idea.md`, `docs/product/product-spec.md`, `docs/product/ui-vision.md`, `docs/product/phase-plan-notes.md`, and `AGENTS.md`. All 5 phases complete — v1 milestone achieved. The codebase is a full Toronto transit sandbox with editor shell, MapLibre map with TTC/GO baseline, click-to-draw editing, station placement, inspectors, descriptive stats, before/after comparison, PNG export, URL hash sharing, read-only view mode, edit-as-copy, and onboarding tooltips. 69+ vitest tests cover domain logic.
+**v1.0 shipped 2026-04-01.** The codebase is a complete Toronto transit sandbox: full-screen editor shell, interactive MapLibre GL map with TTC/GO baseline and Toronto context layers, click-to-draw editing (new lines, extensions, branches), manual station placement with snapping and interchange suggestions, inline naming/coloring, undo/redo/delete, line/station inspectors, descriptive ~prefixed stats, before/after comparison, PNG export, URL hash sharing, read-only view mode, edit-as-copy, and onboarding tooltips. 305 vitest tests cover domain logic, stats, geometry, history, and sharing.
 
-The product intent is consistent across the docs: Toronto-native context should be obvious, the editor should feel quick and satisfying, the map should stay visually primary, and the resulting proposals should be worth sharing externally. The first release should favour fun, clarity, and visible tools over realism, hidden controls, or enterprise-style dashboards.
+**Tech stack:** Next.js 16, React 19, TypeScript 5, Tailwind CSS 4, MapLibre GL JS, react-map-gl, @turf/turf, Vitest.
+
+**No backend** — all state is client-side, sharing uses URL hash encoding.
 
 ## Constraints
 
@@ -53,34 +51,30 @@ The product intent is consistent across the docs: Toronto-native context should 
 - **Product**: Keep scoring descriptive, not judgmental — v1 is not an official planning tool
 - **UX**: Desktop-first creation and map-first layout — editing should prioritize large-screen composition
 - **UX**: Prefer visible tools and manual placement with light snapping — user control matters more than automation
-- **Domain**: Baseline TTC infrastructure may only change through allowed extensions and branches — preserves the “what if” sandbox framing
+- **Domain**: Baseline TTC infrastructure may only change through allowed extensions and branches — preserves the "what if" sandbox framing
 - **Domain**: GO is visible but not editable in v1 — it provides context rather than a second editing surface
-- **Delivery**: Keep phases small and shippable — the roadmap should avoid giant “build everything” phases
-- **Technical**: Add tests for domain logic and geometry helpers where practical — those areas will become correctness hotspots quickly
+- **Technical**: Add tests for domain logic and geometry helpers where practical — correctness hotspots
 
 ## Key Decisions
 
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
-| Desktop-first creation is the primary target | Complex map editing is better suited to larger screens | — Pending |
-| The workspace stays map-first with a supportive sidebar | Preserves fast creation and avoids dashboard sprawl | — Pending |
-| Every proposal starts from a preloaded Toronto baseline | Blank-canvas starts weaken the TTC-specific fantasy | — Pending |
-| Baseline TTC infrastructure stays fixed except for extensions and branches | Keeps proposals grounded without over-policing creativity | — Pending |
-| GO is context only in v1 | Adds regional context without doubling scope | — Pending |
-| Manual station placement is primary, with light snapping and suggestion flows only | Users should feel in control of their map | — Pending |
-| Stats stay expressive and directional rather than authoritative | Supports debate and delight without realism creep | — Pending |
-| Sharing is unlisted by default and shared maps open in read-only mode first | Encourages external sharing without turning v1 into a social platform | — Pending |
+| Desktop-first creation is the primary target | Complex map editing is better suited to larger screens | ✓ Good |
+| The workspace stays map-first with a supportive sidebar | Preserves fast creation and avoids dashboard sprawl | ✓ Good |
+| Every proposal starts from a preloaded Toronto baseline | Blank-canvas starts weaken the TTC-specific fantasy | ✓ Good |
+| Baseline TTC infrastructure stays fixed except for extensions and branches | Keeps proposals grounded without over-policing creativity | ✓ Good |
+| GO is context only in v1 | Adds regional context without doubling scope | ✓ Good |
+| Manual station placement with light snapping | Users should feel in control of their map | ✓ Good |
+| Stats stay expressive (~prefixed) and directional | Supports debate and delight without realism creep | ✓ Good |
+| Sharing is unlisted by default, read-only view first | Encourages sharing without turning v1 into a social platform | ✓ Good |
+| MapLibre GL + MapTiler for map rendering | Open-source, no Mapbox token, BSD-licensed | ✓ Good |
+| URL hash for sharing (no backend) | Client-side only, instant sharing, no server costs | ✓ Good — works up to ~11KB payloads |
+| useReducer + history wrapper for state | Clean undo/redo without external deps | ✓ Good |
+| @turf/turf for geodesic calculations | Accurate distance/snapping on real coordinates | ✓ Good |
 
 ## Evolution
 
 This document evolves at phase transitions and milestone boundaries.
-
-**After each phase transition** (via `/gsd:transition`):
-1. Requirements invalidated? → Move to Out of Scope with reason
-2. Requirements validated? → Move to Validated with phase reference
-3. New requirements emerged? → Add to Active
-4. Decisions to log? → Add to Key Decisions
-5. "What This Is" still accurate? → Update if drifted
 
 **After each milestone** (via `/gsd:complete-milestone`):
 1. Full review of all sections
@@ -89,4 +83,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-01 after Phase 5 completion — v1 milestone complete*
+*Last updated: 2026-04-01 after v1.0 milestone*
