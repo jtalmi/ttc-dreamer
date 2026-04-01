@@ -191,6 +191,33 @@ describe("historyReducer — non-history (chrome-only) actions", () => {
   });
 });
 
+describe("historyReducer — undoPlaceStation is a history-tracked action", () => {
+  it("pushes to past when undoPlaceStation is dispatched", () => {
+    // Set up a session with a station to undo
+    let state = createInitialHistoryState();
+    // Add a line first
+    state = historyReducer(state, {
+      type: "addLine",
+      payload: { id: "line-1", name: "Line 1", color: "#7B61FF", mode: "subway" },
+    });
+    // Start a drawing session
+    state = historyReducer(state, {
+      type: "startDrawing",
+      payload: { lineId: "line-1", mode: "new" },
+    });
+    // Place a station (tracked in history)
+    state = historyReducer(state, {
+      type: "placeStation",
+      payload: { id: "s1", position: [-79.38, 43.65], lineId: "line-1", name: "Station 1" },
+    });
+    const pastLengthBeforeUndo = state.past.length;
+
+    // undoPlaceStation should push to history
+    state = historyReducer(state, { type: "undoPlaceStation" });
+    expect(state.past.length).toBe(pastLengthBeforeUndo + 1);
+  });
+});
+
 describe("historyReducer — new action after undo clears future", () => {
   it("clears future when a history action is dispatched after undo", () => {
     let state = createInitialHistoryState();

@@ -33,7 +33,8 @@ export const EXTENDED_SWATCH_COLORS: string[] = [
 /** State for an in-progress line drawing session. */
 export type DrawingSession = {
   lineId: string;
-  waypoints: [number, number][];
+  /** IDs of stations placed so far in this session, in order. */
+  placedStationIds: string[];
   cursorPosition: [number, number] | null;
   mode: "new" | "extend" | "branch";
 };

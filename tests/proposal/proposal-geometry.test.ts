@@ -6,8 +6,9 @@ import {
   buildProposalLinesGeoJSON,
   buildProposalStationsGeoJSON,
   buildInProgressGeoJSON,
+  deriveWaypointsFromStations,
 } from "@/lib/proposal/proposal-geometry";
-import type { ProposalDraft, ProposalLineDraft, DrawingSession } from "@/lib/proposal/proposal-types";
+import type { ProposalDraft, ProposalLineDraft, DrawingSession, ProposalStationDraft } from "@/lib/proposal/proposal-types";
 
 // Minimal draft factory helpers
 function makeDraft(overrides: Partial<ProposalDraft> = {}): ProposalDraft {
@@ -29,6 +30,16 @@ function makeLine(overrides: Partial<ProposalLineDraft> = {}): ProposalLineDraft
     mode: "subway",
     waypoints: [],
     stationIds: [],
+    ...overrides,
+  };
+}
+
+function makeStation(overrides: Partial<ProposalStationDraft> = {}): ProposalStationDraft {
+  return {
+    id: "station-1",
+    name: "Test Station",
+    position: [-79.38, 43.65],
+    lineIds: ["line-1"],
     ...overrides,
   };
 }
@@ -149,6 +160,53 @@ describe("detectLineHitType", () => {
   });
 });
 
+describe("deriveWaypointsFromStations", () => {
+  it("returns an empty array when stationIds is empty", () => {
+    const result = deriveWaypointsFromStations([], []);
+    expect(result).toEqual([]);
+  });
+
+  it("returns positions in stationIds order", () => {
+    const stations = [
+      makeStation({ id: "s1", position: [-79.38, 43.65] }),
+      makeStation({ id: "s2", position: [-79.39, 43.66] }),
+      makeStation({ id: "s3", position: [-79.40, 43.67] }),
+    ];
+    const result = deriveWaypointsFromStations(["s1", "s2", "s3"], stations);
+    expect(result).toEqual([
+      [-79.38, 43.65],
+      [-79.39, 43.66],
+      [-79.40, 43.67],
+    ]);
+  });
+
+  it("skips stationIds that are not found in the stations array", () => {
+    const stations = [
+      makeStation({ id: "s1", position: [-79.38, 43.65] }),
+      makeStation({ id: "s3", position: [-79.40, 43.67] }),
+    ];
+    // s2 is missing — only s1 and s3 should appear
+    const result = deriveWaypointsFromStations(["s1", "s2", "s3"], stations);
+    expect(result).toEqual([[-79.38, 43.65], [-79.40, 43.67]]);
+  });
+
+  it("returns positions in the order specified by stationIds, not stations array order", () => {
+    const stations = [
+      makeStation({ id: "s1", position: [-79.38, 43.65] }),
+      makeStation({ id: "s2", position: [-79.39, 43.66] }),
+    ];
+    // Reverse order
+    const result = deriveWaypointsFromStations(["s2", "s1"], stations);
+    expect(result).toEqual([[-79.39, 43.66], [-79.38, 43.65]]);
+  });
+
+  it("returns an empty array when all stationIds are missing", () => {
+    const stations = [makeStation({ id: "s1", position: [-79.38, 43.65] })];
+    const result = deriveWaypointsFromStations(["nonexistent-1", "nonexistent-2"], stations);
+    expect(result).toEqual([]);
+  });
+});
+
 describe("buildProposalLinesGeoJSON", () => {
   it("returns a FeatureCollection with type set correctly", () => {
     const draft = makeDraft();
@@ -162,24 +220,27 @@ describe("buildProposalLinesGeoJSON", () => {
     expect(result.features).toHaveLength(0);
   });
 
-  it("excludes lines with fewer than 2 waypoints", () => {
+  it("excludes lines with fewer than 2 stations (station-derived coordinates)", () => {
     const draft = makeDraft({
       lines: [
-        makeLine({ id: "l1", waypoints: [] }),
-        makeLine({ id: "l2", waypoints: [[-79.38, 43.65]] }),
+        makeLine({ id: "l1", stationIds: [] }),
+        makeLine({ id: "l2", stationIds: ["s1"] }),
       ],
+      stations: [makeStation({ id: "s1", position: [-79.38, 43.65], lineIds: ["l2"] })],
     });
     const result = buildProposalLinesGeoJSON(draft);
     expect(result.features).toHaveLength(0);
   });
 
-  it("includes lines with 2+ waypoints as LineString features", () => {
-    const wp: [number, number][] = [
-      [-79.38, 43.65],
-      [-79.39, 43.66],
-    ];
+  it("includes lines with 2+ stations as LineString features using station positions", () => {
+    const pos1: [number, number] = [-79.38, 43.65];
+    const pos2: [number, number] = [-79.39, 43.66];
     const draft = makeDraft({
-      lines: [makeLine({ id: "l1", color: "#E91E8C", mode: "lrt", waypoints: wp })],
+      lines: [makeLine({ id: "l1", color: "#E91E8C", mode: "lrt", stationIds: ["s1", "s2"] })],
+      stations: [
+        makeStation({ id: "s1", position: pos1, lineIds: ["l1"] }),
+        makeStation({ id: "s2", position: pos2, lineIds: ["l1"] }),
+      ],
     });
     const result = buildProposalLinesGeoJSON(draft);
     expect(result.features).toHaveLength(1);
@@ -187,14 +248,21 @@ describe("buildProposalLinesGeoJSON", () => {
     const feature = result.features[0];
     expect(feature.type).toBe("Feature");
     expect(feature.geometry.type).toBe("LineString");
-    expect((feature.geometry as GeoJSON.LineString).coordinates).toEqual(wp);
+    expect((feature.geometry as GeoJSON.LineString).coordinates).toEqual([pos1, pos2]);
     expect(feature.properties?.color).toBe("#E91E8C");
     expect(feature.properties?.mode).toBe("lrt");
   });
 
   it("sets the feature id from the line id", () => {
-    const wp: [number, number][] = [[-79.38, 43.65], [-79.39, 43.66]];
-    const draft = makeDraft({ lines: [makeLine({ id: "my-line-id", waypoints: wp })] });
+    const pos1: [number, number] = [-79.38, 43.65];
+    const pos2: [number, number] = [-79.39, 43.66];
+    const draft = makeDraft({
+      lines: [makeLine({ id: "my-line-id", stationIds: ["s1", "s2"] })],
+      stations: [
+        makeStation({ id: "s1", position: pos1, lineIds: ["my-line-id"] }),
+        makeStation({ id: "s2", position: pos2, lineIds: ["my-line-id"] }),
+      ],
+    });
     const result = buildProposalLinesGeoJSON(draft);
     expect(result.features[0].id).toBe("my-line-id");
   });
@@ -251,41 +319,49 @@ describe("buildProposalStationsGeoJSON", () => {
 });
 
 describe("buildInProgressGeoJSON", () => {
+  const emptyDraft = makeDraft();
+
   it("returns null when session is null", () => {
-    expect(buildInProgressGeoJSON(null, "#7B61FF")).toBeNull();
+    expect(buildInProgressGeoJSON(null, emptyDraft, "#7B61FF")).toBeNull();
   });
 
-  it("returns null when session has no waypoints", () => {
+  it("returns null when session has no placed stations", () => {
     const session: DrawingSession = {
       lineId: "l1",
-      waypoints: [],
+      placedStationIds: [],
       cursorPosition: null,
       mode: "new",
     };
-    expect(buildInProgressGeoJSON(session, "#7B61FF")).toBeNull();
+    expect(buildInProgressGeoJSON(session, emptyDraft, "#7B61FF")).toBeNull();
   });
 
-  it("returns null when session has only one waypoint and no cursor", () => {
+  it("returns null when session has only one station and no cursor", () => {
+    const draft = makeDraft({
+      stations: [makeStation({ id: "s1", position: [-79.38, 43.65] })],
+    });
     const session: DrawingSession = {
       lineId: "l1",
-      waypoints: [[-79.38, 43.65]],
+      placedStationIds: ["s1"],
       cursorPosition: null,
       mode: "new",
     };
-    expect(buildInProgressGeoJSON(session, "#7B61FF")).toBeNull();
+    expect(buildInProgressGeoJSON(session, draft, "#7B61FF")).toBeNull();
   });
 
-  it("returns a FeatureCollection with a LineString when session has 2+ waypoints", () => {
-    const session: DrawingSession = {
-      lineId: "l1",
-      waypoints: [
-        [-79.38, 43.65],
-        [-79.39, 43.66],
+  it("returns a FeatureCollection with a LineString when session has 2+ placed stations", () => {
+    const draft = makeDraft({
+      stations: [
+        makeStation({ id: "s1", position: [-79.38, 43.65] }),
+        makeStation({ id: "s2", position: [-79.39, 43.66] }),
       ],
+    });
+    const session: DrawingSession = {
+      lineId: "l1",
+      placedStationIds: ["s1", "s2"],
       cursorPosition: null,
       mode: "new",
     };
-    const result = buildInProgressGeoJSON(session, "#E91E8C");
+    const result = buildInProgressGeoJSON(session, draft, "#E91E8C");
     expect(result).not.toBeNull();
     expect(result!.type).toBe("FeatureCollection");
     expect(result!.features).toHaveLength(1);
@@ -295,16 +371,43 @@ describe("buildInProgressGeoJSON", () => {
 
   it("includes the cursor position as the final coordinate when set", () => {
     const cursor: [number, number] = [-79.40, 43.67];
+    const draft = makeDraft({
+      stations: [makeStation({ id: "s1", position: [-79.38, 43.65] })],
+    });
     const session: DrawingSession = {
       lineId: "l1",
-      waypoints: [[-79.38, 43.65]],
+      placedStationIds: ["s1"],
       cursorPosition: cursor,
       mode: "new",
     };
-    const result = buildInProgressGeoJSON(session, "#7B61FF");
+    const result = buildInProgressGeoJSON(session, draft, "#7B61FF");
     expect(result).not.toBeNull();
     const coords = (result!.features[0].geometry as GeoJSON.LineString).coordinates;
     expect(coords).toHaveLength(2);
+    expect(coords[0]).toEqual([-79.38, 43.65]);
     expect(coords[1]).toEqual(cursor);
+  });
+
+  it("uses station positions from draft for multi-station line", () => {
+    const draft = makeDraft({
+      stations: [
+        makeStation({ id: "s1", position: [-79.38, 43.65] }),
+        makeStation({ id: "s2", position: [-79.39, 43.66] }),
+        makeStation({ id: "s3", position: [-79.40, 43.67] }),
+      ],
+    });
+    const session: DrawingSession = {
+      lineId: "l1",
+      placedStationIds: ["s1", "s2", "s3"],
+      cursorPosition: null,
+      mode: "new",
+    };
+    const result = buildInProgressGeoJSON(session, draft, "#7B61FF");
+    expect(result).not.toBeNull();
+    const coords = (result!.features[0].geometry as GeoJSON.LineString).coordinates;
+    expect(coords).toHaveLength(3);
+    expect(coords[0]).toEqual([-79.38, 43.65]);
+    expect(coords[1]).toEqual([-79.39, 43.66]);
+    expect(coords[2]).toEqual([-79.40, 43.67]);
   });
 });

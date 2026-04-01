@@ -9,6 +9,7 @@ import type {
   ToolMode,
   TransitMode,
 } from "./proposal-types";
+import { deriveWaypointsFromStations } from "./proposal-geometry";
 
 // Action type discriminants for the editor shell reducer.
 type SetBaselineModeAction = {
@@ -51,13 +52,13 @@ type StartDrawingAction = {
   payload: {
     lineId: string;
     mode: "new" | "extend" | "branch";
-    initialWaypoint?: [number, number];
+    /** Optional ID of the terminus station being extended from (extend/branch modes). */
+    initialStationId?: string;
   };
 };
 
-type AddWaypointAction = {
-  type: "addWaypoint";
-  payload: [number, number];
+type UndoPlaceStationAction = {
+  type: "undoPlaceStation";
 };
 
 type UpdateCursorPositionAction = {
@@ -191,7 +192,7 @@ export type EditorShellAction =
   | ToggleCorridorsAction
   | AddLineAction
   | StartDrawingAction
-  | AddWaypointAction
+  | UndoPlaceStationAction
   | UpdateCursorPositionAction
   | FinishDrawingAction
   | CancelDrawingAction
@@ -269,14 +270,24 @@ export function proposalEditorReducer(
       // Switching away from draw-line cancels the active drawing session
       if (action.payload !== "draw-line" && state.chrome.drawingSession !== null) {
         const session = state.chrome.drawingSession;
+        // Remove all stations placed during this session
+        const sessionStationIds = new Set(session.placedStationIds);
+        const stationsToKeep = state.draft.stations.filter(
+          (s) => !sessionStationIds.has(s.id),
+        );
+        // Remove those station IDs from any line's stationIds
+        const linesWithStationsRemoved = state.draft.lines.map((l: ProposalLineDraft) => ({
+          ...l,
+          stationIds: l.stationIds.filter((id) => !sessionStationIds.has(id)),
+        }));
         // If line has no committed waypoints, remove it
-        const linesToKeep = state.draft.lines.filter(
+        const linesToKeep = linesWithStationsRemoved.filter(
           (l: ProposalLineDraft) =>
             l.id !== session.lineId || l.waypoints.length > 0,
         );
         return {
           ...state,
-          draft: { ...state.draft, lines: linesToKeep },
+          draft: { ...state.draft, lines: linesToKeep, stations: stationsToKeep },
           chrome: {
             ...state.chrome,
             activeTool: action.payload,
@@ -333,26 +344,13 @@ export function proposalEditorReducer(
           activeTool: "draw-line",
           drawingSession: {
             lineId: action.payload.lineId,
-            waypoints: action.payload.initialWaypoint
-              ? [action.payload.initialWaypoint]
+            placedStationIds: action.payload.initialStationId
+              ? [action.payload.initialStationId]
               : [],
             cursorPosition: null,
             mode: action.payload.mode,
           },
           sidebarPanel: "drawing-status",
-        },
-      };
-
-    case "addWaypoint":
-      if (!state.chrome.drawingSession) return state;
-      return {
-        ...state,
-        chrome: {
-          ...state.chrome,
-          drawingSession: {
-            ...state.chrome.drawingSession,
-            waypoints: [...state.chrome.drawingSession.waypoints, action.payload],
-          },
         },
       };
 
@@ -369,12 +367,71 @@ export function proposalEditorReducer(
         },
       };
 
+    case "undoPlaceStation": {
+      if (!state.chrome.drawingSession) return state;
+      const session = state.chrome.drawingSession;
+      if (session.placedStationIds.length === 0) return state;
+      // Remove the last placed station ID
+      const lastStationId = session.placedStationIds[session.placedStationIds.length - 1];
+      const newPlacedIds = session.placedStationIds.slice(0, -1);
+      // Remove the station from draft.stations
+      const stationsWithoutLast = state.draft.stations.filter(
+        (s) => s.id !== lastStationId,
+      );
+      // Remove the station ID from the line's stationIds
+      const updatedLines = state.draft.lines.map((l: ProposalLineDraft) =>
+        l.id === session.lineId
+          ? { ...l, stationIds: l.stationIds.filter((id) => id !== lastStationId) }
+          : l,
+      );
+      return {
+        ...state,
+        draft: {
+          ...state.draft,
+          stations: stationsWithoutLast,
+          lines: updatedLines,
+        },
+        chrome: {
+          ...state.chrome,
+          drawingSession: {
+            ...session,
+            placedStationIds: newPlacedIds,
+          },
+        },
+      };
+    }
+
     case "finishDrawing": {
       if (!state.chrome.drawingSession) return state;
       const session = state.chrome.drawingSession;
+      const derivedWaypoints = deriveWaypointsFromStations(
+        session.placedStationIds,
+        state.draft.stations,
+      );
+      // Require 2+ stations for a valid line; otherwise remove the line
+      if (derivedWaypoints.length < 2) {
+        const linesToKeep = state.draft.lines.filter(
+          (l: ProposalLineDraft) => l.id !== session.lineId,
+        );
+        // Also remove stations that were placed only during this session
+        const sessionStationIds = new Set(session.placedStationIds);
+        const stationsToKeep = state.draft.stations.filter(
+          (s) => !sessionStationIds.has(s.id),
+        );
+        return {
+          ...state,
+          draft: { ...state.draft, lines: linesToKeep, stations: stationsToKeep },
+          chrome: {
+            ...state.chrome,
+            activeTool: "select",
+            drawingSession: null,
+            sidebarPanel: "list",
+          },
+        };
+      }
       const updatedLines = state.draft.lines.map((l: ProposalLineDraft) =>
         l.id === session.lineId
-          ? { ...l, waypoints: session.waypoints }
+          ? { ...l, waypoints: derivedWaypoints }
           : l,
       );
       return {
@@ -392,14 +449,24 @@ export function proposalEditorReducer(
     case "cancelDrawing": {
       if (!state.chrome.drawingSession) return state;
       const session = state.chrome.drawingSession;
+      // Remove all stations placed during this session
+      const sessionStationIds = new Set(session.placedStationIds);
+      const stationsToKeep = state.draft.stations.filter(
+        (s) => !sessionStationIds.has(s.id),
+      );
+      // Remove those station IDs from any line's stationIds
+      const linesWithStationsRemoved = state.draft.lines.map((l: ProposalLineDraft) => ({
+        ...l,
+        stationIds: l.stationIds.filter((id) => !sessionStationIds.has(id)),
+      }));
       // Remove the line if it has no committed waypoints
-      const linesToKeep = state.draft.lines.filter(
+      const linesToKeep = linesWithStationsRemoved.filter(
         (l: ProposalLineDraft) =>
           l.id !== session.lineId || l.waypoints.length > 0,
       );
       return {
         ...state,
-        draft: { ...state.draft, lines: linesToKeep },
+        draft: { ...state.draft, lines: linesToKeep, stations: stationsToKeep },
         chrome: {
           ...state.chrome,
           activeTool: "select",
@@ -433,12 +500,22 @@ export function proposalEditorReducer(
           ? { ...l, stationIds: [...l.stationIds, action.payload.id] }
           : l,
       );
+      // If a drawing session is active for this line, add the station ID to placedStationIds
+      const session = state.chrome.drawingSession;
+      const updatedSession =
+        session && session.lineId === action.payload.lineId
+          ? { ...session, placedStationIds: [...session.placedStationIds, action.payload.id] }
+          : session;
       return {
         ...state,
         draft: {
           ...state.draft,
           stations: [...state.draft.stations, newStation],
           lines: updatedLines,
+        },
+        chrome: {
+          ...state.chrome,
+          drawingSession: updatedSession,
         },
       };
     }

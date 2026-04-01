@@ -7,7 +7,27 @@ import {
   point,
 } from "@turf/turf";
 import type { FeatureCollection, Feature, LineString, Point } from "geojson";
-import type { ProposalDraft, DrawingSession, ProposalLineDraft } from "./proposal-types";
+import type { ProposalDraft, DrawingSession, ProposalLineDraft, ProposalStationDraft } from "./proposal-types";
+
+/**
+ * Derives [lng, lat] waypoints from an ordered list of station IDs.
+ * Iterates stationIds in order, looks up each station by id in the stations array,
+ * and collects their positions. Skips any stationId not found.
+ */
+export function deriveWaypointsFromStations(
+  stationIds: string[],
+  stations: ProposalStationDraft[],
+): [number, number][] {
+  const stationMap = new Map(stations.map((s) => [s.id, s]));
+  const result: [number, number][] = [];
+  for (const id of stationIds) {
+    const station = stationMap.get(id);
+    if (station) {
+      result.push(station.position);
+    }
+  }
+  return result;
+}
 
 /** Result from findSnapTarget. */
 export type SnapResult = {
@@ -16,20 +36,23 @@ export type SnapResult = {
 };
 
 /**
- * Converts proposal lines with 2+ waypoints to a GeoJSON FeatureCollection
+ * Converts proposal lines with 2+ stations to a GeoJSON FeatureCollection
  * of LineString features for rendering on the map.
+ * Coordinates are derived from station positions via deriveWaypointsFromStations.
  */
 export function buildProposalLinesGeoJSON(
   draft: ProposalDraft,
 ): FeatureCollection {
-  const features: Feature[] = draft.lines
-    .filter((l: ProposalLineDraft) => l.waypoints.length >= 2)
-    .map((l: ProposalLineDraft) => ({
+  const features: Feature[] = [];
+  for (const l of draft.lines) {
+    const coords = deriveWaypointsFromStations(l.stationIds, draft.stations);
+    if (coords.length < 2) continue;
+    features.push({
       type: "Feature" as const,
       id: l.id,
       geometry: {
         type: "LineString" as const,
-        coordinates: l.waypoints,
+        coordinates: coords,
       },
       properties: {
         id: l.id,
@@ -37,7 +60,8 @@ export function buildProposalLinesGeoJSON(
         mode: l.mode,
         name: l.name,
       },
-    }));
+    });
+  }
 
   return { type: "FeatureCollection", features };
 }
@@ -79,16 +103,22 @@ export function buildProposalStationsGeoJSON(
 
 /**
  * Builds a GeoJSON FeatureCollection for the in-progress drawing session.
- * Returns null if no session is active or session has no waypoints.
+ * Returns null if no session is active or session has fewer than 2 coordinates
+ * (station positions + optional cursor position).
  * Includes a ghost segment to the cursor position if cursorPosition is set.
  */
 export function buildInProgressGeoJSON(
   session: DrawingSession | null,
+  draft: ProposalDraft,
   lineColor: string,
 ): FeatureCollection | null {
-  if (!session || session.waypoints.length === 0) return null;
+  if (!session || session.placedStationIds.length === 0) return null;
 
-  const coords: [number, number][] = [...session.waypoints];
+  const coords: [number, number][] = deriveWaypointsFromStations(
+    session.placedStationIds,
+    draft.stations,
+  );
+
   if (session.cursorPosition !== null) {
     coords.push(session.cursorPosition);
   }

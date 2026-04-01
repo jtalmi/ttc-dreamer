@@ -26,6 +26,7 @@ const HISTORY_ACTIONS = new Set<string>([
   "addLine",
   "finishDrawing",
   "placeStation",
+  "undoPlaceStation",
   "confirmInterchange",
   "rejectInterchange",
   "deleteStation",

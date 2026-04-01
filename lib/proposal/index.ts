@@ -33,6 +33,7 @@ export {
   buildProposalLinesGeoJSON,
   buildProposalStationsGeoJSON,
   buildInProgressGeoJSON,
+  deriveWaypointsFromStations,
   findSnapTarget,
   detectLineHitType,
   dist2D,

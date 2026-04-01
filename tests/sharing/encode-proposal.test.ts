@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { encodeSharePayload, buildShareUrl } from "@/lib/sharing/encode-proposal";
 import { decodeSharePayload } from "@/lib/sharing/decode-proposal";
-import type { SharePayload } from "@/lib/sharing/sharing-types";
+import type { SharePayload, SharePayloadV2 } from "@/lib/sharing/sharing-types";
 import type { ProposalDraft } from "@/lib/proposal/proposal-types";
 
 const minimalDraft: ProposalDraft = {
@@ -12,8 +12,9 @@ const minimalDraft: ProposalDraft = {
   stations: [],
 };
 
-const payload: SharePayload = {
-  v: 1,
+// Use v2 payload for roundtrip tests (v1 payloads are migrated on decode)
+const payload: SharePayloadV2 = {
+  v: 2,
   draft: minimalDraft,
 };
 
@@ -34,14 +35,14 @@ describe("encodeSharePayload", () => {
 });
 
 describe("roundtrip: encode then decode", () => {
-  it("returns an object deeply equal to the original payload", () => {
+  it("returns an object deeply equal to the original v2 payload", () => {
     const encoded = encodeSharePayload(payload);
     const decoded = decodeSharePayload(encoded);
     expect(decoded).toEqual(payload);
   });
 
   it("roundtrip works with optional author field", () => {
-    const withAuthor: SharePayload = { ...payload, author: "Test User" };
+    const withAuthor: SharePayloadV2 = { ...payload, author: "Test User" };
     const encoded = encodeSharePayload(withAuthor);
     const decoded = decodeSharePayload(encoded);
     expect(decoded).toEqual(withAuthor);
@@ -70,7 +71,7 @@ describe("roundtrip: encode then decode", () => {
         },
       ],
     };
-    const unicodePayload: SharePayload = { v: 1, draft: unicodeDraft, author: "Québécois Transit Fan" };
+    const unicodePayload: SharePayloadV2 = { v: 2, draft: unicodeDraft, author: "Québécois Transit Fan" };
     const encoded = encodeSharePayload(unicodePayload);
     const decoded = decodeSharePayload(encoded);
     expect(decoded).toEqual(unicodePayload);
@@ -81,10 +82,20 @@ describe("roundtrip: encode then decode", () => {
       ...minimalDraft,
       title: "My Dream 🚇 Network",
     };
-    const emojiPayload: SharePayload = { v: 1, draft: emojiDraft };
+    const emojiPayload: SharePayloadV2 = { v: 2, draft: emojiDraft };
     const encoded = encodeSharePayload(emojiPayload);
     const decoded = decodeSharePayload(encoded);
     expect(decoded).toEqual(emojiPayload);
+  });
+
+  it("v1 payload encodes and decodes to v2 (migration)", () => {
+    const v1Payload: SharePayload = { v: 1, draft: minimalDraft };
+    const encoded = encodeSharePayload(v1Payload);
+    const decoded = decodeSharePayload(encoded);
+    // v1 is migrated to v2 on decode
+    expect(decoded!.v).toBe(2);
+    expect(decoded!.draft.lines).toEqual([]);
+    expect(decoded!.draft.stations).toEqual([]);
   });
 });
 

@@ -201,8 +201,8 @@ export default function TorontoMap({
   }, [drawingSession, draft]);
 
   const inProgressGeoJSON = useMemo(() => {
-    return buildInProgressGeoJSON(drawingSession, activeLineColor);
-  }, [drawingSession, activeLineColor]);
+    return buildInProgressGeoJSON(drawingSession, draft ?? { id: "", title: "", baselineMode: "today", lines: [], stations: [] }, activeLineColor);
+  }, [drawingSession, draft, activeLineColor]);
 
   const snapCueGeoJSON = useMemo(() => {
     return buildSnapCueGeoJSON(snapPosition);

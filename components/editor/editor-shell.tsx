@@ -187,7 +187,7 @@ export default function EditorShell() {
     });
     dispatch({
       type: "startDrawing",
-      payload: { lineId: newLineId, mode, initialWaypoint },
+      payload: { lineId: newLineId, mode },
     });
   }
 
@@ -456,9 +456,6 @@ export default function EditorShell() {
       snapPosition={chrome.snapPosition}
       pendingInterchangeSuggestion={chrome.pendingInterchangeSuggestion}
       proposalOpacity={proposalOpacity}
-      onAddWaypoint={(lngLat) =>
-        dispatch({ type: "addWaypoint", payload: lngLat })
-      }
       onFinishDrawing={() => dispatch({ type: "finishDrawing" })}
       onUpdateCursor={(lngLat) =>
         dispatch({ type: "updateCursorPosition", payload: lngLat })
