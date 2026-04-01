@@ -107,7 +107,7 @@ Plans:
 
 Plans:
 - [x] 05-01-PLAN.md — Create sharing types, serialization utilities, reducer actions (updateTitle, loadDraft), and tests
-- [ ] 05-02-PLAN.md — Build Share modal, inline title editing, image export, and share link generation
+- [x] 05-02-PLAN.md — Build Share modal, inline title editing, image export, and share link generation
 - [ ] 05-03-PLAN.md — Add shared view mode, edit-as-copy flow, and onboarding tooltips
 
 ## Progress
@@ -121,4 +121,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | 2. Toronto Baseline and Context Layers | 3/3 | Complete   | 2026-04-01 |
 | 3. Editing Core | 6/6 | Complete   | 2026-04-01 |
 | 4. Stats, Inspectors, and Comparison | 3/3 | Complete   | 2026-04-01 |
-| 5. Sharing, Export, and Polish | 0/3 | Planned | - |
+| 5. Sharing, Export, and Polish | 2/3 | In Progress|  |

@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 05-01-PLAN.md
-last_updated: "2026-04-01T07:33:27.027Z"
+stopped_at: Completed 05-02-PLAN.md
+last_updated: "2026-04-01T07:41:33.312Z"
 last_activity: 2026-04-01
 progress:
   total_phases: 5
   completed_phases: 4
   total_plans: 18
-  completed_plans: 16
+  completed_plans: 17
   percent: 0
 ---
 
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-03-31)
 ## Current Position
 
 Phase: 05 (sharing-export-and-polish) — EXECUTING
-Plan: 2 of 3
+Plan: 3 of 3
 Status: Ready to execute
 Last activity: 2026-04-01
 
@@ -68,6 +68,7 @@ Progress: ░░░░░░░░░░ 0%
 | Phase 04 P02 | 8 | 2 tasks | 6 files |
 | Phase 04 P03 | 3 | 1 tasks | 6 files |
 | Phase 05-sharing-export-and-polish P01 | 4 | 2 tasks | 10 files |
+| Phase 05-sharing-export-and-polish P02 | 7 | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -121,6 +122,9 @@ Recent decisions affecting current work:
 - [Phase 05-sharing-export-and-polish]: decodeSharePayload validates v===1, draft object, lines/stations arrays; returns null on any failure
 - [Phase 05-sharing-export-and-polish]: loadDraft resets full chrome state to prevent stale selection/drawing/inspector state when loading foreign draft
 - [Phase 05-sharing-export-and-polish]: updateTitle and loadDraft added to HISTORY_ACTIONS — title edits and draft loads are undoable
+- [Phase 05-sharing-export-and-polish]: startEditing() initializes titleInput from prop on click — avoids setState-in-effect lint error while preserving correct sync behavior
+- [Phase 05-sharing-export-and-polish]: ShareModal wraps MapRef | null in { current: mapRef } object for exportMapAsPng RefObject param
+- [Phase 05-sharing-export-and-polish]: shareUrl remains null until Create Link clicked — URL reflects current title/author values at generation time
 
 ### Pending Todos
 
@@ -133,6 +137,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-01T07:33:27.024Z
-Stopped at: Completed 05-01-PLAN.md
+Last session: 2026-04-01T07:41:33.304Z
+Stopped at: Completed 05-02-PLAN.md
 Resume file: None
