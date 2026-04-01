@@ -61,7 +61,7 @@ Exceptions: none
 
 ## Typography
 
-All roles identical to Phase 1. Phase 2 adds two map-specific sub-roles:
+Four declared sizes — identical to Phase 1. Map-specific visual subordination is achieved through opacity, letter-spacing, and weight within the Label (14px) role. No new sizes are introduced.
 
 | Role | Size | Weight | Line Height |
 |------|------|--------|-------------|
@@ -69,17 +69,18 @@ All roles identical to Phase 1. Phase 2 adds two map-specific sub-roles:
 | Label | 14px | 600 | 1.3 |
 | Heading | 20px | 600 | 1.25 |
 | Display | 32px | 600 | 1.1 |
-| Map label — neighbourhood | 13px | 600 | 1.2 |
-| Map label — station | 11px | 400 | 1.2 |
 
-Map label rules:
-- Neighbourhood labels: 13px, weight 600, all-caps, letter-spacing 0.08em, color `--shell-secondary` at 70% opacity
-- Street labels: 11px, weight 400, color `--shell-secondary` at 50% opacity
-- TTC station labels: 11px, weight 400, color `--shell-secondary` at 90% opacity, placed to the right of station dot by default
-- GO station labels: 11px, weight 400, color `--go-secondary` (see Color section) at 80% opacity
-- Landmark callouts: 12px, weight 600, color `--shell-secondary` at 85% opacity
+Map label rules — all rendered at 14px (Label role), differentiated by weight, letter-spacing, and opacity:
 
-> Source: Phase 1 UI-SPEC.md base typography; map sub-roles are Phase 2 defaults.
+- Neighbourhood labels: 14px, weight 600, all-caps, letter-spacing 0.08em, color `--shell-secondary` at 70% opacity
+- Street labels: 14px, weight 400, color `--shell-secondary` at 50% opacity
+- TTC station labels: 14px, weight 400, color `--shell-secondary` at 90% opacity, placed to the right of station dot by default
+- GO station labels: 14px, weight 400, color `--go-secondary` (see Color section) at 80% opacity
+- Landmark callouts: 14px, weight 600, color `--shell-secondary` at 85% opacity
+
+Vendor exception (not a declared design system size): map tile attribution text renders at 11px, weight 400, opacity 0.5. This is dictated by the map tile provider and must not be suppressed. It does not enter the type scale.
+
+> Source: Phase 1 UI-SPEC.md base typography (4 sizes). Map sub-roles consolidated into Label (14px) per checker Dimension 4 fix — 2026-03-31.
 
 ---
 
