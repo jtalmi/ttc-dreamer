@@ -2,6 +2,11 @@
 
 import { Train, TrainFront, Bus, Layers } from "lucide-react";
 
+const LAYER_PICKER_BG =
+  "var(--layer-picker-bg, rgba(24, 50, 74, 0.92))";
+const LAYER_PICKER_SHADOW =
+  "var(--layer-picker-shadow, 0 2px 12px rgba(0, 0, 0, 0.28))";
+
 type FloatingLayerPickerProps = Readonly<{
   baselineMode: "today" | "future_committed";
   onBaselineChange: (mode: "today" | "future_committed") => void;
@@ -24,16 +29,16 @@ export function FloatingLayerPicker({
   sidebarOpen = false,
 }: FloatingLayerPickerProps) {
   const rightOffset = sidebarOpen
-    ? "calc(320px + var(--space-lg) + 8px)"
-    : "calc(var(--space-lg) + 8px)";
+    ? "calc(320px + var(--space-lg))"
+    : "var(--space-lg)";
 
   return (
     <div
       style={{
-        position: "absolute",
-        bottom: "var(--space-lg)",
+        position: "fixed",
+        top: "var(--space-lg)",
         right: rightOffset,
-        zIndex: "var(--z-floating-toolbar)",
+        zIndex: 9000,
         pointerEvents: "none",
         transition: "right 0.2s ease",
       }}
@@ -45,8 +50,8 @@ export function FloatingLayerPicker({
           gap: "var(--space-xs)",
           padding: "var(--space-md)",
           borderRadius: "8px",
-          background: "var(--layer-picker-bg)",
-          boxShadow: "var(--layer-picker-shadow)",
+          background: LAYER_PICKER_BG,
+          boxShadow: LAYER_PICKER_SHADOW,
           pointerEvents: "auto",
         }}
       >

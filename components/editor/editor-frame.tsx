@@ -48,7 +48,7 @@ export default function EditorFrame({
       {/* Map fills the entire viewport */}
       <MapStage banner={mapBanner}>{mapChildren}</MapStage>
 
-      {/* Floating controls (toolbars, layer pickers) rendered over the map */}
+      {/* Floating controls rendered over the map */}
       {floatingControls}
 
       {/* Right-hand overlay sidebar */}

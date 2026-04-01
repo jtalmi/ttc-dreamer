@@ -2,6 +2,11 @@
 
 import { MousePointer2, Pencil, Plus } from "lucide-react";
 
+const FLOATING_TOOLBAR_BG =
+  "var(--floating-toolbar-bg, rgba(24, 50, 74, 0.92))";
+const FLOATING_TOOLBAR_SHADOW =
+  "var(--floating-toolbar-shadow, 0 2px 12px rgba(0, 0, 0, 0.28))";
+
 type FloatingDrawingToolbarProps = Readonly<{
   activeTool: "select" | "draw-line" | "add-station";
   onToolSelect: (tool: "select" | "draw-line" | "add-station") => void;
@@ -16,23 +21,23 @@ export function FloatingDrawingToolbar({
   return (
     <div
       style={{
-        position: "absolute",
-        left: "var(--space-lg)",
-        top: "50%",
-        transform: "translateY(-50%)",
-        zIndex: "var(--z-floating-toolbar)",
+        position: "fixed",
+        top: "var(--space-lg)",
+        left: "50%",
+        transform: "translateX(-50%)",
+        zIndex: 9000,
         pointerEvents: "none",
       }}
     >
       <div
         style={{
           display: "flex",
-          flexDirection: "column",
+          flexDirection: "row",
           gap: "var(--space-xs)",
           padding: "var(--space-sm)",
           borderRadius: "12px",
-          background: "var(--floating-toolbar-bg)",
-          boxShadow: "var(--floating-toolbar-shadow)",
+          background: FLOATING_TOOLBAR_BG,
+          boxShadow: FLOATING_TOOLBAR_SHADOW,
           pointerEvents: "auto",
         }}
       >
@@ -51,7 +56,7 @@ export function FloatingDrawingToolbar({
             cursor: "pointer",
             borderRadius: "8px",
             fontFamily: "var(--font-sans)",
-            background: activeTool === "select" ? "var(--shell-accent)" : "transparent",
+            background: activeTool === "select" ? "var(--shell-accent)" : "rgba(243, 238, 229, 0.1)",
             color: "var(--shell-dominant)",
           }}
         >
@@ -73,7 +78,7 @@ export function FloatingDrawingToolbar({
             cursor: "pointer",
             borderRadius: "8px",
             fontFamily: "var(--font-sans)",
-            background: activeTool === "draw-line" ? "var(--shell-accent)" : "transparent",
+            background: activeTool === "draw-line" ? "var(--shell-accent)" : "rgba(243, 238, 229, 0.1)",
             color: "var(--shell-dominant)",
           }}
         >
@@ -83,9 +88,10 @@ export function FloatingDrawingToolbar({
         {/* Divider */}
         <div
           style={{
-            height: "1px",
+            width: "1px",
+            alignSelf: "stretch",
             background: "rgba(243, 238, 229, 0.15)",
-            margin: "0 var(--space-xs)",
+            margin: "var(--space-xs) 0",
           }}
         />
 
@@ -104,7 +110,7 @@ export function FloatingDrawingToolbar({
             cursor: "pointer",
             borderRadius: "8px",
             fontFamily: "var(--font-sans)",
-            background: "transparent",
+            background: "rgba(243, 238, 229, 0.1)",
             color: "var(--shell-dominant)",
           }}
         >

@@ -3,6 +3,11 @@
 import { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
+const FLOATING_TOGGLE_BG =
+  "var(--floating-toolbar-bg, rgba(24, 50, 74, 0.92))";
+const FLOATING_TOGGLE_SHADOW =
+  "var(--floating-toolbar-shadow, 0 2px 12px rgba(0, 0, 0, 0.28))";
+
 type SidebarShellProps = Readonly<{
   open: boolean;
   onToggle: () => void;
@@ -48,25 +53,25 @@ export default function SidebarShell({
 
   return (
     <>
-      {/* Sidebar toggle chevron — floats at right map edge */}
+      {/* Sidebar toggle chevron — bottom-right corner */}
       <button
         onClick={onToggle}
         aria-label={open ? "Close sidebar" : "Open sidebar"}
         style={{
-          position: "absolute",
-          top: "50%",
-          right: open ? "320px" : "0",
-          transform: "translateY(-50%)",
-          zIndex: "var(--z-sidebar-toggle)",
-          width: "32px",
-          height: "32px",
-          borderRadius: "6px 0 0 6px",
+          position: "fixed",
+          bottom: "var(--space-lg)",
+          right: open ? "calc(320px + var(--space-sm))" : "var(--space-sm)",
+          zIndex: 9100,
+          width: "40px",
+          height: "40px",
+          borderRadius: "8px",
           border: "none",
           cursor: "pointer",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background: "var(--shell-secondary)",
+          background: FLOATING_TOGGLE_BG,
+          boxShadow: FLOATING_TOGGLE_SHADOW,
           color: "var(--shell-dominant)",
           transition: "right 0.2s ease",
           flexShrink: 0,
@@ -79,12 +84,12 @@ export default function SidebarShell({
       <aside
         aria-label="Editor sidebar"
         style={{
-          position: "absolute",
+          position: "fixed",
           top: 0,
           right: 0,
           bottom: 0,
           width: "320px",
-          zIndex: "var(--z-sidebar)",
+          zIndex: 9050,
           background: "var(--shell-secondary)",
           color: "var(--shell-dominant)",
           display: "flex",
