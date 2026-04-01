@@ -22,9 +22,14 @@ Make it fast and satisfying for Toronto transit nerds to sketch a TTC-flavoured 
 
 ### Active
 
-<!-- Next milestone scope. -->
+<!-- v2.0 scope — UI Revamp & Data Accuracy -->
 
-(None yet — run `/gsd:new-milestone` to define v1.1 requirements)
+- [ ] Full-screen Excalidraw-style map editor with floating toolbars replacing nav buttons
+- [ ] Station-first drawing model: click to place stations, auto-connect lines, auto-interchanges at intersections
+- [ ] Floating drawing toolbar and floating map layers toolbar overlaid on map
+- [ ] Redesigned sidebar: default line list with colors, station/line info on click, auto-generated station names from street data
+- [ ] Corrected baseline TTC data: accurate line coordinates through station dots, Eglinton Crosstown and Finch West LRT as operational, Ontario Line as under construction
+- [ ] Dynamic line/station interaction: drag station repositions and adjusts connected geometry
 
 ### Out of Scope
 
@@ -82,5 +87,17 @@ This document evolves at phase transitions and milestone boundaries.
 3. Audit Out of Scope — reasons still valid?
 4. Update Context with current state
 
+## Current Milestone: v2.0 UI Revamp & Data Accuracy
+
+**Goal:** Transform the sandbox into a full-screen, Excalidraw-style map editor with intuitive station-first drawing, floating toolbars, and corrected baseline transit data.
+
+**Target features:**
+- Full-screen map editor — remove nav buttons, make the map the entire experience
+- Station-first drawing model — click to place stations, lines auto-connect; auto-interchanges at intersections
+- Floating drawing toolbar and map layers toolbar overlaid on map
+- Redesigned sidebar with line list default, station/line info on selection
+- Baseline data correction — accurate coordinates, updated line statuses
+- Dynamic line/station interaction with responsive geometry
+
 ---
-*Last updated: 2026-04-01 after v1.0 milestone*
+*Last updated: 2026-04-01 after v2.0 milestone start*
