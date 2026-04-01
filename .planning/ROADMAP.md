@@ -13,7 +13,7 @@ This roadmap turns the current scaffold into a desktop-first Toronto transit san
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Editor Shell and Proposal State** - Establish the desktop-first editor frame, baseline mode shell, and proposal foundation (completed 2026-04-01)
-- [ ] **Phase 2: Toronto Baseline and Context Layers** - Make the map feel unmistakably local with TTC, GO, and city context
+- [x] **Phase 2: Toronto Baseline and Context Layers** - Make the map feel unmistakably local with TTC, GO, and city context (completed 2026-04-01)
 - [ ] **Phase 3: Editing Core** - Deliver the fun proposal-building loop for lines, stations, branches, and styling
 - [ ] **Phase 4: Stats, Inspectors, and Comparison** - Add descriptive insight without drifting into realism-heavy tooling
 - [ ] **Phase 5: Sharing, Export, and Polish** - Make proposals externally shareable and viewer-friendly
@@ -52,7 +52,7 @@ Plans:
 Plans:
 - [x] 02-01-PLAN.md — Install MapLibre, create baseline data infrastructure, and render TTC + GO layers on interactive map
 - [x] 02-02-PLAN.md — Add Toronto context labels (neighbourhoods, landmarks, streets, station names) and hover tooltips
-- [ ] 02-03-PLAN.md — Add bus/streetcar corridor toggle and verify complete Toronto-native map experience
+- [x] 02-03-PLAN.md — Add bus/streetcar corridor toggle and verify complete Toronto-native map experience
 
 ### Phase 3: Editing Core
 **Goal**: Make proposal creation fun by enabling new lines, extensions, branches, stations, interchanges, and styling
@@ -115,7 +115,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Editor Shell and Proposal State | 3/3 | Complete   | 2026-04-01 |
-| 2. Toronto Baseline and Context Layers | 1/3 | In Progress|  |
+| 2. Toronto Baseline and Context Layers | 3/3 | Complete   | 2026-04-01 |
 | 3. Editing Core | 0/3 | Not started | - |
 | 4. Stats, Inspectors, and Comparison | 0/3 | Not started | - |
 | 5. Sharing, Export, and Polish | 0/3 | Not started | - |

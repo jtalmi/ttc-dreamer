@@ -20,7 +20,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **MAP-01**: User sees the TTC rapid transit baseline rendered on the map
 - [x] **MAP-02**: User sees GO lines and stations as context only, not editable infrastructure
 - [x] **MAP-03**: User sees Toronto context labels for neighbourhoods, major streets, landmarks, and stations
-- [ ] **MAP-04**: User can toggle major bus and streetcar corridor context on and off
+- [x] **MAP-04**: User can toggle major bus and streetcar corridor context on and off
 
 ### Proposal Editing
 
@@ -101,7 +101,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | MAP-01 | Phase 2 | Complete |
 | MAP-02 | Phase 2 | Complete |
 | MAP-03 | Phase 2 | Complete |
-| MAP-04 | Phase 2 | Pending |
+| MAP-04 | Phase 2 | Complete |
 | EDIT-01 | Phase 3 | Pending |
 | EDIT-02 | Phase 3 | Pending |
 | EDIT-03 | Phase 3 | Pending |

@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: executing
-stopped_at: Completed 02-02-PLAN.md
-last_updated: "2026-04-01T03:38:24.423Z"
+status: verifying
+stopped_at: Completed 02-03-PLAN.md
+last_updated: "2026-04-01T03:44:51.038Z"
 last_activity: 2026-04-01
 progress:
   total_phases: 5
-  completed_phases: 1
+  completed_phases: 2
   total_plans: 6
-  completed_plans: 5
+  completed_plans: 6
   percent: 0
 ---
 
@@ -27,7 +27,7 @@ See: .planning/PROJECT.md (updated 2026-03-31)
 
 Phase: 02 (toronto-baseline-and-context-layers) — EXECUTING
 Plan: 3 of 3
-Status: Ready to execute
+Status: Phase complete — ready for verification
 Last activity: 2026-04-01
 
 Progress: ░░░░░░░░░░ 0%
@@ -57,6 +57,7 @@ Progress: ░░░░░░░░░░ 0%
 | Phase 01-editor-shell-and-proposal-state P03 | 1 | 2 tasks | 4 files |
 | Phase 02-toronto-baseline-and-context-layers P01 | 16 | 2 tasks | 14 files |
 | Phase 02 P02 | 4 | 2 tasks | 8 files |
+| Phase 02-toronto-baseline-and-context-layers P03 | 246 | 2 tasks | 11 files |
 
 ## Accumulated Context
 
@@ -83,6 +84,8 @@ Recent decisions affecting current work:
 - [Phase 02-toronto-baseline-and-context-layers]: TTC station data from ArcGIS does not include ROUTE_ID so stations use a uniform dark border color (#18324A)
 - [Phase 02-toronto-baseline-and-context-layers]: TTC station labels use PT_NAME field — PLACE_NAME is null for all TTC station records in ArcGIS data
 - [Phase 02-toronto-baseline-and-context-layers]: Hover tooltip shows station name + TTC label only — PT_CONN_ROUTE has bus routes not subway line numbers
+- [Phase 02-toronto-baseline-and-context-layers]: layout.visibility toggle used for instant hide/show of corridor layers without reload
+- [Phase 02-toronto-baseline-and-context-layers]: Corridor data loaded in single Promise.all with all baseline data, not lazy-loaded on toggle
 
 ### Pending Todos
 
@@ -95,6 +98,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-01T03:38:24.421Z
-Stopped at: Completed 02-02-PLAN.md
+Last session: 2026-04-01T03:44:51.035Z
+Stopped at: Completed 02-03-PLAN.md
 Resume file: None
