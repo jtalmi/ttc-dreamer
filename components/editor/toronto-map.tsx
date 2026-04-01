@@ -124,6 +124,11 @@ export default function TorontoMap({
   const [isOverSegment, setIsOverSegment] = useState(false);
   // Track station drag state for select-move
   const [draggingStationId, setDraggingStationId] = useState<string | null>(null);
+  // Track waypoint drag state for select-move waypoint repositioning
+  const [draggingWaypoint, setDraggingWaypoint] = useState<{
+    lineId: string;
+    waypointIndex: number;
+  } | null>(null);
 
   // Map ref for programmatic access (project/unproject)
   const mapRef = useRef<MapRef | null>(null);
@@ -182,6 +187,20 @@ export default function TorontoMap({
     return buildSnapCueGeoJSON(snapPosition);
   }, [snapPosition]);
 
+  const waypointsGeoJSON = useMemo((): FeatureCollection => {
+    if (!draft || activeTool !== "select") {
+      return { type: "FeatureCollection", features: [] };
+    }
+    const features = draft.lines.flatMap((line) =>
+      line.waypoints.map((coord, index) => ({
+        type: "Feature" as const,
+        geometry: { type: "Point" as const, coordinates: coord },
+        properties: { lineId: line.id, waypointIndex: index, color: line.color },
+      })),
+    );
+    return { type: "FeatureCollection", features };
+  }, [draft, activeTool]);
+
   // Helper: get the map instance from the ref
   function getMap() {
     return mapRef.current?.getMap() ?? null;
@@ -235,6 +254,19 @@ export default function TorontoMap({
       return;
     }
 
+    // Handle waypoint drag in select mode
+    if (activeTool === "select" && draggingWaypoint) {
+      dispatch?.({
+        type: "moveWaypoint",
+        payload: {
+          lineId: draggingWaypoint.lineId,
+          waypointIndex: draggingWaypoint.waypointIndex,
+          position: lngLat,
+        },
+      });
+      return;
+    }
+
     // Clear snap cue in other tool modes
     if (map) {
       dispatch?.({ type: "setSnapPosition", payload: null });
@@ -265,7 +297,7 @@ export default function TorontoMap({
     } else {
       setHoverStation(null);
     }
-  }, [activeTool, onUpdateCursor, draft, dispatch, draggingStationId]);
+  }, [activeTool, onUpdateCursor, draft, dispatch, draggingStationId, draggingWaypoint]);
 
   const handleMouseLeave = useCallback(() => {
     setHoverStation(null);
@@ -280,7 +312,10 @@ export default function TorontoMap({
     if (draggingStationId) {
       setDraggingStationId(null);
     }
-  }, [draggingStationId]);
+    if (draggingWaypoint) {
+      setDraggingWaypoint(null);
+    }
+  }, [draggingStationId, draggingWaypoint]);
 
   const handleClick = useCallback((e: MapLayerMouseEvent) => {
     const lngLat: [number, number] = [e.lngLat.lng, e.lngLat.lat];
@@ -367,6 +402,16 @@ export default function TorontoMap({
       if (features && features.length > 0) {
         const feature = features[0];
         const props = feature.properties as Record<string, unknown>;
+
+        // Waypoint vertex click → start waypoint drag
+        if (feature.layer?.id === "proposal-waypoints-circle") {
+          const lineId = props["lineId"] as string;
+          const waypointIndex = props["waypointIndex"] as number;
+          setDraggingWaypoint({ lineId, waypointIndex });
+          return;
+        }
+
+        // Station or line click (existing behavior)
         const id = props["id"] as string | null;
         if (id) {
           dispatch?.({ type: "setSelectedElement", payload: id });
@@ -429,7 +474,7 @@ export default function TorontoMap({
 
   // Determine map cursor style based on active tool and hover context
   const cursorStyle = useMemo(() => {
-    if (draggingStationId) return "grabbing";
+    if (draggingStationId || draggingWaypoint) return "grabbing";
     switch (activeTool) {
       case "draw-line": return "crosshair";
       case "add-station": return isOverSegment ? "cell" : "not-allowed";
@@ -437,7 +482,7 @@ export default function TorontoMap({
       case "select": return "default";
       default: return "default";
     }
-  }, [activeTool, isOverSegment, draggingStationId]);
+  }, [activeTool, isOverSegment, draggingStationId, draggingWaypoint]);
 
   if (error) {
     return (
@@ -493,6 +538,7 @@ export default function TorontoMap({
         "ttc-stations-circle",
         "proposal-lines-stroke",
         "proposal-stations-circle",
+        "proposal-waypoints-circle",
       ]}
       cursor={cursorStyle}
       onMouseMove={handleMouseMove}
@@ -529,6 +575,7 @@ export default function TorontoMap({
         inProgressGeoJSON={inProgressGeoJSON}
         selectedElementId={selectedElementId}
         snapCueGeoJSON={snapCueGeoJSON}
+        waypointsGeoJSON={waypointsGeoJSON}
       />
       <StationLabels
         ttcStations={data.ttcStations}
