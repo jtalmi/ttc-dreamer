@@ -24,11 +24,11 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Proposal Editing
 
-- [ ] **EDIT-01**: User can create a new subway, LRT, or BRT line
-- [ ] **EDIT-02**: User can extend an existing TTC line from an existing endpoint
-- [ ] **EDIT-03**: User can branch an existing TTC line
-- [ ] **EDIT-04**: User can build a multi-line proposal, not just a single isolated line
-- [ ] **EDIT-05**: Existing TTC infrastructure stays fixed except for allowed extensions and branches
+- [x] **EDIT-01**: User can create a new subway, LRT, or BRT line
+- [x] **EDIT-02**: User can extend an existing TTC line from an existing endpoint
+- [x] **EDIT-03**: User can branch an existing TTC line
+- [x] **EDIT-04**: User can build a multi-line proposal, not just a single isolated line
+- [x] **EDIT-05**: Existing TTC infrastructure stays fixed except for allowed extensions and branches
 - [ ] **EDIT-06**: User can draw a route and then clean up or adjust its geometry afterward
 - [ ] **EDIT-07**: User can place stations manually
 - [ ] **EDIT-08**: User can use shared stations across multiple lines
@@ -42,7 +42,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **STYLE-01**: User can name new lines
 - [ ] **STYLE-02**: User can name new stations
 - [ ] **STYLE-03**: User can customize proposal line colors
-- [ ] **STYLE-04**: New proposal lines start with a distinct default color while existing TTC names remain unchanged
+- [x] **STYLE-04**: New proposal lines start with a distinct default color while existing TTC names remain unchanged
 
 ### Stats & Inspectors
 
@@ -102,11 +102,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | MAP-02 | Phase 2 | Complete |
 | MAP-03 | Phase 2 | Complete |
 | MAP-04 | Phase 2 | Complete |
-| EDIT-01 | Phase 3 | Pending |
-| EDIT-02 | Phase 3 | Pending |
-| EDIT-03 | Phase 3 | Pending |
-| EDIT-04 | Phase 3 | Pending |
-| EDIT-05 | Phase 3 | Pending |
+| EDIT-01 | Phase 3 | Complete |
+| EDIT-02 | Phase 3 | Complete |
+| EDIT-03 | Phase 3 | Complete |
+| EDIT-04 | Phase 3 | Complete |
+| EDIT-05 | Phase 3 | Complete |
 | EDIT-06 | Phase 3 | Pending |
 | EDIT-07 | Phase 3 | Pending |
 | EDIT-08 | Phase 3 | Pending |
@@ -117,7 +117,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | STYLE-01 | Phase 3 | Pending |
 | STYLE-02 | Phase 3 | Pending |
 | STYLE-03 | Phase 3 | Pending |
-| STYLE-04 | Phase 3 | Pending |
+| STYLE-04 | Phase 3 | Complete |
 | STATS-01 | Phase 4 | Pending |
 | STATS-02 | Phase 4 | Pending |
 | STATS-03 | Phase 4 | Pending |

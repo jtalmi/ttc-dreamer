@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: verifying
-stopped_at: Phase 3 UI-SPEC approved
-last_updated: "2026-04-01T04:07:56.974Z"
+status: executing
+stopped_at: Completed 03-01-PLAN.md
+last_updated: "2026-04-01T05:00:58.873Z"
 last_activity: 2026-04-01
 progress:
   total_phases: 5
   completed_phases: 2
-  total_plans: 6
-  completed_plans: 6
+  total_plans: 9
+  completed_plans: 7
   percent: 0
 ---
 
@@ -21,13 +21,13 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-31)
 
 **Core value:** Make it fast and satisfying for Toronto transit nerds to sketch a TTC-flavoured proposal they want to share
-**Current focus:** Phase 02 — toronto-baseline-and-context-layers
+**Current focus:** Phase 03 — editing-core
 
 ## Current Position
 
-Phase: 3
-Plan: Not started
-Status: Phase complete — ready for verification
+Phase: 03 (editing-core) — EXECUTING
+Plan: 2 of 3
+Status: Ready to execute
 Last activity: 2026-04-01
 
 Progress: ░░░░░░░░░░ 0%
@@ -58,6 +58,7 @@ Progress: ░░░░░░░░░░ 0%
 | Phase 02-toronto-baseline-and-context-layers P01 | 16 | 2 tasks | 14 files |
 | Phase 02 P02 | 4 | 2 tasks | 8 files |
 | Phase 02-toronto-baseline-and-context-layers P03 | 246 | 2 tasks | 11 files |
+| Phase 03 P01 | 8 | 2 tasks | 14 files |
 
 ## Accumulated Context
 
@@ -86,6 +87,9 @@ Recent decisions affecting current work:
 - [Phase 02-toronto-baseline-and-context-layers]: Hover tooltip shows station name + TTC label only — PT_CONN_ROUTE has bus routes not subway line numbers
 - [Phase 02-toronto-baseline-and-context-layers]: layout.visibility toggle used for instant hide/show of corridor layers without reload
 - [Phase 02-toronto-baseline-and-context-layers]: Corridor data loaded in single Promise.all with all baseline data, not lazy-loaded on toggle
+- [Phase 03-01]: DrawingSession lives in chrome state (not draft), only committing waypoints to draft on finishDrawing — keeps history clean from transient drawing state
+- [Phase 03-01]: historyReducer only pushes history on semantic draft mutations (addLine, finishDrawing) not on transient state like addWaypoint or updateCursorPosition
+- [Phase 03-01]: New line ID generated with crypto.randomUUID() before both addLine and startDrawing dispatches to avoid multi-step async flow
 
 ### Pending Todos
 
@@ -98,6 +102,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-01T04:07:56.971Z
-Stopped at: Phase 3 UI-SPEC approved
-Resume file: .planning/phases/03-editing-core/03-UI-SPEC.md
+Last session: 2026-04-01T05:00:58.871Z
+Stopped at: Completed 03-01-PLAN.md
+Resume file: None
