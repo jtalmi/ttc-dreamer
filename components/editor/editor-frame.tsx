@@ -15,6 +15,12 @@ type EditorFrameProps = Readonly<{
   baseline?: BaselineMode;
   /** Override sidebar collapsed state */
   sidebarCollapsed?: boolean;
+  /** Called when a tool button is clicked (used by parent-controlled mode) */
+  onToolSelect?: (tool: ToolName) => void;
+  /** Called when the baseline toggle changes (used by parent-controlled mode) */
+  onBaselineChange?: (mode: BaselineMode) => void;
+  /** Called when the sidebar toggle is clicked (used by parent-controlled mode) */
+  onSidebarToggle?: () => void;
   /** Slot for injecting map content (future phases) */
   mapChildren?: React.ReactNode;
   /** Slot for injecting sidebar content (future phases) */
@@ -25,6 +31,9 @@ export default function EditorFrame({
   activeTool: controlledTool,
   baseline: controlledBaseline,
   sidebarCollapsed: controlledCollapsed,
+  onToolSelect: controlledOnToolSelect,
+  onBaselineChange: controlledOnBaselineChange,
+  onSidebarToggle: controlledOnSidebarToggle,
   mapChildren,
   sidebarChildren,
 }: EditorFrameProps) {
@@ -54,10 +63,18 @@ export default function EditorFrame({
         activeTool={activeTool}
         baseline={baseline}
         onToolSelect={(tool) => {
-          if (!controlledTool) setInternalTool(tool);
+          if (controlledOnToolSelect) {
+            controlledOnToolSelect(tool);
+          } else if (!controlledTool) {
+            setInternalTool(tool);
+          }
         }}
         onBaselineChange={(mode) => {
-          if (!controlledBaseline) setInternalBaseline(mode);
+          if (controlledOnBaselineChange) {
+            controlledOnBaselineChange(mode);
+          } else if (!controlledBaseline) {
+            setInternalBaseline(mode);
+          }
         }}
       />
 
@@ -76,7 +93,9 @@ export default function EditorFrame({
         <SidebarShell
           collapsed={sidebarCollapsed}
           onToggle={() => {
-            if (controlledCollapsed === undefined) {
+            if (controlledOnSidebarToggle) {
+              controlledOnSidebarToggle();
+            } else if (controlledCollapsed === undefined) {
               setInternalCollapsed((prev) => !prev);
             }
           }}
