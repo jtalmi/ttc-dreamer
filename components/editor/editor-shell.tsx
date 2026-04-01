@@ -1,11 +1,33 @@
 "use client";
 
 import { useReducer } from "react";
+import dynamic from "next/dynamic";
 import {
   createInitialProposalDraft,
   proposalEditorReducer,
 } from "@/lib/proposal";
 import EditorFrame from "@/components/editor/editor-frame";
+
+// Dynamically import TorontoMap with ssr: false to guard against
+// window-is-undefined errors from maplibre-gl during server rendering.
+const TorontoMap = dynamic(() => import("@/components/editor/toronto-map"), {
+  ssr: false,
+  loading: () => (
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        color: "var(--shell-secondary)",
+        fontSize: "16px",
+      }}
+    >
+      Loading Toronto map...
+    </div>
+  ),
+});
 
 // Map reducer ToolMode to the display names expected by EditorFrame's TopToolbar
 const TOOL_DISPLAY: Record<string, "Select" | "Draw Line" | "Add Station" | "Inspect"> = {
@@ -44,6 +66,7 @@ export default function EditorShell() {
         dispatch({ type: "setBaselineMode", payload: mode })
       }
       onSidebarToggle={() => dispatch({ type: "toggleSidebar" })}
+      mapChildren={<TorontoMap />}
     />
   );
 }
