@@ -173,6 +173,8 @@ export default function EditorShell() {
       drawingSession={chrome.drawingSession}
       activeTool={chrome.activeTool}
       selectedElementId={chrome.selectedElementId}
+      snapPosition={chrome.snapPosition}
+      pendingInterchangeSuggestion={chrome.pendingInterchangeSuggestion}
       onAddWaypoint={(lngLat) =>
         dispatch({ type: "addWaypoint", payload: lngLat })
       }
@@ -180,6 +182,7 @@ export default function EditorShell() {
       onUpdateCursor={(lngLat) =>
         dispatch({ type: "updateCursorPosition", payload: lngLat })
       }
+      dispatch={dispatch}
     />
   );
 
