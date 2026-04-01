@@ -13,6 +13,7 @@ import type { TransitMode, ProposalDraft } from "@/lib/proposal";
 import type { SharePayload } from "@/lib/sharing";
 import { decodeSharePayload } from "@/lib/sharing";
 import EditorFrame from "@/components/editor/editor-frame";
+import { FloatingDrawingToolbar } from "@/components/editor/floating-drawing-toolbar";
 import { LineList } from "@/components/editor/sidebar/line-list";
 import { LineCreationPanel } from "@/components/editor/sidebar/line-creation-panel";
 import { ConfirmationDialog } from "@/components/editor/sidebar/confirmation-dialog";
@@ -489,6 +490,14 @@ export default function EditorShell() {
     </div>
   ) : undefined;
 
+  const floatingToolbar = (
+    <FloatingDrawingToolbar
+      activeTool={chrome.activeTool}
+      onToolSelect={(tool) => dispatch({ type: "setActiveTool", payload: tool })}
+      onAddLine={() => dispatch({ type: "setSidebarPanel", payload: "create" })}
+    />
+  );
+
   return (
     <>
       <EditorFrame
@@ -497,7 +506,7 @@ export default function EditorShell() {
         mapBanner={comparisonBanner}
         mapChildren={mapElement}
         sidebarChildren={sidebarContent}
-        floatingControls={null}
+        floatingControls={floatingToolbar}
       />
       {confirmationProps && (
         <ConfirmationDialog
