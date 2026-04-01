@@ -1,6 +1,6 @@
 "use client";
 
-import { useReducer, useEffect, useState } from "react";
+import { useReducer, useEffect, useState, useRef } from "react";
 import dynamic from "next/dynamic";
 import type { FeatureCollection } from "geojson";
 import type { MapRef } from "@vis.gl/react-maplibre";
@@ -9,7 +9,9 @@ import {
   createInitialHistoryState,
   DEFAULT_LINE_COLORS,
 } from "@/lib/proposal";
-import type { TransitMode } from "@/lib/proposal";
+import type { TransitMode, ProposalDraft } from "@/lib/proposal";
+import type { SharePayload } from "@/lib/sharing";
+import { decodeSharePayload } from "@/lib/sharing";
 import EditorFrame from "@/components/editor/editor-frame";
 import { LineList } from "@/components/editor/sidebar/line-list";
 import { LineCreationPanel } from "@/components/editor/sidebar/line-creation-panel";
@@ -18,6 +20,8 @@ import { LineInspectorPanel } from "@/components/editor/sidebar/line-inspector-p
 import { StationInspectorPanel } from "@/components/editor/sidebar/station-inspector-panel";
 import { ProposalStatsPanel } from "@/components/editor/sidebar/proposal-stats-panel";
 import { ShareModal } from "@/components/sharing/share-modal";
+import SharedViewShell from "@/components/sharing/shared-view-shell";
+import OnboardingTooltip from "@/components/sharing/onboarding-tooltip";
 
 // Dynamically import TorontoMap with ssr: false to guard against
 // window-is-undefined errors from maplibre-gl during server rendering.
@@ -68,6 +72,91 @@ export default function EditorShell() {
   // Share modal state
   const [shareModalOpen, setShareModalOpen] = useState(false);
   const [mapRefState, setMapRefState] = useState<MapRef | null>(null);
+
+  // Shared view mode state — populated when URL hash contains a valid SharePayload
+  const [sharedPayload, setSharedPayload] = useState<SharePayload | null>(null);
+  const hasLoadedFromHash = useRef(false);
+
+  // Read URL hash on mount — runs client-side only (per RESEARCH.md pitfall 3)
+  // hasLoadedFromHash guards against React strict mode double-invoke (pitfall 5)
+  // Async callback pattern avoids lint rule react-hooks/set-state-in-effect
+  useEffect(() => {
+    if (hasLoadedFromHash.current) return;
+    hasLoadedFromHash.current = true;
+    const hash = window.location.hash;
+    Promise.resolve(decodeSharePayload(hash)).then((payload) => {
+      if (payload) setSharedPayload(payload);
+    });
+  }, []);
+
+  // Onboarding tooltip state
+  const [tooltipStep, setTooltipStep] = useState<0 | 1 | 2 | null>(null);
+  const hasInteractedRef = useRef(false);
+
+  // Onboarding controller — runs once on mount, skips in shared view
+  useEffect(() => {
+    // Guard: no onboarding in shared view (sharedPayload checked lazily via hasLoadedFromHash)
+    // Guard: already onboarded
+    try {
+      if (localStorage.getItem("ttc-dreamer-onboarded") === "1") return;
+    } catch {
+      return; // Private browsing — skip onboarding
+    }
+
+    function markInteracted() {
+      hasInteractedRef.current = true;
+      window.removeEventListener("mousedown", markInteracted);
+      window.removeEventListener("keydown", markInteracted);
+    }
+
+    window.addEventListener("mousedown", markInteracted);
+    window.addEventListener("keydown", markInteracted);
+
+    const timer = setTimeout(() => {
+      // If user hasn't clicked/typed in 2 seconds, start onboarding
+      if (!hasInteractedRef.current) {
+        setTooltipStep(0);
+      }
+    }, 2000);
+
+    return () => {
+      window.removeEventListener("mousedown", markInteracted);
+      window.removeEventListener("keydown", markInteracted);
+      clearTimeout(timer);
+    };
+  }, []);
+
+  function handleTooltipNext() {
+    setTooltipStep((prev) => {
+      if (prev === null) return null;
+      if (prev < 2) return (prev + 1) as 0 | 1 | 2;
+      // Last step completed — mark onboarded
+      try {
+        localStorage.setItem("ttc-dreamer-onboarded", "1");
+      } catch {}
+      return null;
+    });
+  }
+
+  function handleTooltipSkipAll() {
+    try {
+      localStorage.setItem("ttc-dreamer-onboarded", "1");
+    } catch {}
+    setTooltipStep(null);
+  }
+
+  // Edit-as-copy handler — clones draft with new UUID and "(copy)" suffix
+  function handleEditAsCopy(sourceDraft: ProposalDraft) {
+    const copy: ProposalDraft = {
+      ...sourceDraft,
+      id: crypto.randomUUID(),
+      title: `${sourceDraft.title} (copy)`,
+    };
+    dispatch({ type: "loadDraft", payload: copy });
+    // Clear URL hash so the editor URL is clean (per RESEARCH.md pattern 3)
+    history.replaceState(null, "", window.location.pathname);
+    setSharedPayload(null);
+  }
 
   // Neighbourhoods GeoJSON for station location resolution in StationInspectorPanel
   const [neighbourhoods, setNeighbourhoods] = useState<FeatureCollection | null>(null);
@@ -342,6 +431,30 @@ export default function EditorShell() {
     );
   }
 
+  // Shared view mode — render read-only SharedViewShell when hash payload is present
+  if (sharedPayload) {
+    const viewMapElement = (
+      <TorontoMap
+        busCorridorVisible={false}
+        draft={sharedPayload.draft}
+        drawingSession={null}
+        activeTool="select"
+        selectedElementId={null}
+        snapPosition={null}
+        pendingInterchangeSuggestion={null}
+        proposalOpacity={1}
+      />
+    );
+    return (
+      <SharedViewShell
+        draft={sharedPayload.draft}
+        author={sharedPayload.author}
+        mapElement={viewMapElement}
+        onEditAsCopy={() => handleEditAsCopy(sharedPayload.draft)}
+      />
+    );
+  }
+
   const proposalOpacity = chrome.comparisonMode ? 0.4 : 1;
 
   const mapElement = (
@@ -430,6 +543,13 @@ export default function EditorShell() {
           mapRef={mapRefState}
           onTitleChange={(title) => dispatch({ type: "updateTitle", payload: title })}
           onClose={() => setShareModalOpen(false)}
+        />
+      )}
+      {tooltipStep !== null && (
+        <OnboardingTooltip
+          step={tooltipStep}
+          onNext={handleTooltipNext}
+          onSkipAll={handleTooltipSkipAll}
         />
       )}
     </>
