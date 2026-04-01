@@ -62,7 +62,7 @@ export function TtcLayers({ routes, stations }: TtcLayersProps) {
           type="line"
           filter={["==", ["get", "ROUTE_ID"], 5]}
           paint={{
-            "line-color": "#DF6C2B",
+            "line-color": "#E77817",
             "line-width": 4,
           }}
           layout={{
@@ -70,14 +70,43 @@ export function TtcLayers({ routes, stations }: TtcLayersProps) {
             "line-join": "round",
           }}
         />
-        {/* Line 6 — Finch West (grey — future/under construction) */}
+        {/* Line 6 — Finch West (grey) */}
         <Layer
           id="ttc-line-6"
           type="line"
           filter={["==", ["get", "ROUTE_ID"], 6]}
           paint={{
-            "line-color": "#808080",
+            "line-color": "#969594",
             "line-width": 4,
+          }}
+          layout={{
+            "line-cap": "round",
+            "line-join": "round",
+          }}
+        />
+        {/* Ontario Line — under construction (dashed blue) */}
+        <Layer
+          id="ttc-line-7-base"
+          type="line"
+          filter={["==", ["get", "ROUTE_ID"], 7]}
+          paint={{
+            "line-color": "#00A4E3",
+            "line-width": 4,
+            "line-opacity": 0.4,
+          }}
+          layout={{
+            "line-cap": "round",
+            "line-join": "round",
+          }}
+        />
+        <Layer
+          id="ttc-line-7-dash"
+          type="line"
+          filter={["==", ["get", "ROUTE_ID"], 7]}
+          paint={{
+            "line-color": "#00A4E3",
+            "line-width": 4,
+            "line-dasharray": [4, 3],
           }}
           layout={{
             "line-cap": "round",
