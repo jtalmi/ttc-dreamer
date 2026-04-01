@@ -299,11 +299,15 @@ export default function TorontoMap({
         ?? (props["STATION"] as string | null)
         ?? "Unknown";
 
+      // Determine station type from the layer the feature came from
+      const layerId = feature.layer?.id;
+      const stationType: "ttc" | "go" = layerId === "go-stations-circle" ? "go" : "ttc";
+
       setHoverStation({
         name,
         lng: coords[0],
         lat: coords[1],
-        type: "ttc",
+        type: stationType,
       });
     } else {
       setHoverStation(null);
@@ -621,6 +625,7 @@ export default function TorontoMap({
       canvasContextAttributes={{ preserveDrawingBuffer: true }}
       interactiveLayerIds={[
         "ttc-stations-circle",
+        "go-stations-circle",
         "proposal-lines-stroke",
         "proposal-stations-circle",
         "proposal-waypoints-circle",
@@ -671,7 +676,7 @@ export default function TorontoMap({
         goStations={data.goStations}
       />
 
-      {/* TTC station hover tooltip */}
+      {/* Station hover tooltip */}
       {hoverStation && (
         <Popup
           longitude={hoverStation.lng}
@@ -682,7 +687,7 @@ export default function TorontoMap({
           offset={10}
           style={{ fontSize: "14px" }}
         >
-          {hoverStation.name} &mdash; TTC
+          {hoverStation.name} &mdash; {hoverStation.type === "go" ? "GO" : "TTC"}
         </Popup>
       )}
 
