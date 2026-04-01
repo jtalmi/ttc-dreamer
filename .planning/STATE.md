@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: executing
-stopped_at: Completed 01-01-PLAN.md
-last_updated: "2026-04-01T01:02:49.558Z"
+status: verifying
+stopped_at: Completed 01-03-PLAN.md
+last_updated: "2026-04-01T01:07:52.434Z"
 last_activity: 2026-04-01
 progress:
   total_phases: 5
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 3
-  completed_plans: 2
+  completed_plans: 3
   percent: 0
 ---
 
@@ -27,7 +27,7 @@ See: .planning/PROJECT.md (updated 2026-03-31)
 
 Phase: 01 (editor-shell-and-proposal-state) — EXECUTING
 Plan: 3 of 3
-Status: Ready to execute
+Status: Phase complete — ready for verification
 Last activity: 2026-04-01
 
 Progress: ░░░░░░░░░░ 0%
@@ -54,6 +54,7 @@ Progress: ░░░░░░░░░░ 0%
 *Updated after each plan completion*
 | Phase 01 P02 | 2 | 2 tasks | 5 files |
 | Phase 01-editor-shell-and-proposal-state P01 | 15 | 2 tasks | 3 files |
+| Phase 01-editor-shell-and-proposal-state P03 | 1 | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -73,6 +74,8 @@ Recent decisions affecting current work:
 - [Phase 01-editor-shell-and-proposal-state]: BaselineMode union uses exact string literals today and future_committed per D-09
 - [Phase 01-editor-shell-and-proposal-state]: EditorShellState combines draft and chrome into one reducer root to avoid split-state pitfall
 - [Phase 01-editor-shell-and-proposal-state]: lib/proposal barrel index.ts is the single import target for editor shell components
+- [Phase 01-editor-shell-and-proposal-state]: EditorShell owns all Phase 1 interactive state via useReducer rather than lifting state into the route
+- [Phase 01-editor-shell-and-proposal-state]: EditorFrame extended with optional callback props (onToolSelect, onBaselineChange, onSidebarToggle) to support parent-controlled mode without removing uncontrolled fallback
 
 ### Pending Todos
 
@@ -85,6 +88,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-01T01:02:49.555Z
-Stopped at: Completed 01-01-PLAN.md
+Last session: 2026-04-01T01:07:52.430Z
+Stopped at: Completed 01-03-PLAN.md
 Resume file: None

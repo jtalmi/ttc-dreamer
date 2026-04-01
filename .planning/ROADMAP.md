@@ -12,7 +12,7 @@ This roadmap turns the current scaffold into a desktop-first Toronto transit san
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Editor Shell and Proposal State** - Establish the desktop-first editor frame, baseline mode shell, and proposal foundation
+- [x] **Phase 1: Editor Shell and Proposal State** - Establish the desktop-first editor frame, baseline mode shell, and proposal foundation (completed 2026-04-01)
 - [ ] **Phase 2: Toronto Baseline and Context Layers** - Make the map feel unmistakably local with TTC, GO, and city context
 - [ ] **Phase 3: Editing Core** - Deliver the fun proposal-building loop for lines, stations, branches, and styling
 - [ ] **Phase 4: Stats, Inspectors, and Comparison** - Add descriptive insight without drifting into realism-heavy tooling
@@ -35,7 +35,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 Plans:
 - [x] 01-01: Replace the placeholder page with the editor shell, toolbar scaffold, and sidebar scaffold
 - [x] 01-02: Establish proposal/baseline state foundations and wire the Today/Future committed toggle
-- [ ] 01-03: Refine desktop-first layout behavior, empty states, and shell-level UX framing
+- [x] 01-03: Refine desktop-first layout behavior, empty states, and shell-level UX framing
 
 ### Phase 2: Toronto Baseline and Context Layers
 **Goal**: Make the city itself prominent by rendering TTC, GO, and Toronto-specific context on the map
@@ -114,7 +114,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Editor Shell and Proposal State | 2/3 | In Progress|  |
+| 1. Editor Shell and Proposal State | 3/3 | Complete   | 2026-04-01 |
 | 2. Toronto Baseline and Context Layers | 0/3 | Not started | - |
 | 3. Editing Core | 0/3 | Not started | - |
 | 4. Stats, Inspectors, and Comparison | 0/3 | Not started | - |
