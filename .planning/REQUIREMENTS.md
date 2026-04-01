@@ -69,9 +69,9 @@ Requirements for v2.0 milestone: UI Revamp & Data Accuracy.
 
 ### Layout & Controls
 
-- [ ] **LAYOUT-01**: User sees a full-screen map canvas with no fixed header or nav bar
-- [ ] **LAYOUT-02**: User can switch drawing tools via a floating toolbar overlaid on the map
-- [ ] **LAYOUT-03**: User can toggle map layers (baseline mode, corridors) via a floating layer picker
+- [x] **LAYOUT-01**: User sees a full-screen map canvas with no fixed header or nav bar
+- [x] **LAYOUT-02**: User can switch drawing tools via a floating toolbar overlaid on the map
+- [x] **LAYOUT-03**: User can toggle map layers (baseline mode, corridors) via a floating layer picker
 
 ### Drawing Model
 
@@ -88,7 +88,7 @@ Requirements for v2.0 milestone: UI Revamp & Data Accuracy.
 
 ### Sidebar
 
-- [ ] **SIDE-01**: Sidebar defaults to a line list view showing all proposal lines with colors
+- [x] **SIDE-01**: Sidebar defaults to a line list view showing all proposal lines with colors
 - [ ] **SIDE-02**: Clicking a station on the map loads station info (name, address, connected lines) in the sidebar
 - [ ] **SIDE-03**: Clicking a line on the map loads line info (name, color, stations, stats) in the sidebar
 
@@ -174,10 +174,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | BASE-01 | Phase 6 | Complete |
 | BASE-02 | Phase 6 | Complete |
 | BASE-03 | Phase 6 | Complete |
-| LAYOUT-01 | Phase 7 | Pending |
-| LAYOUT-02 | Phase 7 | Pending |
-| LAYOUT-03 | Phase 7 | Pending |
-| SIDE-01 | Phase 7 | Pending |
+| LAYOUT-01 | Phase 7 | Complete |
+| LAYOUT-02 | Phase 7 | Complete |
+| LAYOUT-03 | Phase 7 | Complete |
+| SIDE-01 | Phase 7 | Complete |
 | DRAW-01 | Phase 8 | Pending |
 | DRAW-02 | Phase 8 | Pending |
 | DRAW-03 | Phase 8 | Pending |

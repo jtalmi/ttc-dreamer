@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: UI Revamp & Data Accuracy
-status: executing
-stopped_at: Completed 07-01-PLAN.md
-last_updated: "2026-04-01T22:08:45.344Z"
+status: verifying
+stopped_at: "Checkpoint: Task 2 human-verify for 07-02-PLAN.md"
+last_updated: "2026-04-01T22:12:21.079Z"
 last_activity: 2026-04-01
 progress:
   total_phases: 5
-  completed_phases: 1
+  completed_phases: 2
   total_plans: 4
-  completed_plans: 3
+  completed_plans: 4
   percent: 0
 ---
 
@@ -27,7 +27,7 @@ See: .planning/PROJECT.md (updated 2026-04-01)
 
 Phase: 07 (full-screen-layout-and-floating-toolbars) — EXECUTING
 Plan: 2 of 2
-Status: Ready to execute
+Status: Phase complete — ready for verification
 Last activity: 2026-04-01
 
 Progress: ░░░░░░░░░░ 0%
@@ -55,6 +55,7 @@ Progress: ░░░░░░░░░░ 0%
 | Phase 06 P01 | 5 | 2 tasks | 4 files |
 | Phase 06 P02 | 5 | 2 tasks | 3 files |
 | Phase 07 P01 | 3 | 2 tasks | 8 files |
+| Phase 07 P02 | 2 | 1 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -75,6 +76,8 @@ Key v2.0 constraints from research:
 - [Phase 07]: Select mode auto-opens inspector (inspectElement dispatch) - inspect tool removed from ToolMode
 - [Phase 07]: FloatingDrawingToolbar uses pointer-events:none wrapper with auto on interactive children
 - [Phase 07]: EditorFrame simplified to pure layout shell with no tool state management
+- [Phase 07]: SidebarShell rewritten as absolute overlay with translateX transition; ChevronRight=open, ChevronLeft=closed for toggle button direction
+- [Phase 07]: FloatingLayerPicker right offset transitions with sidebar open state to avoid overlap
 
 ### Pending Todos
 
@@ -87,6 +90,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-01T22:08:45.342Z
-Stopped at: Completed 07-01-PLAN.md
+Last session: 2026-04-01T22:12:21.077Z
+Stopped at: Checkpoint: Task 2 human-verify for 07-02-PLAN.md
 Resume file: None

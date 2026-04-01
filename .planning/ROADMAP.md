@@ -119,7 +119,7 @@ Plans:
 **Milestone Goal:** Transform the sandbox into a full-screen, Excalidraw-style map editor with intuitive station-first drawing, floating toolbars, and corrected baseline transit data.
 
 - [x] **Phase 6: Baseline Data Correction** - Replace GeoJSON files with accurate TTC geometry and updated line statuses (completed 2026-04-01)
-- [ ] **Phase 7: Full-Screen Layout and Floating Toolbars** - Remove fixed header, float drawing and layer controls over the map, default sidebar to line list
+- [x] **Phase 7: Full-Screen Layout and Floating Toolbars** - Remove fixed header, float drawing and layer controls over the map, default sidebar to line list (completed 2026-04-01)
 - [ ] **Phase 8: Station-First Drawing Model** - Rewrite drawing session so stations are the atomic unit and lines auto-connect between them
 - [ ] **Phase 9: Station Drag, Auto-Interchange, and Sidebar Panels** - Enable station repositioning with live geometry, auto-interchanges at proposal crossings, and click-to-inspect panels
 - [ ] **Phase 10: Auto-Generated Station Names** - Suggest street-based names via Nominatim reverse geocoding at station placement time
@@ -155,7 +155,7 @@ Plans:
 
 Plans:
 - [x] 07-01-PLAN.md — Remove TopToolbar, make map full-screen, install lucide-react, add CSS tokens, create floating drawing toolbar, merge inspect into select mode
-- [ ] 07-02-PLAN.md — Create floating layer picker, redesign sidebar as overlay with title/share header, add toggle chevron, human verification
+- [x] 07-02-PLAN.md — Create floating layer picker, redesign sidebar as overlay with title/share header, add toggle chevron, human verification
 
 ### Phase 8: Station-First Drawing Model
 **Goal**: Users draw lines by clicking to place stations, with lines auto-connecting between consecutive stations and existing line termini acting as natural extension or branch points
@@ -203,7 +203,7 @@ Phases execute in numeric order: 6 -> 7 -> 8 -> 9 -> 10
 | 4. Stats, Inspectors, and Comparison | v1.0 | 3/3 | Complete | 2026-04-01 |
 | 5. Sharing, Export, and Polish | v1.0 | 3/3 | Complete | 2026-04-01 |
 | 6. Baseline Data Correction | v2.0 | 2/2 | Complete   | 2026-04-01 |
-| 7. Full-Screen Layout and Floating Toolbars | v2.0 | 1/2 | In Progress|  |
+| 7. Full-Screen Layout and Floating Toolbars | v2.0 | 2/2 | Complete   | 2026-04-01 |
 | 8. Station-First Drawing Model | v2.0 | 0/TBD | Not started | - |
 | 9. Station Drag, Auto-Interchange, and Sidebar Panels | v2.0 | 0/TBD | Not started | - |
 | 10. Auto-Generated Station Names | v2.0 | 0/TBD | Not started | - |
