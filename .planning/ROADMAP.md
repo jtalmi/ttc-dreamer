@@ -170,7 +170,7 @@ Plans:
 
 Plans:
 - [x] 08-01-PLAN.md — Freeze v1 share fixture, rewrite DrawingSession/reducer/geometry for station-first model, bump share payload to v2 with migration
-- [ ] 08-02-PLAN.md — Wire station-first click handlers in toronto-map.tsx and editor-shell.tsx, human verification
+- [x] 08-02-PLAN.md — Wire station-first click handlers in toronto-map.tsx and editor-shell.tsx, human verification
 
 ### Phase 9: Station Drag, Auto-Interchange, and Sidebar Panels
 **Goal**: Users can reposition stations by dragging, crossing proposal lines auto-create interchanges, and clicking any station or line on the map loads its details in the sidebar

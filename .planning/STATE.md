@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: UI Revamp & Data Accuracy
-status: executing
-stopped_at: Completed 08-01-PLAN.md
-last_updated: "2026-04-01T23:13:54.098Z"
+status: verifying
+stopped_at: Completed 08-02-PLAN.md Task 1 — awaiting human-verify checkpoint (Task 2)
+last_updated: "2026-04-01T23:21:53.935Z"
 last_activity: 2026-04-01
 progress:
   total_phases: 5
-  completed_phases: 2
+  completed_phases: 3
   total_plans: 6
-  completed_plans: 5
+  completed_plans: 6
   percent: 0
 ---
 
@@ -27,7 +27,7 @@ See: .planning/PROJECT.md (updated 2026-04-01)
 
 Phase: 08 (station-first-drawing-model) — EXECUTING
 Plan: 2 of 2
-Status: Ready to execute
+Status: Phase complete — ready for verification
 Last activity: 2026-04-01
 
 Progress: ░░░░░░░░░░ 0%
@@ -57,6 +57,7 @@ Progress: ░░░░░░░░░░ 0%
 | Phase 07 P01 | 3 | 2 tasks | 8 files |
 | Phase 07 P02 | 2 | 1 tasks | 4 files |
 | Phase 08-station-first-drawing-model P01 | 14 | 1 tasks | 16 files |
+| Phase 08-station-first-drawing-model P02 | 8 | 1 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -82,6 +83,9 @@ Key v2.0 constraints from research:
 - [Phase 08]: DrawingSession.waypoints replaced with placedStationIds: string[] — stations are canonical geometry source
 - [Phase 08]: decodeSharePayload always returns SharePayloadV2 — v1 payloads migrated on decode via migrateV1toV2
 - [Phase 08]: finishDrawing requires 2+ placed stations; line removed if session ends with fewer
+- [Phase 08-station-first-drawing-model]: PlaceStationAction.insertAtIndex added for splice-based mid-line station ordering
+- [Phase 08-station-first-drawing-model]: Auto-create-line on empty draw-line click: addLine + startDrawing + placeStation dispatched in sequence
+- [Phase 08-station-first-drawing-model]: Double-click places final station before finishDrawing — no separate single-click needed
 
 ### Pending Todos
 
@@ -94,6 +98,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-01T23:13:54.095Z
-Stopped at: Completed 08-01-PLAN.md
+Last session: 2026-04-01T23:21:53.932Z
+Stopped at: Completed 08-02-PLAN.md Task 1 — awaiting human-verify checkpoint (Task 2)
 Resume file: None
