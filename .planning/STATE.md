@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: verifying
-stopped_at: Phase 4 UI-SPEC approved
-last_updated: "2026-04-01T06:19:39.588Z"
+status: executing
+stopped_at: Completed 04-01-PLAN.md
+last_updated: "2026-04-01T06:42:08.579Z"
 last_activity: 2026-04-01
 progress:
   total_phases: 5
   completed_phases: 3
-  total_plans: 12
-  completed_plans: 12
+  total_plans: 15
+  completed_plans: 13
   percent: 0
 ---
 
@@ -21,13 +21,13 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-31)
 
 **Core value:** Make it fast and satisfying for Toronto transit nerds to sketch a TTC-flavoured proposal they want to share
-**Current focus:** Phase 03 — editing-core
+**Current focus:** Phase 04 — stats-inspectors-and-comparison
 
 ## Current Position
 
-Phase: 4
-Plan: Not started
-Status: Phase complete — ready for verification
+Phase: 04 (stats-inspectors-and-comparison) — EXECUTING
+Plan: 2 of 3
+Status: Ready to execute
 Last activity: 2026-04-01
 
 Progress: ░░░░░░░░░░ 0%
@@ -64,6 +64,7 @@ Progress: ░░░░░░░░░░ 0%
 | Phase 03-editing-core P05 | 12 | 2 tasks | 2 files |
 | Phase 03-editing-core P06 | 8 | 1 tasks | 2 files |
 | Phase 03-editing-core P04 | 20 | 2 tasks | 5 files |
+| Phase 04 P01 | 182 | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -106,6 +107,9 @@ Recent decisions affecting current work:
 - [Phase 03-editing-core]: detectLineHitType checked per-feature in handleClick before fallthrough to onAddWaypoint, guarded by drawingSession null check
 - [Phase 03-editing-core]: onStartExtend receives TTC feature OBJECTID as parentLineId — not a proposal UUID
 - [Phase 03-editing-core]: vitest added as test infrastructure to enable TDD for domain layer tests
+- [Phase 04]: Stat functions are pure (take ProposalLineDraft/ProposalDraft, return numbers/null) — no side effects
+- [Phase 04]: inspectElement is a dedicated action that atomically sets sidebarPanel and inspectedElementId; setSidebarPanel payload stays at the original 3-value union
+- [Phase 04]: New chrome actions (inspectElement, closeInspector, toggleComparisonMode) NOT added to HISTORY_ACTIONS — chrome-only, not draft mutations
 
 ### Pending Todos
 
@@ -118,6 +122,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-01T06:19:39.585Z
-Stopped at: Phase 4 UI-SPEC approved
-Resume file: .planning/phases/04-stats-inspectors-and-comparison/04-UI-SPEC.md
+Last session: 2026-04-01T06:42:08.576Z
+Stopped at: Completed 04-01-PLAN.md
+Resume file: None

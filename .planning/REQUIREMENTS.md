@@ -49,8 +49,8 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **STATS-01**: User can inspect line details in a sidebar inspector
 - [ ] **STATS-02**: User can inspect station details in a sidebar inspector
 - [ ] **STATS-03**: User sees live proposal-level and line-level descriptive stats in the sidebar
-- [ ] **STATS-04**: Stats include speed/travel time, average stop spacing, estimated cost, and estimated ridership
-- [ ] **STATS-05**: Stats can also surface station count, line length, and connection/interchange counts
+- [x] **STATS-04**: Stats include speed/travel time, average stop spacing, estimated cost, and estimated ridership
+- [x] **STATS-05**: Stats can also surface station count, line length, and connection/interchange counts
 - [ ] **STATS-06**: User can compare the proposal against the baseline with a before/after toggle
 
 ### Sharing & Onboarding
@@ -121,8 +121,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | STATS-01 | Phase 4 | Pending |
 | STATS-02 | Phase 4 | Pending |
 | STATS-03 | Phase 4 | Pending |
-| STATS-04 | Phase 4 | Pending |
-| STATS-05 | Phase 4 | Pending |
+| STATS-04 | Phase 4 | Complete |
+| STATS-05 | Phase 4 | Complete |
 | STATS-06 | Phase 4 | Pending |
 | SHARE-01 | Phase 5 | Pending |
 | SHARE-02 | Phase 5 | Pending |

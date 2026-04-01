@@ -88,7 +88,7 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 04-01-PLAN.md — Build stat computation layer (TDD) and extend proposal state with inspector/comparison types
+- [x] 04-01-PLAN.md — Build stat computation layer (TDD) and extend proposal state with inspector/comparison types
 - [ ] 04-02-PLAN.md — Create inspector and stats panel components, wire inspect tool and sidebar routing
 - [ ] 04-03-PLAN.md — Add before/after comparison toggle with proposal opacity control and verification checkpoint
 
@@ -120,5 +120,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | 1. Editor Shell and Proposal State | 3/3 | Complete   | 2026-04-01 |
 | 2. Toronto Baseline and Context Layers | 3/3 | Complete   | 2026-04-01 |
 | 3. Editing Core | 6/6 | Complete   | 2026-04-01 |
-| 4. Stats, Inspectors, and Comparison | 0/3 | Not started | - |
+| 4. Stats, Inspectors, and Comparison | 1/3 | In Progress|  |
 | 5. Sharing, Export, and Polish | 0/3 | Not started | - |
