@@ -114,7 +114,7 @@ Plans:
 
 </details>
 
-### 🚧 v2.0 UI Revamp & Data Accuracy (In Progress)
+### v2.0 UI Revamp & Data Accuracy (In Progress)
 
 **Milestone Goal:** Transform the sandbox into a full-screen, Excalidraw-style map editor with intuitive station-first drawing, floating toolbars, and corrected baseline transit data.
 
@@ -135,7 +135,11 @@ Plans:
   2. Eglinton Crosstown and Finch West LRT appear in the same operational style as Lines 1 and 2
   3. Ontario Line appears with a dashed or visually distinct under-construction style
   4. All current TTC rapid transit lines (Lines 1, 2, 3, 4, 5, Ontario Line) are present in the baseline
-**Plans**: TBD
+**Plans**: 2 plans
+
+Plans:
+- [ ] 06-01-PLAN.md — Add status properties to route GeoJSON, fix Line 6 color, add Ontario Line to future baseline, remove Scarborough RT stations, update types
+- [ ] 06-02-PLAN.md — Replace Line 5/6 station coordinates with GTFS data, add Ontario Line stations, update ttc-layers.tsx rendering
 
 ### Phase 7: Full-Screen Layout and Floating Toolbars
 **Goal**: Users experience a map-first editor with no fixed header — drawing tools and layer controls float over the canvas, and the sidebar defaults to showing all proposal lines
@@ -185,7 +189,7 @@ Plans:
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 6 → 7 → 8 → 9 → 10
+Phases execute in numeric order: 6 -> 7 -> 8 -> 9 -> 10
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
@@ -194,7 +198,7 @@ Phases execute in numeric order: 6 → 7 → 8 → 9 → 10
 | 3. Editing Core | v1.0 | 6/6 | Complete | 2026-04-01 |
 | 4. Stats, Inspectors, and Comparison | v1.0 | 3/3 | Complete | 2026-04-01 |
 | 5. Sharing, Export, and Polish | v1.0 | 3/3 | Complete | 2026-04-01 |
-| 6. Baseline Data Correction | v2.0 | 0/TBD | Not started | - |
+| 6. Baseline Data Correction | v2.0 | 0/2 | Not started | - |
 | 7. Full-Screen Layout and Floating Toolbars | v2.0 | 0/TBD | Not started | - |
 | 8. Station-First Drawing Model | v2.0 | 0/TBD | Not started | - |
 | 9. Station Drag, Auto-Interchange, and Sidebar Panels | v2.0 | 0/TBD | Not started | - |
