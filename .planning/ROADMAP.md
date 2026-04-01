@@ -50,9 +50,9 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 02-01: Load and render TTC baseline network plus GO context layers
-- [ ] 02-02: Add Toronto labels, landmarks, and other city-context overlays
-- [ ] 02-03: Add layer visibility controls and polish map legibility for a Toronto-native look
+- [ ] 02-01-PLAN.md — Install MapLibre, create baseline data infrastructure, and render TTC + GO layers on interactive map
+- [ ] 02-02-PLAN.md — Add Toronto context labels (neighbourhoods, landmarks, streets, station names) and hover tooltips
+- [ ] 02-03-PLAN.md — Add bus/streetcar corridor toggle and verify complete Toronto-native map experience
 
 ### Phase 3: Editing Core
 **Goal**: Make proposal creation fun by enabling new lines, extensions, branches, stations, interchanges, and styling
