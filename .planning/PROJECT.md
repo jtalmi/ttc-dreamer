@@ -15,6 +15,7 @@ Make it fast and satisfying for Toronto transit nerds to sketch a TTC-flavoured 
 <!-- Shipped and confirmed valuable. -->
 
 - [x] Deliver a map-first desktop editor shell rooted in a preloaded Toronto transit map — Validated in Phase 1: Editor Shell and Proposal State (shell scaffold, baseline toggle, proposal state)
+- [x] Make the city itself prominent through TTC, GO, neighbourhood, street, and landmark context — Validated in Phase 2: Toronto Baseline and Context Layers (MapLibre map, TTC/GO layers, context labels, corridor toggle)
 
 ### Active
 
@@ -39,7 +40,7 @@ Make it fast and satisfying for Toronto transit nerds to sketch a TTC-flavoured 
 
 ## Context
 
-The source-of-truth product inputs for this project are `docs/product/gsd-idea.md`, `docs/product/product-spec.md`, `docs/product/ui-vision.md`, `docs/product/phase-plan-notes.md`, and `AGENTS.md`. Phase 1 complete — the codebase has a full-screen editor shell with typed proposal state (`lib/proposal/`), presentational components (`components/editor/`), CSS design tokens, and a working baseline toggle wired through `useReducer`.
+The source-of-truth product inputs for this project are `docs/product/gsd-idea.md`, `docs/product/product-spec.md`, `docs/product/ui-vision.md`, `docs/product/phase-plan-notes.md`, and `AGENTS.md`. Phase 2 complete — the codebase has a full-screen editor shell with typed proposal state, an interactive MapLibre GL map rendering TTC rapid transit lines in brand colours, GO Transit as context, neighbourhood/street/landmark labels, station tooltips, and a toggleable bus/streetcar corridor overlay.
 
 The product intent is consistent across the docs: Toronto-native context should be obvious, the editor should feel quick and satisfying, the map should stay visually primary, and the resulting proposals should be worth sharing externally. The first release should favour fun, clarity, and visible tools over realism, hidden controls, or enterprise-style dashboards.
 
@@ -85,4 +86,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-01 after Phase 1 completion*
+*Last updated: 2026-04-01 after Phase 2 completion*
