@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: verifying
-stopped_at: Phase 5 UI-SPEC approved
-last_updated: "2026-04-01T07:04:30.444Z"
+status: executing
+stopped_at: Completed 05-01-PLAN.md
+last_updated: "2026-04-01T07:33:27.027Z"
 last_activity: 2026-04-01
 progress:
   total_phases: 5
   completed_phases: 4
-  total_plans: 15
-  completed_plans: 15
+  total_plans: 18
+  completed_plans: 16
   percent: 0
 ---
 
@@ -21,13 +21,13 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-31)
 
 **Core value:** Make it fast and satisfying for Toronto transit nerds to sketch a TTC-flavoured proposal they want to share
-**Current focus:** Phase 04 — stats-inspectors-and-comparison
+**Current focus:** Phase 05 — sharing-export-and-polish
 
 ## Current Position
 
-Phase: 5
-Plan: Not started
-Status: Phase complete — ready for verification
+Phase: 05 (sharing-export-and-polish) — EXECUTING
+Plan: 2 of 3
+Status: Ready to execute
 Last activity: 2026-04-01
 
 Progress: ░░░░░░░░░░ 0%
@@ -67,6 +67,7 @@ Progress: ░░░░░░░░░░ 0%
 | Phase 04 P01 | 182 | 2 tasks | 6 files |
 | Phase 04 P02 | 8 | 2 tasks | 6 files |
 | Phase 04 P03 | 3 | 1 tasks | 6 files |
+| Phase 05-sharing-export-and-polish P01 | 4 | 2 tasks | 10 files |
 
 ## Accumulated Context
 
@@ -116,6 +117,10 @@ Recent decisions affecting current work:
 - [Phase 04]: proposalOpacity is numeric (not boolean) so future phases can use intermediate values
 - [Phase 04]: MapStage receives banner as ReactNode slot so EditorShell owns banner DOM and styling
 - [Phase 04]: Selection glow scales with proposalOpacity (not *= 0.25) to preserve normal-mode glow visibility
+- [Phase 05-sharing-export-and-polish]: encodeURIComponent wraps JSON.stringify before btoa for Unicode-safe base64 encoding in SharePayload
+- [Phase 05-sharing-export-and-polish]: decodeSharePayload validates v===1, draft object, lines/stations arrays; returns null on any failure
+- [Phase 05-sharing-export-and-polish]: loadDraft resets full chrome state to prevent stale selection/drawing/inspector state when loading foreign draft
+- [Phase 05-sharing-export-and-polish]: updateTitle and loadDraft added to HISTORY_ACTIONS — title edits and draft loads are undoable
 
 ### Pending Todos
 
@@ -128,6 +133,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-01T07:04:30.441Z
-Stopped at: Phase 5 UI-SPEC approved
-Resume file: .planning/phases/05-sharing-export-and-polish/05-UI-SPEC.md
+Last session: 2026-04-01T07:33:27.024Z
+Stopped at: Completed 05-01-PLAN.md
+Resume file: None

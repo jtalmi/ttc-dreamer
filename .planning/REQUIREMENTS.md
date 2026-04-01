@@ -55,12 +55,12 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Sharing & Onboarding
 
-- [ ] **SHARE-01**: User can give a proposal a map title
-- [ ] **SHARE-02**: User can optionally add a display name
-- [ ] **SHARE-03**: User can export a clean image of the proposal
-- [ ] **SHARE-04**: User can create an unlisted share link
+- [x] **SHARE-01**: User can give a proposal a map title
+- [x] **SHARE-02**: User can optionally add a display name
+- [x] **SHARE-03**: User can export a clean image of the proposal
+- [x] **SHARE-04**: User can create an unlisted share link
 - [ ] **SHARE-05**: Shared proposals open in read-only view mode first
-- [ ] **SHARE-06**: A viewer can make their own editable copy from a shared proposal
+- [x] **SHARE-06**: A viewer can make their own editable copy from a shared proposal
 - [ ] **SHARE-07**: First-time users get lightweight onboarding or tooltips that do not dominate the map
 
 ## v2 Requirements
@@ -124,12 +124,12 @@ Which phases cover which requirements. Updated during roadmap creation.
 | STATS-04 | Phase 4 | Complete |
 | STATS-05 | Phase 4 | Complete |
 | STATS-06 | Phase 4 | Complete |
-| SHARE-01 | Phase 5 | Pending |
-| SHARE-02 | Phase 5 | Pending |
-| SHARE-03 | Phase 5 | Pending |
-| SHARE-04 | Phase 5 | Pending |
+| SHARE-01 | Phase 5 | Complete |
+| SHARE-02 | Phase 5 | Complete |
+| SHARE-03 | Phase 5 | Complete |
+| SHARE-04 | Phase 5 | Complete |
 | SHARE-05 | Phase 5 | Pending |
-| SHARE-06 | Phase 5 | Pending |
+| SHARE-06 | Phase 5 | Complete |
 | SHARE-07 | Phase 5 | Pending |
 
 **Coverage:**

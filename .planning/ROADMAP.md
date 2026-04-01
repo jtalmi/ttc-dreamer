@@ -106,7 +106,7 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 05-01-PLAN.md — Create sharing types, serialization utilities, reducer actions (updateTitle, loadDraft), and tests
+- [x] 05-01-PLAN.md — Create sharing types, serialization utilities, reducer actions (updateTitle, loadDraft), and tests
 - [ ] 05-02-PLAN.md — Build Share modal, inline title editing, image export, and share link generation
 - [ ] 05-03-PLAN.md — Add shared view mode, edit-as-copy flow, and onboarding tooltips
 
