@@ -47,6 +47,13 @@
   --interchange-badge-text: #F3EEE5;
   --selected-element: rgba(216, 90, 42, 0.25);
   --drawing-cursor-dot: #D85A2A;
+
+  /* Phase 4 inspector and comparison tokens */
+  --inspector-divider: rgba(243, 238, 229, 0.12);
+  --stat-value-muted: rgba(243, 238, 229, 0.60);
+  --stat-group-label: rgba(243, 238, 229, 0.70);
+  --comparison-delta-positive: #4CAF50;
+  --comparison-delta-neutral: rgba(243, 238, 229, 0.70);
 }
 
 /* Full-height desktop shell foundation */

@@ -157,6 +157,19 @@ type ClearProposalAction = {
   type: "clearProposal";
 };
 
+type InspectElementAction = {
+  type: "inspectElement";
+  payload: { id: string; elementType: "line" | "station" };
+};
+
+type CloseInspectorAction = {
+  type: "closeInspector";
+};
+
+type ToggleComparisonModeAction = {
+  type: "toggleComparisonMode";
+};
+
 /** All action variants the editor shell reducer handles. */
 export type EditorShellAction =
   | SetBaselineModeAction
@@ -187,7 +200,10 @@ export type EditorShellAction =
   | CancelDeletionAction
   | UpdateLineNameAction
   | UpdateLineColorAction
-  | ClearProposalAction;
+  | ClearProposalAction
+  | InspectElementAction
+  | CloseInspectorAction
+  | ToggleComparisonModeAction;
 
 /** Returns the default draft for the Toronto sandbox shell. */
 export function createInitialProposalDraft(): EditorShellState {
@@ -211,6 +227,8 @@ export function createInitialProposalDraft(): EditorShellState {
       sidebarPanel: "list",
       snapPosition: null,
       pendingDeletion: null,
+      inspectedElementId: null,
+      comparisonMode: false,
     },
   };
 }
@@ -727,6 +745,36 @@ export function proposalEditorReducer(
           sidebarPanel: "list",
           snapPosition: null,
           pendingInterchangeSuggestion: null,
+        },
+      };
+
+    case "inspectElement":
+      return {
+        ...state,
+        chrome: {
+          ...state.chrome,
+          inspectedElementId: action.payload.id,
+          sidebarPanel: action.payload.elementType === "line" ? "inspect-line" : "inspect-station",
+          sidebarOpen: true,
+        },
+      };
+
+    case "closeInspector":
+      return {
+        ...state,
+        chrome: {
+          ...state.chrome,
+          inspectedElementId: null,
+          sidebarPanel: "list",
+        },
+      };
+
+    case "toggleComparisonMode":
+      return {
+        ...state,
+        chrome: {
+          ...state.chrome,
+          comparisonMode: !state.chrome.comparisonMode,
         },
       };
 

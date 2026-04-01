@@ -47,3 +47,18 @@ export {
   historyReducer,
   createInitialHistoryState,
 } from "./proposal-history";
+
+// Stat computation functions and constants from proposal-stats.ts
+export type { ProposalStats } from "./proposal-stats";
+export {
+  computeLineLength,
+  computeTravelTime,
+  computeAvgStopSpacing,
+  computeLineCost,
+  computeLineRidership,
+  computeProposalStats,
+  resolveNeighbourhood,
+  SPEED_KMH,
+  COST_PER_KM_M,
+  RIDERSHIP_PER_STATION,
+} from "./proposal-stats";

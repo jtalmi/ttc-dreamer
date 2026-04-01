@@ -108,11 +108,15 @@ export type EditorChromeState = {
   /** Currently selected element ID (line or station). */
   selectedElementId: string | null;
   /** Which panel the sidebar is showing. */
-  sidebarPanel: "list" | "create" | "drawing-status";
+  sidebarPanel: "list" | "create" | "drawing-status" | "inspect-line" | "inspect-station";
   /** Current snap target position for rendering the snap cue ring. */
   snapPosition: [number, number] | null;
   /** Pending deletion waiting for user confirmation via dialog. */
   pendingDeletion: PendingDeletion | null;
+  /** ID of the currently inspected line or station (inspect tool). */
+  inspectedElementId: string | null;
+  /** True when comparison (Before / Baseline View) mode is active. */
+  comparisonMode: boolean;
 };
 
 /** Combined state held by the editor shell reducer. */
