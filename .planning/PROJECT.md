@@ -14,7 +14,7 @@ Make it fast and satisfying for Toronto transit nerds to sketch a TTC-flavoured 
 
 <!-- Shipped and confirmed valuable. -->
 
-(None yet — the repo is still at the scaffold-and-planning stage.)
+- [x] Deliver a map-first desktop editor shell rooted in a preloaded Toronto transit map — Validated in Phase 1: Editor Shell and Proposal State (shell scaffold, baseline toggle, proposal state)
 
 ### Active
 
@@ -39,7 +39,7 @@ Make it fast and satisfying for Toronto transit nerds to sketch a TTC-flavoured 
 
 ## Context
 
-The source-of-truth product inputs for this project are `docs/product/gsd-idea.md`, `docs/product/product-spec.md`, `docs/product/ui-vision.md`, `docs/product/phase-plan-notes.md`, and `AGENTS.md`. The current codebase is a brownfield scaffold: a working Next.js 16 app with a placeholder landing page, empty implementation directories, and a checked-in local GSD bundle under `.claude/`.
+The source-of-truth product inputs for this project are `docs/product/gsd-idea.md`, `docs/product/product-spec.md`, `docs/product/ui-vision.md`, `docs/product/phase-plan-notes.md`, and `AGENTS.md`. Phase 1 complete — the codebase has a full-screen editor shell with typed proposal state (`lib/proposal/`), presentational components (`components/editor/`), CSS design tokens, and a working baseline toggle wired through `useReducer`.
 
 The product intent is consistent across the docs: Toronto-native context should be obvious, the editor should feel quick and satisfying, the map should stay visually primary, and the resulting proposals should be worth sharing externally. The first release should favour fun, clarity, and visible tools over realism, hidden controls, or enterprise-style dashboards.
 
@@ -85,4 +85,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-03-31 after initialization*
+*Last updated: 2026-04-01 after Phase 1 completion*
