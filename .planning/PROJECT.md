@@ -12,24 +12,25 @@ Make it fast and satisfying for Toronto transit nerds to sketch a TTC-flavoured 
 
 ### Validated
 
-<!-- Shipped and confirmed in v1.0. -->
+<!-- Shipped and confirmed. -->
 
 - ✓ Deliver a map-first desktop editor shell rooted in a preloaded Toronto transit map — v1.0
 - ✓ Make the city itself prominent through TTC, GO, neighbourhood, street, and landmark context — v1.0
 - ✓ Support playful but controlled proposal editing: new lines, extensions, branches, manual stations, naming, and styling — v1.0
 - ✓ Add lightweight descriptive stats and inspectors without turning the product into a realism-heavy planning tool — v1.0
 - ✓ Let users share proposals externally through clean exports and unlisted links — v1.0
+- ✓ Full-screen Excalidraw-style map editor with floating toolbars replacing nav buttons — v2.0
+- ✓ Station-first drawing model: click to place stations, auto-connect lines, auto-interchanges — v2.0
+- ✓ Corrected baseline TTC data with GTFS coordinates, updated line statuses, Ontario Line — v2.0
+- ✓ Redesigned sidebar with line list default, station/line/baseline info on click — v2.0
+- ✓ Dynamic station drag with connected geometry updates — v2.0
+- ✓ Auto-generated station names via Nominatim reverse geocoding — v2.0
 
 ### Active
 
-<!-- v2.0 scope — UI Revamp & Data Accuracy -->
+<!-- Next milestone scope. -->
 
-- [ ] Full-screen Excalidraw-style map editor with floating toolbars replacing nav buttons
-- [ ] Station-first drawing model: click to place stations, auto-connect lines, auto-interchanges at intersections
-- [ ] Floating drawing toolbar and floating map layers toolbar overlaid on map
-- [ ] Redesigned sidebar: default line list with colors, station/line info on click, auto-generated station names from street data
-- [ ] Corrected baseline TTC data: accurate line coordinates through station dots, Eglinton Crosstown and Finch West LRT as operational, Ontario Line as under construction
-- [ ] Dynamic line/station interaction: drag station repositions and adjusts connected geometry
+(None yet — run `/gsd:new-milestone` to define next scope)
 
 ### Out of Scope
 
@@ -44,11 +45,11 @@ Make it fast and satisfying for Toronto transit nerds to sketch a TTC-flavoured 
 
 ## Context
 
-**v1.0 shipped 2026-04-01.** The codebase is a complete Toronto transit sandbox: full-screen editor shell, interactive MapLibre GL map with TTC/GO baseline and Toronto context layers, click-to-draw editing (new lines, extensions, branches), manual station placement with snapping and interchange suggestions, inline naming/coloring, undo/redo/delete, line/station inspectors, descriptive ~prefixed stats, before/after comparison, PNG export, URL hash sharing, read-only view mode, edit-as-copy, and onboarding tooltips. 305 vitest tests cover domain logic, stats, geometry, history, and sharing.
+**v2.0 shipped 2026-04-02.** Full-screen Excalidraw-style transit sandbox with station-first drawing, floating toolbars (top-center drawing tools, top-right layer picker), redesigned overlay sidebar with baseline/proposal inspector panels. GTFS-sourced station coordinates, corrected TTC line statuses (Lines 5/6 operational, Ontario Line under construction), and Nominatim reverse geocoding for auto-generated station names. 156 vitest tests cover domain logic, stats, geometry, history, sharing, station drag, auto-interchange, and geocoding. 11,578 LOC TypeScript.
 
-**Tech stack:** Next.js 16, React 19, TypeScript 5, Tailwind CSS 4, MapLibre GL JS, react-map-gl, @turf/turf, Vitest.
+**Tech stack:** Next.js 16, React 19, TypeScript 5, Tailwind CSS 4, MapLibre GL JS, react-map-gl, @turf/turf, lucide-react, Vitest.
 
-**No backend** — all state is client-side, sharing uses URL hash encoding.
+**No backend** — all state is client-side, sharing uses URL hash encoding (v2 schema with v1 migration).
 
 ## Constraints
 
@@ -76,6 +77,12 @@ Make it fast and satisfying for Toronto transit nerds to sketch a TTC-flavoured 
 | URL hash for sharing (no backend) | Client-side only, instant sharing, no server costs | ✓ Good — works up to ~11KB payloads |
 | useReducer + history wrapper for state | Clean undo/redo without external deps | ✓ Good |
 | @turf/turf for geodesic calculations | Accurate distance/snapping on real coordinates | ✓ Good |
+| Stations as canonical geometry, waypoints derived | Single source of truth prevents undo/drag/stats divergence | ✓ Good |
+| position: fixed for floating toolbars | Escapes MapLibre stacking context reliably | ✓ Good |
+| GTFS for station coordinates over ArcGIS | Platform-level coords within 15-95m of routes vs 300-1600m | ✓ Good |
+| Nominatim reverse geocoding (no npm package) | Free, no API key, 1 req/sec adequate for manual placement | ✓ Good |
+| Share payload v2 with v1 migration | Backward-compatible without breaking existing shared URLs | ✓ Good |
+| Auto-finish drawing on tool switch | Eliminates accidental data loss from forgetting to "finish" | ✓ Good |
 
 ## Evolution
 
@@ -87,17 +94,5 @@ This document evolves at phase transitions and milestone boundaries.
 3. Audit Out of Scope — reasons still valid?
 4. Update Context with current state
 
-## Current Milestone: v2.0 UI Revamp & Data Accuracy
-
-**Goal:** Transform the sandbox into a full-screen, Excalidraw-style map editor with intuitive station-first drawing, floating toolbars, and corrected baseline transit data.
-
-**Target features:**
-- Full-screen map editor — remove nav buttons, make the map the entire experience
-- Station-first drawing model — click to place stations, lines auto-connect; auto-interchanges at intersections
-- Floating drawing toolbar and map layers toolbar overlaid on map
-- Redesigned sidebar with line list default, station/line info on selection
-- Baseline data correction — accurate coordinates, updated line statuses
-- Dynamic line/station interaction with responsive geometry
-
 ---
-*Last updated: 2026-04-01 after v2.0 milestone start*
+*Last updated: 2026-04-02 after v2.0 milestone*

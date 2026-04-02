@@ -1,5 +1,22 @@
 # Milestones
 
+## v2.0 UI Revamp & Data Accuracy (Shipped: 2026-04-02)
+
+**Phases completed:** 5 phases, 9 plans, 12 tasks
+
+**Key accomplishments:**
+
+- Status property added to all TTC route features, Line 5/6 colors corrected to official TTC values, Ontario Line hand-authored into future baseline, and 5 decommissioned Scarborough RT stations removed from today baseline
+- GTFS-sourced Line 5 (25 stations) and Line 6 (18 stations) coordinates replace inaccurate ArcGIS data in both baselines, Ontario Line (15 stations) added to future baseline, and ttc-layers.tsx renders Ontario Line with dashed blue construction style
+- One-liner:
+- One-liner:
+- DrawingSession
+- Station-first drawing wired into map click handlers: clicks place stations with auto-connect, double-click finishes, undo steps back through stations, empty-map click auto-creates a line, terminus click extends from last station
+- One-liner:
+- Nominatim reverse geocoding wired into all 4 station placement paths; popover shows street-based name (e.g. "King St W & Spadina Ave") replacing "Station N" placeholder within ~1s
+
+---
+
 ## v1.0 MVP (Shipped: 2026-04-01)
 
 **Phases completed:** 5 phases, 18 plans, 26 tasks
