@@ -1,77 +1,102 @@
 # Technology Stack
 
-**Analysis Date:** 2026-03-31
+**Analysis Date:** 2026-04-01
 
 ## Languages
 
 **Primary:**
-- TypeScript 5 - Application code and typed configuration in `app/layout.tsx`, `app/page.tsx`, `next.config.ts`, and `tsconfig.json`
+- TypeScript 5 - Application code, typed configuration, and React components in `app/`, `components/`, and `lib/`
 
 **Secondary:**
 - JavaScript (ES modules) - Tooling configuration in `eslint.config.mjs` and `postcss.config.mjs`
 - CSS - Global styling entrypoint in `app/globals.css`
-- Markdown - Product direction and workflow definitions in `docs/product/` and `.claude/`
 
 ## Runtime
 
 **Environment:**
-- Node.js - Required to run `next`, `eslint`, and TypeScript tooling via `package.json`
-- Browser runtime - Served by Next.js for the eventual editor UI, though the current app is a static scaffold
+- Node.js (version unspecified, inferred ^18+ from TypeScript and Next.js 16)
 
 **Package Manager:**
-- npm - `package-lock.json` is present, and scripts are declared in `package.json`
+- npm - `package-lock.json` present
+- Lockfile: `package-lock.json` (present)
 
 ## Frameworks
 
 **Core:**
-- Next.js 16.2.1 - App Router web application framework
-- React 19.2.4 - UI rendering model used by the route components
-- React DOM 19.2.4 - Browser/server rendering companion for React
+- Next.js 16.2.1 - App Router web application framework, routing, and server rendering (`next.config.ts`)
+- React 19.2.4 - Component model and JSX rendering
+- React DOM 19.2.4 - Browser rendering companion for Next.js
 
 **Testing:**
-- No dedicated unit, integration, or E2E test framework is installed yet
+- Vitest 4.1.2 - Unit and integration test runner (`vitest.config.ts`)
+  - Configured with Node environment
+  - Excludes `.claude/worktrees/**` to avoid scanning agent worktrees
+  - Path alias support for `@` mapping to repo root
 
 **Build/Dev:**
-- TypeScript 5 - Static typing and editor tooling
-- Tailwind CSS 4 - Utility-first styling, imported through `app/globals.css`
-- `@tailwindcss/postcss` - Tailwind PostCSS integration configured in `postcss.config.mjs`
-- ESLint 9 with `eslint-config-next` 16.2.1 - Linting and framework rules
+- TypeScript 5 - Static type checking and compilation
+- Tailwind CSS 4 - Utility-first styling with PostCSS integration
+- @tailwindcss/postcss 4 - Tailwind PostCSS plugin for CSS processing
+- ESLint 9 - Code linting with Next.js and TypeScript rule sets
+- eslint-config-next 16.2.1 - Next.js-specific linting rules
 
 ## Key Dependencies
 
-**Critical:**
-- `next@16.2.1` - Defines the routing, rendering, metadata, and build model
-- `react@19.2.4` - Component model for the application shell
-- `react-dom@19.2.4` - Required for Next.js rendering
-- `tailwindcss@^4` - Styling system foundation
-- `eslint-config-next@16.2.1` - Keeps the repo aligned with Next.js conventions
+**Mapping & Geospatial:**
+- maplibre-gl 5.21.1 - Open-source vector tile map rendering, primary mapping library
+- react-map-gl 8.1.0 - React wrapper for maplibre-gl with component API
+- @turf/turf 7.3.4 - Geospatial analysis library for geometry calculations (snapping, proximity detection)
 
-**Infrastructure:**
-- `typescript@^5` - Type checking through `npm run typecheck`
-- `@types/node`, `@types/react`, `@types/react-dom` - Development-time type support
+**UI:**
+- lucide-react 1.7.0 - Icon component library for React
+
+**Type Support:**
+- @types/node 20 - Node.js type definitions for server-side code
+- @types/react 19 - React type definitions
+- @types/react-dom 19 - React DOM type definitions
 
 ## Configuration
 
 **Environment:**
-- No project-specific environment variables are declared yet
-- `.env*` files are ignored by `.gitignore`, so future secrets are expected to live outside git
+- NEXT_PUBLIC_MAPTILER_KEY - MapTiler Cloud API key (required for map tiles)
+  - Defined in `.env.local` (not committed)
+  - Example template: `.env.local.example`
+  - Free plan available at https://cloud.maptiler.com
 
 **Build:**
-- `next.config.ts` - Next.js configuration entrypoint
-- `tsconfig.json` - Strict TypeScript and path alias configuration
-- `eslint.config.mjs` - ESLint rules and ignore list
-- `postcss.config.mjs` - Tailwind/PostCSS integration
+- `tsconfig.json` - TypeScript compiler options with strict mode enabled and path aliases (`@/*` → repo root)
+- `next.config.ts` - Next.js configuration (currently minimal placeholder)
+- `eslint.config.mjs` - ESLint configuration with Next.js core-web-vitals and TypeScript rule sets
+  - Ignores: `.next/`, `out/`, `build/`, `.claude/`, `.planning/`
+- `postcss.config.mjs` - PostCSS configuration for Tailwind CSS
 
 ## Platform Requirements
 
 **Development:**
-- Any platform that can run Node.js and npm
-- No database, Docker, or external service is required for the current scaffold
+- Node.js 18+ (inferred from TypeScript 5 and Next.js 16)
+- npm (lockfile-based dependency management)
+- macOS, Linux, or Windows (platform-agnostic)
 
 **Production:**
-- No deployment target is configured yet
-- The stack is compatible with standard Next.js hosting targets such as Node-based hosting or Vercel, but that is not wired up in repo code today
+- Node.js 18+ runtime
+- Standard Next.js hosting targets supported:
+  - Node-based hosting (self-hosted)
+  - Vercel (optimized for Next.js)
+  - Docker containerization
+- Not configured in repo code today — deployment target is not wired up
+
+## Scripts
+
+**Development:**
+```bash
+npm run dev       # Start Next.js dev server
+npm run build     # Build for production
+npm run start     # Run production build
+npm run lint      # Run ESLint
+npm run typecheck # Run TypeScript type check
+npm run test      # Run Vitest
+```
 
 ---
-*Stack analysis: 2026-03-31*
-*Update after major dependency changes*
+
+*Stack analysis: 2026-04-01*

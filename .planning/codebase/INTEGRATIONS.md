@@ -1,89 +1,108 @@
 # External Integrations
 
-**Analysis Date:** 2026-03-31
+**Analysis Date:** 2026-04-01
 
 ## APIs & External Services
 
-**Application Runtime:**
-- None configured yet
-  - SDK/Client: None
-  - Auth: None
-  - Endpoints used: None
+**Maps & Tiles:**
+- MapTiler Cloud - Vector tile basemap and map styling service
+  - SDK/Client: maplibre-gl 5.21.1 (open-source vector tile renderer)
+  - Auth: `NEXT_PUBLIC_MAPTILER_KEY` (required, public API key)
+  - Usage: Map rendering and styling in `components/editor/toronto-map.tsx`
 
-**Notes:**
-- The checked-in GSD assets under `.claude/` are local workflow files, not application runtime integrations
-- There are no network calls in `app/layout.tsx` or `app/page.tsx`
+**Geocoding:**
+- OpenStreetMap Nominatim - Free reverse geocoding service for street addresses
+  - Endpoint: `https://nominatim.openstreetmap.org/reverse`
+  - Client: Browser `fetch()` API with 3-second timeout
+  - Rate limiting: Cached results to avoid redundant requests (4 decimal place coordinate precision ≈ 11m)
+  - Usage: Convert station coordinates to street names/cross-streets in `lib/geocoding/reverse-geocode.ts`
+  - User-Agent: `TorontoTransitSandbox/1.0`
 
 ## Data Storage
 
 **Databases:**
-- None configured
-  - Connection: N/A
-  - Client: N/A
-  - Migrations: N/A
+- Not used - No persistent database integrated
 
 **File Storage:**
-- None configured
-  - SDK/Client: N/A
-  - Auth: N/A
-  - Buckets: N/A
+- Local filesystem only - GeoJSON baseline data files served from `public/data/` directory
+  - Data files:
+    - `ttc-routes.geojson` - Current TTC rapid transit route lines
+    - `ttc-stations.geojson` - Current TTC subway station points
+    - `ttc-routes-future.geojson` - Future-committed TTC lines (Lines 5 & 6)
+    - `ttc-stations-future.geojson` - Future-committed TTC stops
+    - `go-routes.geojson` - GO rail corridor lines
+    - `go-stations.geojson` - GO train station points
+    - `neighbourhoods.geojson` - Toronto neighbourhood centroids
+    - `landmarks.geojson` - Toronto landmark points
+    - `bus-corridors.geojson` - Bus rapid transit corridors
+    - `streetcar-corridors.geojson` - Streetcar line corridors
+  - Loaded via `fetch()` calls in `lib/baseline/baseline-data.ts`
+  - No database connection — all data is read-only during runtime
 
 **Caching:**
-- None configured
+- In-memory browser cache - Nominatim geocoding results cached by rounded coordinate
+  - Cache key precision: 4 decimal places (≈11m accuracy)
+  - Client-side only, lost on page refresh
+  - No server-side cache configured
 
 ## Authentication & Identity
 
 **Auth Provider:**
-- None configured
-  - Implementation: N/A
-  - Token storage: N/A
-  - Session management: N/A
-
-**OAuth Integrations:**
-- None configured
+- Not used - No user authentication or authorization system integrated
 
 ## Monitoring & Observability
 
 **Error Tracking:**
-- None configured
-
-**Analytics:**
-- None configured
+- Not detected - No error tracking service (Sentry, Rollbar, etc.) integrated
 
 **Logs:**
-- Default local Next.js stdout/stderr only when running `npm run dev` or `npm run build`
+- Console logging only - No structured logging library configured
+- Browser console for client-side errors
+- No server-side logging framework configured
 
 ## CI/CD & Deployment
 
 **Hosting:**
-- No hosting platform is configured in repo code
-  - Deployment: N/A
-  - Environment vars: N/A
+- Not configured - No deployment target wired up in code
+- Compatible with: Vercel (native Next.js), Node-based hosting, Docker containerization
 
 **CI Pipeline:**
-- No `.github/workflows/` pipeline is present in the repo
+- Not detected - No CI service configuration found (.github/workflows, .gitlab-ci.yml, etc.)
 
 ## Environment Configuration
 
-**Development:**
-- Required env vars: None today
-- Secrets location: `.env*` is ignored, but no environment contract exists yet
-- Mock/stub services: Not needed for the current scaffold
+**Required env vars:**
+- `NEXT_PUBLIC_MAPTILER_KEY` - MapTiler Cloud API key (required for map tiles)
 
-**Staging:**
-- Not configured
+**Optional env vars:**
+- None currently defined
 
-**Production:**
-- Not configured
+**Secrets location:**
+- `.env.local` - Local environment file (in `.gitignore`, not committed)
+- Secrets must be sourced from `.env.local` at runtime
+- Example template: `.env.local.example` (checked into git)
 
 ## Webhooks & Callbacks
 
 **Incoming:**
-- None configured
+- Not detected - No webhook endpoints configured
 
 **Outgoing:**
-- None configured
+- Not detected - No outgoing webhooks to external services
+
+## Network Requests
+
+**Baseline Data Loading:**
+- Synchronous `fetch()` calls to local `/data/*` endpoints during component mount
+- Data loaded in `components/editor/toronto-map.tsx` via functions in `lib/baseline/baseline-data.ts`
+- Errors thrown if loading fails (e.g., 404, network error)
+
+**Reverse Geocoding:**
+- Asynchronous `fetch()` to Nominatim with:
+  - 3-second timeout (`AbortSignal.timeout(3000)`)
+  - Graceful failure: returns `null` on network error, rate limit, or timeout
+  - User-Agent header required by Nominatim policy
 
 ---
-*Integration audit: 2026-03-31*
-*Update when adding/removing external services*
+
+*Integration audit: 2026-04-01*
