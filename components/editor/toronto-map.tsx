@@ -708,11 +708,18 @@ export default function TorontoMap({
           return;
         }
 
-        // Baseline TTC station click — show tooltip with station name
+        // Baseline TTC/GO station click — show name in persistent tooltip
         if (layerId === "ttc-stations-circle" || layerId === "go-stations-circle") {
-          // TTC/GO stations are read-only — just show their name as selection feedback
           const name = (props["PT_NAME"] || props["STATION_NAME"] || props["name"] || "Station") as string;
-          dispatch?.({ type: "setSelectedElement", payload: name });
+          const stationType: "ttc" | "go" = layerId === "go-stations-circle" ? "go" : "ttc";
+          setHoverStation({ name, lng: lngLat[0], lat: lngLat[1], type: stationType });
+          return;
+        }
+
+        // Baseline TTC line click — show line name in persistent tooltip
+        if (layerId?.startsWith("ttc-line-")) {
+          const routeName = (props["ROUTE_NAME"] || props["LINE_NAME"] || "TTC Line") as string;
+          setHoverStation({ name: routeName, lng: lngLat[0], lat: lngLat[1], type: "ttc" });
           return;
         }
       }
@@ -835,6 +842,12 @@ export default function TorontoMap({
       interactiveLayerIds={[
         "ttc-stations-circle",
         "go-stations-circle",
+        "ttc-line-1",
+        "ttc-line-2",
+        "ttc-line-4",
+        "ttc-line-5",
+        "ttc-line-6",
+        "ttc-line-7-dash",
         "proposal-lines-stroke",
         "proposal-stations-circle",
         "proposal-waypoints-circle",

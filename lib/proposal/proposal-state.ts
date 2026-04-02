@@ -311,6 +311,7 @@ export function proposalEditorReducer(
               activeTool: action.payload,
               drawingSession: null,
               pendingInterchangeSuggestion: null,
+              snapPosition: null,
               sidebarPanel: "list",
             },
           };
@@ -336,6 +337,7 @@ export function proposalEditorReducer(
             activeTool: action.payload,
             drawingSession: null,
             pendingInterchangeSuggestion: null,
+            snapPosition: null,
             sidebarPanel: "list",
           },
         };
@@ -346,6 +348,7 @@ export function proposalEditorReducer(
           ...state.chrome,
           activeTool: action.payload,
           pendingInterchangeSuggestion: null,
+          snapPosition: null,
         },
       };
 
