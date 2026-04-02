@@ -55,7 +55,7 @@ export function ShareModal({ draft, mapRef, onTitleChange, onClose }: ShareModal
 
   function handleCreateLink() {
     const url = buildShareUrl({
-      v: 1,
+      v: 2,
       draft,
       author: authorName.trim() || undefined,
     });
