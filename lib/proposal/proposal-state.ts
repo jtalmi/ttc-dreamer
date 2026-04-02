@@ -96,6 +96,18 @@ type PlaceStationAction = {
      * instead of appended. Used for mid-line station insertion (add-station tool).
      */
     insertAtIndex?: number;
+    /**
+     * When provided, auto-sets the baseline link on the new station instead of
+     * showing a confirmation prompt. Used for auto-interchange with TTC stations.
+     */
+    linkedBaselineStationId?: string;
+    /**
+     * When provided, merges the current line into the existing proposal station
+     * instead of creating a new station. The existing station's ID is added to the
+     * line's stationIds and the lineId is added to the existing station's lineIds.
+     * No new station is created.
+     */
+    mergeWithStationId?: string;
   };
 };
 
@@ -520,11 +532,49 @@ export function proposalEditorReducer(
       };
 
     case "placeStation": {
+      const session = state.chrome.drawingSession;
+
+      // Auto-interchange: merge with existing proposal station (no new station created)
+      if (action.payload.mergeWithStationId) {
+        const existingStation = state.draft.stations.find(
+          (s) => s.id === action.payload.mergeWithStationId,
+        );
+        if (existingStation) {
+          const updatedStations = state.draft.stations.map((s) =>
+            s.id === existingStation.id
+              ? { ...s, lineIds: [...s.lineIds, action.payload.lineId] }
+              : s,
+          );
+          const updatedLines = state.draft.lines.map((l: ProposalLineDraft) => {
+            if (l.id !== action.payload.lineId) return l;
+            if (action.payload.insertAtIndex !== undefined) {
+              const newStationIds = [...l.stationIds];
+              newStationIds.splice(action.payload.insertAtIndex + 1, 0, existingStation.id);
+              return { ...l, stationIds: newStationIds };
+            }
+            return { ...l, stationIds: [...l.stationIds, existingStation.id] };
+          });
+          const updatedSession =
+            session && session.lineId === action.payload.lineId
+              ? { ...session, placedStationIds: [...session.placedStationIds, existingStation.id] }
+              : session;
+          return {
+            ...state,
+            draft: { ...state.draft, stations: updatedStations, lines: updatedLines },
+            chrome: { ...state.chrome, drawingSession: updatedSession },
+          };
+        }
+      }
+
+      // Normal placement (with optional linkedBaselineStationId)
       const newStation: ProposalStationDraft = {
         id: action.payload.id,
         name: action.payload.name,
         position: action.payload.position,
         lineIds: [action.payload.lineId],
+        ...(action.payload.linkedBaselineStationId !== undefined && {
+          linkedBaselineStationId: action.payload.linkedBaselineStationId,
+        }),
       };
       const updatedLines = state.draft.lines.map((l: ProposalLineDraft) => {
         if (l.id !== action.payload.lineId) return l;
@@ -536,7 +586,6 @@ export function proposalEditorReducer(
         return { ...l, stationIds: [...l.stationIds, action.payload.id] };
       });
       // If a drawing session is active for this line, add the station ID to placedStationIds
-      const session = state.chrome.drawingSession;
       const updatedSession =
         session && session.lineId === action.payload.lineId
           ? { ...session, placedStationIds: [...session.placedStationIds, action.payload.id] }
@@ -696,9 +745,17 @@ export function proposalEditorReducer(
           ? { ...s, position: action.payload.position }
           : s,
       );
+      // Re-derive waypoints for all lines containing this station
+      const updatedLines = state.draft.lines.map((l) => {
+        if (!l.stationIds.includes(action.payload.stationId)) return l;
+        return {
+          ...l,
+          waypoints: deriveWaypointsFromStations(l.stationIds, updatedStations),
+        };
+      });
       return {
         ...state,
-        draft: { ...state.draft, stations: updatedStations },
+        draft: { ...state.draft, stations: updatedStations, lines: updatedLines },
       };
     }
 
