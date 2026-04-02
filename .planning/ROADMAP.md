@@ -182,7 +182,11 @@ Plans:
   2. Placing a station near an existing proposal or baseline station automatically creates an interchange without a confirmation prompt
   3. Clicking a station on the map shows its name, address, and connected lines in the sidebar
   4. Clicking a line on the map shows its name, color, stations, and stats in the sidebar
-**Plans**: TBD
+**Plans**: 2 plans
+
+Plans:
+- [ ] 09-01-PLAN.md — Fix moveStation reducer to re-derive waypoints, add auto-interchange to placeStation, throttle drag dispatch, write tests
+- [ ] 09-02-PLAN.md — Verify click-to-inspect sidebar panel wiring, human verification of all Phase 9 features
 
 ### Phase 10: Auto-Generated Station Names
 **Goal**: Users see a street-based name pre-filled in the station name popover at placement time, reducing manual naming effort while keeping full control
@@ -209,5 +213,5 @@ Phases execute in numeric order: 6 -> 7 -> 8 -> 9 -> 10
 | 6. Baseline Data Correction | v2.0 | 2/2 | Complete   | 2026-04-01 |
 | 7. Full-Screen Layout and Floating Toolbars | v2.0 | 2/2 | Complete   | 2026-04-01 |
 | 8. Station-First Drawing Model | v2.0 | 1/2 | In Progress|  |
-| 9. Station Drag, Auto-Interchange, and Sidebar Panels | v2.0 | 0/TBD | Not started | - |
+| 9. Station Drag, Auto-Interchange, and Sidebar Panels | v2.0 | 0/2 | Not started | - |
 | 10. Auto-Generated Station Names | v2.0 | 0/TBD | Not started | - |
