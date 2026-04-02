@@ -1,4 +1,4 @@
-import type { SharePayload, SharePayloadV1, SharePayloadV2 } from "./sharing-types";
+import type { SharePayloadV1, SharePayloadV2 } from "./sharing-types";
 import type { ProposalStationDraft } from "@/lib/proposal/proposal-types";
 
 /**
