@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import { Map, Popup } from "react-map-gl/maplibre";
 import "maplibre-gl/dist/maplibre-gl.css";
 import type { MapLayerMouseEvent, MapMouseEvent, MapRef } from "react-map-gl/maplibre";
+import type { MapGeoJSONFeature } from "maplibre-gl";
 import type { FeatureCollection } from "geojson";
 import { TtcLayers } from "@/components/map/ttc-layers";
 import { GoLayers } from "@/components/map/go-layers";
@@ -39,7 +40,9 @@ import {
   detectLineHitType,
 } from "@/lib/proposal";
 import type {
+  BaselineLineInspection,
   ProposalDraft,
+  BaselineStationInspection,
   DrawingSession,
   ToolMode,
   InterchangeSuggestion,
@@ -47,6 +50,7 @@ import type {
   BaselineMode,
 } from "@/lib/proposal";
 import { DEFAULT_LINE_COLORS } from "@/lib/proposal";
+import { reverseGeocode } from "@/lib/geocoding/reverse-geocode";
 
 type MapData = {
   ttcRoutes: FeatureCollection;
@@ -75,6 +79,49 @@ type PendingStationName = {
   position: [number, number];
   defaultName: string;
 };
+
+const SELECT_LAYER_PRIORITY = [
+  "proposal-stations-circle",
+  "proposal-lines-stroke",
+  "ttc-stations-circle",
+  "go-stations-circle",
+  "ttc-line-1",
+  "ttc-line-2",
+  "ttc-line-4",
+  "ttc-line-5",
+  "ttc-line-6",
+  "ttc-line-7-dash",
+  "go-routes-line",
+] as const;
+
+function asString(value: unknown): string | null {
+  return typeof value === "string" && value.trim().length > 0 ? value : null;
+}
+
+function buildAddress(addressNumber: unknown, streetName: unknown) {
+  const number = asString(addressNumber);
+  const street = asString(streetName);
+  const value = [number, street].filter(Boolean).join(" ").trim();
+  return value.length > 0 ? value : null;
+}
+
+function pickSelectableFeature(features: MapGeoJSONFeature[] | undefined) {
+  if (!features || features.length === 0) return null;
+
+  let bestFeature: MapGeoJSONFeature | null = null;
+  let bestPriority = Number.POSITIVE_INFINITY;
+
+  for (const feature of features) {
+    const layerId = feature.layer?.id ?? "";
+    const priority = SELECT_LAYER_PRIORITY.indexOf(layerId as (typeof SELECT_LAYER_PRIORITY)[number]);
+    if (priority !== -1 && priority < bestPriority) {
+      bestFeature = feature;
+      bestPriority = priority;
+    }
+  }
+
+  return bestFeature;
+}
 
 type TorontoMapProps = Readonly<{
   /** Controls visibility of bus and streetcar corridor overlay */
@@ -126,7 +173,6 @@ export default function TorontoMap({
   activeTool = "select",
   selectedElementId = null,
   snapPosition = null,
-  pendingInterchangeSuggestion: _pendingInterchangeSuggestion = null,
   proposalOpacity = 1,
   onFinishDrawing,
   onUpdateCursor,
@@ -140,14 +186,10 @@ export default function TorontoMap({
   const [pendingStationName, setPendingStationName] = useState<PendingStationName | null>(null);
   // Track whether cursor is over a proposal line segment for cursor style
   const [isOverSegment, setIsOverSegment] = useState(false);
+  // Track whether the cursor is over any clickable feature in select mode
+  const [isOverSelectable, setIsOverSelectable] = useState(false);
   // Track station drag state for select-move
   const [draggingStationId, setDraggingStationId] = useState<string | null>(null);
-  // Track waypoint drag state for select-move waypoint repositioning
-  const [draggingWaypoint, setDraggingWaypoint] = useState<{
-    lineId: string;
-    waypointIndex: number;
-  } | null>(null);
-
   // Map ref for programmatic access (project/unproject)
   const mapRef = useRef<MapRef | null>(null);
   // Throttle ref for station drag dispatch (~30ms to avoid MapLibre worker queue blowup)
@@ -211,30 +253,107 @@ export default function TorontoMap({
     return buildSnapCueGeoJSON(snapPosition);
   }, [snapPosition]);
 
-  const waypointsGeoJSON = useMemo((): FeatureCollection => {
-    if (!draft || activeTool !== "select") {
-      return { type: "FeatureCollection", features: [] };
-    }
-    const features = draft.lines.flatMap((line) =>
-      line.waypoints.map((coord, index) => ({
-        type: "Feature" as const,
-        geometry: { type: "Point" as const, coordinates: coord },
-        properties: { lineId: line.id, waypointIndex: index, color: line.color },
-      })),
-    );
-    return { type: "FeatureCollection", features };
-  }, [draft, activeTool]);
-
   // Helper: get the map instance from the ref
   function getMap() {
     return mapRef.current?.getMap() ?? null;
   }
+
+  const buildBaselineStationInspection = useCallback(
+    (feature: MapGeoJSONFeature, layerId: string): BaselineStationInspection | null => {
+      if (feature.geometry.type !== "Point") return null;
+
+      const props = feature.properties as Record<string, unknown>;
+      const position = feature.geometry.coordinates as [number, number];
+
+      if (layerId === "ttc-stations-circle") {
+        return {
+          type: "baseline-station",
+          sourceId: String(props["OBJECTID"] ?? ""),
+          system: "ttc",
+          name:
+            asString(props["PT_NAME"])
+            ?? asString(props["PLACE_NAME"])
+            ?? "TTC Station",
+          position,
+          address:
+            asString(props["ADDRESS_FULL"])
+            ?? buildAddress(props["ADDRESS_NUMBER"], props["LINEAR_NAME_FULL"]),
+          municipality:
+            asString(props["CITY"])
+            ?? asString(props["MUNICIPALITY"]),
+          accessibility: asString(props["PT_ELEVATOR"]),
+        };
+      }
+
+      if (layerId === "go-stations-circle") {
+        return {
+          type: "baseline-station",
+          sourceId: String(props["OBJECTID"] ?? ""),
+          system: "go",
+          name:
+            asString(props["STATION"])
+            ?? asString(props["PLACE_NAME"])
+            ?? "GO Station",
+          position,
+          address: buildAddress(props["ADDRESS_NUMBER"], props["LINEAR_NAME_FULL"]),
+          municipality:
+            asString(props["MUNICIPALITY_NAME"])
+            ?? asString(props["WARD_NAME"]),
+          accessibility: null,
+        };
+      }
+
+      return null;
+    },
+    [],
+  );
+
+  const buildBaselineLineInspection = useCallback(
+    (feature: MapGeoJSONFeature, layerId: string): BaselineLineInspection | null => {
+      const props = feature.properties as Record<string, unknown>;
+
+      if (layerId.startsWith("ttc-line-")) {
+        const color = asString(props["ROUTE_COLOR"]);
+        return {
+          type: "baseline-line",
+          sourceId: String(props["OBJECTID"] ?? props["ROUTE_ID"] ?? ""),
+          system: "ttc",
+          name:
+            asString(props["ROUTE_LONG_NAME"])
+            ?? asString(props["ROUTE_SHORT_NAME"])
+            ?? "TTC Line",
+          color: color ? `#${color}` : "#18324A",
+          modeLabel: "Subway",
+          status: asString(props["status"]),
+          shortLabel: asString(props["ROUTE_SHORT_NAME"]),
+        };
+      }
+
+      if (layerId === "go-routes-line") {
+        const corridor = asString(props["CORRIDOR"]) ?? "GO Corridor";
+        return {
+          type: "baseline-line",
+          sourceId: String(props["CORRIDOR_ID"] ?? corridor),
+          system: "go",
+          name: `${corridor} GO Corridor`,
+          color: "#007A3D",
+          modeLabel: "Regional Rail",
+          status: null,
+          shortLabel: asString(props["CORRIDOR_ID"]),
+        };
+      }
+
+      return null;
+    },
+    [],
+  );
 
   const handleMouseMove = useCallback((e: MapLayerMouseEvent) => {
     const lngLat: [number, number] = [e.lngLat.lng, e.lngLat.lat];
     const map = getMap();
 
     if (activeTool === "draw-line") {
+      setIsOverSelectable(false);
       // Dispatch cursor position update directly
       dispatch?.({ type: "updateCursorPosition", payload: lngLat });
       // Also call legacy callback for any external usage
@@ -255,6 +374,7 @@ export default function TorontoMap({
     }
 
     if (activeTool === "add-station") {
+      setIsOverSelectable(false);
       // Check if cursor is over a proposal line segment
       if (map && draft) {
         let overSeg = false;
@@ -277,6 +397,7 @@ export default function TorontoMap({
 
     // Handle station drag in select mode (throttled to ~30ms)
     if (activeTool === "select" && draggingStationId) {
+      setIsOverSelectable(false);
       lastDragPosition.current = lngLat;
       const now = performance.now();
       if (now - lastDragDispatch.current < 30) return;
@@ -285,34 +406,23 @@ export default function TorontoMap({
       return;
     }
 
-    // Handle waypoint drag in select mode
-    if (activeTool === "select" && draggingWaypoint) {
-      dispatch?.({
-        type: "moveWaypoint",
-        payload: {
-          lineId: draggingWaypoint.lineId,
-          waypointIndex: draggingWaypoint.waypointIndex,
-          position: lngLat,
-        },
-      });
-      return;
-    }
-
     // Clear snap cue in other tool modes
     if (map) {
       dispatch?.({ type: "setSnapPosition", payload: null });
     }
 
-    // Show hover tooltip for station features
-    const features = e.features;
-    if (features && features.length > 0) {
-      const feature = features[0];
-      const props = feature.properties as Record<string, unknown>;
-      const coords = feature.geometry.type === "Point"
-        ? (feature.geometry.coordinates as [number, number])
-        : null;
+    if (activeTool === "select") {
+      setIsOverSelectable(Boolean(pickSelectableFeature(e.features)));
+    } else {
+      setIsOverSelectable(false);
+    }
 
-      if (!coords) return;
+    // Show hover tooltip for station features
+    const stationFeature = (e.features ?? []).find((feature) => feature.geometry.type === "Point");
+    if (stationFeature) {
+      if (stationFeature.geometry.type !== "Point") return;
+      const props = stationFeature.properties as Record<string, unknown>;
+      const coords = stationFeature.geometry.coordinates as [number, number];
 
       const name = (props["PT_NAME"] as string | null)
         ?? (props["PLACE_NAME"] as string | null)
@@ -320,7 +430,7 @@ export default function TorontoMap({
         ?? "Unknown";
 
       // Determine station type from the layer the feature came from
-      const layerId = feature.layer?.id;
+      const layerId = stationFeature.layer?.id;
       const stationType: "ttc" | "go" = layerId === "go-stations-circle" ? "go" : "ttc";
 
       setHoverStation({
@@ -332,11 +442,33 @@ export default function TorontoMap({
     } else {
       setHoverStation(null);
     }
-  }, [activeTool, onUpdateCursor, draft, dispatch, draggingStationId, draggingWaypoint]);
+  }, [activeTool, onUpdateCursor, draft, dispatch, draggingStationId]);
+
+  const handleMouseDown = useCallback((e: MapLayerMouseEvent) => {
+    if (activeTool !== "select") return;
+
+    const map = getMap();
+    if (!map) return;
+
+    const features = map.queryRenderedFeatures(e.point, {
+      layers: ["proposal-stations-circle"],
+    });
+    if (features.length === 0) return;
+
+    const feature = features[0];
+    const props = feature.properties as Record<string, unknown>;
+    const stationId = props["id"] as string | null;
+    if (stationId) {
+      setDraggingStationId(stationId);
+    }
+  }, [activeTool]);
 
   const handleMouseLeave = useCallback(() => {
     setHoverStation(null);
     setIsOverSegment(false);
+    setIsOverSelectable(false);
+    setDraggingStationId(null);
+    lastDragPosition.current = null;
     if (activeTool === "draw-line") {
       dispatch?.({ type: "updateCursorPosition", payload: null });
       onUpdateCursor?.(null);
@@ -357,10 +489,28 @@ export default function TorontoMap({
       }
       setDraggingStationId(null);
     }
-    if (draggingWaypoint) {
-      setDraggingWaypoint(null);
-    }
-  }, [draggingStationId, draggingWaypoint, dispatch]);
+  }, [draggingStationId, dispatch]);
+
+  /**
+   * Async geocode helper — fires after station placement.
+   * Updates the pending station name popover once the geocoded name arrives,
+   * then also updates the station's name in the store so it persists on dismiss.
+   * Fire-and-forget: does not block the synchronous placement flow.
+   */
+  const fireGeocodeUpdate = useCallback((stationId: string, position: [number, number]) => {
+    reverseGeocode(position).then((geocodedName) => {
+      if (!geocodedName) return;
+      setPendingStationName((prev) =>
+        prev && prev.stationId === stationId
+          ? { ...prev, defaultName: geocodedName }
+          : prev,
+      );
+      dispatch?.({
+        type: "updateStationName",
+        payload: { stationId, name: geocodedName },
+      });
+    });
+  }, [dispatch]);
 
   const handleClick = useCallback((e: MapLayerMouseEvent) => {
     const lngLat: [number, number] = [e.lngLat.lng, e.lngLat.lat];
@@ -451,6 +601,7 @@ export default function TorontoMap({
           position: stationPosition,
           defaultName: stationName,
         });
+        fireGeocodeUpdate(stationId, stationPosition);
         return;
       }
 
@@ -574,6 +725,7 @@ export default function TorontoMap({
           position: lngLat,
           defaultName: stationName,
         });
+        fireGeocodeUpdate(newStationId, lngLat);
       }
       return;
     }
@@ -670,31 +822,22 @@ export default function TorontoMap({
         position: snappedPosition,
         defaultName: stationName,
       });
+      fireGeocodeUpdate(newStationId, snappedPosition);
       return;
     }
 
     if (activeTool === "select") {
-      // Check if click hit an interactive element
-      const features = e.features;
-      if (features && features.length > 0) {
-        const feature = features[0];
+      const feature = pickSelectableFeature(e.features);
+      if (feature) {
         const props = feature.properties as Record<string, unknown>;
         const layerId = feature.layer?.id;
 
-        // Waypoint vertex click → start waypoint drag
-        if (layerId === "proposal-waypoints-circle") {
-          const lineId = props["lineId"] as string;
-          const waypointIndex = props["waypointIndex"] as number;
-          setDraggingWaypoint({ lineId, waypointIndex });
-          return;
-        }
-
-        // Proposal station click — open inspector + start drag
+        // Proposal station click — open inspector
         if (layerId === "proposal-stations-circle") {
           const id = props["id"] as string | null;
           if (id) {
+            setHoverStation(null);
             dispatch?.({ type: "inspectElement", payload: { id, elementType: "station" } });
-            setDraggingStationId(id);
           }
           return;
         }
@@ -703,30 +846,59 @@ export default function TorontoMap({
         if (layerId === "proposal-lines-stroke") {
           const id = props["id"] as string | null;
           if (id) {
+            setHoverStation(null);
             dispatch?.({ type: "inspectElement", payload: { id, elementType: "line" } });
           }
           return;
         }
 
-        // Baseline TTC/GO station click — show name in persistent tooltip
         if (layerId === "ttc-stations-circle" || layerId === "go-stations-circle") {
-          const name = (props["PT_NAME"] || props["STATION_NAME"] || props["name"] || "Station") as string;
-          const stationType: "ttc" | "go" = layerId === "go-stations-circle" ? "go" : "ttc";
-          setHoverStation({ name, lng: lngLat[0], lat: lngLat[1], type: stationType });
+          const inspection = buildBaselineStationInspection(feature, layerId);
+          if (inspection) {
+            setHoverStation(null);
+            dispatch?.({
+              type: "inspectElement",
+              payload: {
+                id: `baseline-station:${inspection.system}:${inspection.sourceId}`,
+                elementType: "baseline-station",
+                inspection,
+              },
+            });
+          }
           return;
         }
 
-        // Baseline TTC line click — show line name in persistent tooltip
-        if (layerId?.startsWith("ttc-line-")) {
-          const routeName = (props["ROUTE_NAME"] || props["LINE_NAME"] || "TTC Line") as string;
-          setHoverStation({ name: routeName, lng: lngLat[0], lat: lngLat[1], type: "ttc" });
+        if (layerId?.startsWith("ttc-line-") || layerId === "go-routes-line") {
+          const inspection = buildBaselineLineInspection(feature, layerId);
+          if (inspection) {
+            setHoverStation(null);
+            dispatch?.({
+              type: "inspectElement",
+              payload: {
+                id: `baseline-line:${inspection.system}:${inspection.sourceId}`,
+                elementType: "baseline-line",
+                inspection,
+              },
+            });
+          }
           return;
         }
       }
       // Click on empty space — return to line list (do NOT close sidebar)
+      setHoverStation(null);
       dispatch?.({ type: "closeInspector" });
     }
-  }, [activeTool, onStartExtend, drawingSession, draft, data, dispatch]);
+  }, [
+    activeTool,
+    onStartExtend,
+    drawingSession,
+    draft,
+    data,
+    dispatch,
+    fireGeocodeUpdate,
+    buildBaselineLineInspection,
+    buildBaselineStationInspection,
+  ]);
 
   const handleDblClick = useCallback((e: MapMouseEvent) => {
     if (activeTool !== "draw-line" || !drawingSession) return;
@@ -746,10 +918,17 @@ export default function TorontoMap({
         name: stationName,
       },
     });
+    // Show name popover for the final station before finishing
+    setPendingStationName({
+      stationId,
+      position: lngLat,
+      defaultName: stationName,
+    });
+    fireGeocodeUpdate(stationId, lngLat);
     // Finish drawing after placing the final station
     dispatch?.({ type: "finishDrawing" });
     onFinishDrawing?.();
-  }, [activeTool, drawingSession, draft, dispatch, onFinishDrawing]);
+  }, [activeTool, drawingSession, draft, dispatch, fireGeocodeUpdate, onFinishDrawing]);
 
   // Handle station name save
   const handleStationNameSave = useCallback((name: string) => {
@@ -779,14 +958,14 @@ export default function TorontoMap({
 
   // Determine map cursor style based on active tool and hover context
   const cursorStyle = useMemo(() => {
-    if (draggingStationId || draggingWaypoint) return "grabbing";
+    if (draggingStationId) return "grabbing";
     switch (activeTool) {
       case "draw-line": return "crosshair";
       case "add-station": return isOverSegment ? "cell" : "not-allowed";
-      case "select": return "default";
+      case "select": return isOverSelectable ? "pointer" : "default";
       default: return "default";
     }
-  }, [activeTool, isOverSegment, draggingStationId, draggingWaypoint]);
+  }, [activeTool, isOverSegment, isOverSelectable, draggingStationId]);
 
   if (error) {
     return (
@@ -848,11 +1027,12 @@ export default function TorontoMap({
         "ttc-line-5",
         "ttc-line-6",
         "ttc-line-7-dash",
+        "go-routes-line",
         "proposal-lines-stroke",
         "proposal-stations-circle",
-        "proposal-waypoints-circle",
       ]}
       cursor={cursorStyle}
+      onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
       onMouseOut={handleMouseLeave}
       onMouseUp={handleMouseUp}
@@ -893,7 +1073,6 @@ export default function TorontoMap({
         inProgressGeoJSON={inProgressGeoJSON}
         selectedElementId={selectedElementId}
         snapCueGeoJSON={snapCueGeoJSON}
-        waypointsGeoJSON={waypointsGeoJSON}
         proposalOpacity={proposalOpacity}
       />
       <StationLabels
