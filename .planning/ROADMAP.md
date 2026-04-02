@@ -186,7 +186,7 @@ Plans:
 
 Plans:
 - [x] 09-01-PLAN.md — Fix moveStation reducer to re-derive waypoints, add auto-interchange to placeStation, throttle drag dispatch, write tests
-- [ ] 09-02-PLAN.md — Verify click-to-inspect sidebar panel wiring, human verification of all Phase 9 features
+- [x] 09-02-PLAN.md — Verify click-to-inspect sidebar panel wiring, human verification of all Phase 9 features
 
 ### Phase 10: Auto-Generated Station Names
 **Goal**: Users see a street-based name pre-filled in the station name popover at placement time, reducing manual naming effort while keeping full control
