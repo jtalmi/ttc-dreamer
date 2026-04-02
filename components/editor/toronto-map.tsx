@@ -12,7 +12,8 @@ import { StationLabels } from "@/components/map/station-labels";
 import { CorridorLayers } from "@/components/map/corridor-layers";
 import { ProposalLayers } from "@/components/map/proposal-layers";
 import { StationNamePopover } from "@/components/editor/sidebar/station-name-popover";
-import { InterchangeBadge } from "@/components/editor/sidebar/interchange-badge";
+// InterchangeBadge kept for potential future use (auto-interchange now fires directly)
+// import { InterchangeBadge } from "@/components/editor/sidebar/interchange-badge";
 import {
   TORONTO_VIEW,
   loadTtcRoutes,
@@ -125,7 +126,7 @@ export default function TorontoMap({
   activeTool = "select",
   selectedElementId = null,
   snapPosition = null,
-  pendingInterchangeSuggestion = null,
+  pendingInterchangeSuggestion: _pendingInterchangeSuggestion = null,
   proposalOpacity = 1,
   onFinishDrawing,
   onUpdateCursor,
@@ -149,6 +150,10 @@ export default function TorontoMap({
 
   // Map ref for programmatic access (project/unproject)
   const mapRef = useRef<MapRef | null>(null);
+  // Throttle ref for station drag dispatch (~30ms to avoid MapLibre worker queue blowup)
+  const lastDragDispatch = useRef<number>(0);
+  // Track last drag position so mouseup can fire a final precise dispatch
+  const lastDragPosition = useRef<[number, number] | null>(null);
 
   useEffect(() => {
     const key = process.env.NEXT_PUBLIC_MAPTILER_KEY;
@@ -270,8 +275,12 @@ export default function TorontoMap({
       return;
     }
 
-    // Handle station drag in select mode
+    // Handle station drag in select mode (throttled to ~30ms)
     if (activeTool === "select" && draggingStationId) {
+      lastDragPosition.current = lngLat;
+      const now = performance.now();
+      if (now - lastDragDispatch.current < 30) return;
+      lastDragDispatch.current = now;
       dispatch?.({ type: "moveStation", payload: { stationId: draggingStationId, position: lngLat } });
       return;
     }
@@ -337,12 +346,21 @@ export default function TorontoMap({
 
   const handleMouseUp = useCallback(() => {
     if (draggingStationId) {
+      // Fire a final moveStation dispatch with the last known position to
+      // ensure the committed position is accurate after throttling
+      if (lastDragPosition.current) {
+        dispatch?.({
+          type: "moveStation",
+          payload: { stationId: draggingStationId, position: lastDragPosition.current },
+        });
+        lastDragPosition.current = null;
+      }
       setDraggingStationId(null);
     }
     if (draggingWaypoint) {
       setDraggingWaypoint(null);
     }
-  }, [draggingStationId, draggingWaypoint]);
+  }, [draggingStationId, draggingWaypoint, dispatch]);
 
   const handleClick = useCallback((e: MapLayerMouseEvent) => {
     const lngLat: [number, number] = [e.lngLat.lng, e.lngLat.lat];
@@ -370,7 +388,7 @@ export default function TorontoMap({
           }
         }
 
-        // Check for nearby existing stations before placing
+        // Check for nearby existing stations — auto-interchange (no confirmation prompt)
         if (map && draft && data?.ttcStations) {
           const nearby = findNearbyStation(
             stationPosition,
@@ -380,16 +398,41 @@ export default function TorontoMap({
             20,
           );
           if (nearby) {
-            dispatch?.({
-              type: "suggestInterchange",
-              payload: {
-                newStationPosition: stationPosition,
-                nearbyStationId: nearby.id,
-                nearbyStationName: nearby.name,
-                lineId: drawingSession.lineId,
-                stationName,
-              },
-            });
+            if (nearby.type === "proposal") {
+              // Merge current line into the existing proposal station
+              dispatch?.({
+                type: "placeStation",
+                payload: {
+                  id: stationId,
+                  position: stationPosition,
+                  lineId: drawingSession.lineId,
+                  name: nearby.name,
+                  mergeWithStationId: nearby.id,
+                },
+              });
+              setPendingStationName({
+                stationId: nearby.id,
+                position: stationPosition,
+                defaultName: nearby.name,
+              });
+            } else {
+              // Auto-link to TTC baseline station
+              dispatch?.({
+                type: "placeStation",
+                payload: {
+                  id: stationId,
+                  position: stationPosition,
+                  lineId: drawingSession.lineId,
+                  name: nearby.name,
+                  linkedBaselineStationId: nearby.id,
+                },
+              });
+              setPendingStationName({
+                stationId,
+                position: stationPosition,
+                defaultName: nearby.name,
+              });
+            }
             return;
           }
         }
@@ -500,6 +543,28 @@ export default function TorontoMap({
 
         dispatch({ type: "addLine", payload: { id: newLineId, name: lineName, mode: "subway", color: nextColor } });
         dispatch({ type: "startDrawing", payload: { lineId: newLineId, mode: "new" } });
+
+        // Check for nearby stations — auto-interchange on first station of new line
+        if (map && data?.ttcStations) {
+          const nearby = findNearbyStation(lngLat, draft.stations, data.ttcStations, map, 20);
+          if (nearby) {
+            if (nearby.type === "proposal") {
+              dispatch({
+                type: "placeStation",
+                payload: { id: newStationId, position: lngLat, lineId: newLineId, name: nearby.name, mergeWithStationId: nearby.id },
+              });
+              setPendingStationName({ stationId: nearby.id, position: lngLat, defaultName: nearby.name });
+            } else {
+              dispatch({
+                type: "placeStation",
+                payload: { id: newStationId, position: lngLat, lineId: newLineId, name: nearby.name, linkedBaselineStationId: nearby.id },
+              });
+              setPendingStationName({ stationId: newStationId, position: lngLat, defaultName: nearby.name });
+            }
+            return;
+          }
+        }
+
         dispatch({
           type: "placeStation",
           payload: { id: newStationId, position: lngLat, lineId: newLineId, name: stationName },
@@ -545,7 +610,7 @@ export default function TorontoMap({
       // Generate default station name
       const stationName = `Station ${draft.stations.length + 1}`;
 
-      // Check for nearby existing stations (20px threshold)
+      // Check for nearby existing stations — auto-interchange (no confirmation prompt)
       if (data?.ttcStations) {
         const nearby = findNearbyStation(
           snappedPosition,
@@ -556,17 +621,34 @@ export default function TorontoMap({
         );
 
         if (nearby) {
-          // Suggest interchange — defer station creation
-          dispatch?.({
-            type: "suggestInterchange",
-            payload: {
-              newStationPosition: snappedPosition,
-              nearbyStationId: nearby.id,
-              nearbyStationName: nearby.name,
-              lineId: targetLineId,
-              stationName,
-            },
-          });
+          const nearbyStationId = crypto.randomUUID();
+          if (nearby.type === "proposal") {
+            dispatch?.({
+              type: "placeStation",
+              payload: {
+                id: nearbyStationId,
+                position: snappedPosition,
+                lineId: targetLineId,
+                name: nearby.name,
+                insertAtIndex,
+                mergeWithStationId: nearby.id,
+              },
+            });
+            setPendingStationName({ stationId: nearby.id, position: snappedPosition, defaultName: nearby.name });
+          } else {
+            dispatch?.({
+              type: "placeStation",
+              payload: {
+                id: nearbyStationId,
+                position: snappedPosition,
+                lineId: targetLineId,
+                name: nearby.name,
+                insertAtIndex,
+                linkedBaselineStationId: nearby.id,
+              },
+            });
+            setPendingStationName({ stationId: nearbyStationId, position: snappedPosition, defaultName: nearby.name });
+          }
           return;
         }
       }
@@ -669,20 +751,8 @@ export default function TorontoMap({
     setPendingStationName(null);
   }, [pendingStationName, dispatch]);
 
-  // Handle interchange confirm — show name popover after
-  const handleInterchangeConfirm = useCallback(() => {
-    if (!pendingInterchangeSuggestion) return;
-    dispatch?.({ type: "confirmInterchange" });
-    // Note: confirmInterchange generates its own UUID in the reducer,
-    // so we don't track a pending name here. The station is placed with
-    // the suggestion's stationName.
-  }, [pendingInterchangeSuggestion, dispatch]);
-
-  // Handle interchange reject — show name popover after
-  const handleInterchangeReject = useCallback(() => {
-    if (!pendingInterchangeSuggestion) return;
-    dispatch?.({ type: "rejectInterchange" });
-  }, [pendingInterchangeSuggestion, dispatch]);
+  // Note: confirmInterchange/rejectInterchange handlers removed — auto-interchange
+  // fires placeStation directly instead of going through the confirm/reject flow.
 
   // Determine map cursor style based on active tool and hover context
   const cursorStyle = useMemo(() => {
@@ -827,15 +897,7 @@ export default function TorontoMap({
         />
       )}
 
-      {/* Interchange suggestion badge */}
-      {pendingInterchangeSuggestion && (
-        <InterchangeBadge
-          position={pendingInterchangeSuggestion.newStationPosition}
-          nearbyStationName={pendingInterchangeSuggestion.nearbyStationName}
-          onConfirm={handleInterchangeConfirm}
-          onReject={handleInterchangeReject}
-        />
-      )}
+      {/* Interchange suggestion badge — no longer triggered (auto-interchange replaces confirm/reject flow) */}
     </Map>
   );
 }
