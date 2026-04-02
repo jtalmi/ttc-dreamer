@@ -674,29 +674,45 @@ export default function TorontoMap({
     }
 
     if (activeTool === "select") {
-      // Check if click hit a proposal element via interactive layers
+      // Check if click hit an interactive element
       const features = e.features;
       if (features && features.length > 0) {
         const feature = features[0];
         const props = feature.properties as Record<string, unknown>;
+        const layerId = feature.layer?.id;
 
         // Waypoint vertex click → start waypoint drag
-        if (feature.layer?.id === "proposal-waypoints-circle") {
+        if (layerId === "proposal-waypoints-circle") {
           const lineId = props["lineId"] as string;
           const waypointIndex = props["waypointIndex"] as number;
           setDraggingWaypoint({ lineId, waypointIndex });
           return;
         }
 
-        // Station or line click — auto-open inspector
-        const id = props["id"] as string | null;
-        if (id) {
-          const elementType = feature.layer?.id === "proposal-stations-circle" ? "station" : "line";
-          dispatch?.({ type: "inspectElement", payload: { id, elementType } });
-          // Start dragging if it's a station
-          if (feature.layer?.id === "proposal-stations-circle") {
+        // Proposal station click — open inspector + start drag
+        if (layerId === "proposal-stations-circle") {
+          const id = props["id"] as string | null;
+          if (id) {
+            dispatch?.({ type: "inspectElement", payload: { id, elementType: "station" } });
             setDraggingStationId(id);
           }
+          return;
+        }
+
+        // Proposal line click — open line inspector
+        if (layerId === "proposal-lines-stroke") {
+          const id = props["id"] as string | null;
+          if (id) {
+            dispatch?.({ type: "inspectElement", payload: { id, elementType: "line" } });
+          }
+          return;
+        }
+
+        // Baseline TTC station click — show tooltip with station name
+        if (layerId === "ttc-stations-circle" || layerId === "go-stations-circle") {
+          // TTC/GO stations are read-only — just show their name as selection feedback
+          const name = (props["PT_NAME"] || props["STATION_NAME"] || props["name"] || "Station") as string;
+          dispatch?.({ type: "setSelectedElement", payload: name });
           return;
         }
       }
