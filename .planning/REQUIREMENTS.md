@@ -89,8 +89,8 @@ Requirements for v2.0 milestone: UI Revamp & Data Accuracy.
 ### Sidebar
 
 - [x] **SIDE-01**: Sidebar defaults to a line list view showing all proposal lines with colors
-- [ ] **SIDE-02**: Clicking a station on the map loads station info (name, address, connected lines) in the sidebar
-- [ ] **SIDE-03**: Clicking a line on the map loads line info (name, color, stations, stats) in the sidebar
+- [x] **SIDE-02**: Clicking a station on the map loads station info (name, address, connected lines) in the sidebar
+- [x] **SIDE-03**: Clicking a line on the map loads line info (name, color, stations, stats) in the sidebar
 
 ### Baseline Data
 
@@ -183,8 +183,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DRAW-03 | Phase 8 | Complete |
 | STATION-01 | Phase 9 | Complete |
 | DRAW-04 | Phase 9 | Complete |
-| SIDE-02 | Phase 9 | Pending |
-| SIDE-03 | Phase 9 | Pending |
+| SIDE-02 | Phase 9 | Complete |
+| SIDE-03 | Phase 9 | Complete |
 | STATION-02 | Phase 10 | Complete |
 | STATION-03 | Phase 10 | Complete |
 
