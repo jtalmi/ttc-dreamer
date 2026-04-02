@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: UI Revamp & Data Accuracy
-status: verifying
-stopped_at: Completed 08-02-PLAN.md Task 1 — awaiting human-verify checkpoint (Task 2)
-last_updated: "2026-04-02T00:04:55.953Z"
+status: executing
+stopped_at: Completed 09-01-PLAN.md
+last_updated: "2026-04-02T00:18:58.629Z"
 last_activity: 2026-04-02
 progress:
   total_phases: 5
   completed_phases: 3
-  total_plans: 6
-  completed_plans: 6
+  total_plans: 8
+  completed_plans: 7
   percent: 0
 ---
 
@@ -21,13 +21,13 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-01)
 
 **Core value:** Make it fast and satisfying for Toronto transit nerds to sketch a TTC-flavoured proposal they want to share
-**Current focus:** Phase 08 — station-first-drawing-model
+**Current focus:** Phase 09 — station-drag-auto-interchange-and-sidebar-panels
 
 ## Current Position
 
-Phase: 9
-Plan: Not started
-Status: Phase complete — ready for verification
+Phase: 09 (station-drag-auto-interchange-and-sidebar-panels) — EXECUTING
+Plan: 2 of 2
+Status: Ready to execute
 Last activity: 2026-04-02
 
 Progress: ░░░░░░░░░░ 0%
@@ -58,6 +58,7 @@ Progress: ░░░░░░░░░░ 0%
 | Phase 07 P02 | 2 | 1 tasks | 4 files |
 | Phase 08-station-first-drawing-model P01 | 14 | 1 tasks | 16 files |
 | Phase 08-station-first-drawing-model P02 | 8 | 1 tasks | 3 files |
+| Phase 09 P01 | 278 | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -86,6 +87,8 @@ Key v2.0 constraints from research:
 - [Phase 08-station-first-drawing-model]: PlaceStationAction.insertAtIndex added for splice-based mid-line station ordering
 - [Phase 08-station-first-drawing-model]: Auto-create-line on empty draw-line click: addLine + startDrawing + placeStation dispatched in sequence
 - [Phase 08-station-first-drawing-model]: Double-click places final station before finishDrawing — no separate single-click needed
+- [Phase 09]: Auto-interchange fires via placeStation mergeWithStationId/linkedBaselineStationId fields instead of suggestInterchange+confirm/reject flow
+- [Phase 09]: Station drag throttled to 30ms via performance.now refs; final moveStation dispatch fires on mouseup for position accuracy
 
 ### Pending Todos
 
@@ -98,6 +101,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-01T23:21:53.932Z
-Stopped at: Completed 08-02-PLAN.md Task 1 — awaiting human-verify checkpoint (Task 2)
+Last session: 2026-04-02T00:18:58.626Z
+Stopped at: Completed 09-01-PLAN.md
 Resume file: None
