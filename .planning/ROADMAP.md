@@ -217,4 +217,4 @@ Phases execute in numeric order: 6 -> 7 -> 8 -> 9 -> 10
 | 7. Full-Screen Layout and Floating Toolbars | v2.0 | 2/2 | Complete   | 2026-04-01 |
 | 8. Station-First Drawing Model | v2.0 | 1/2 | In Progress|  |
 | 9. Station Drag, Auto-Interchange, and Sidebar Panels | v2.0 | 1/2 | In Progress|  |
-| 10. Auto-Generated Station Names | v2.0 | 1/1 | Complete   | 2026-04-02 |
+| 10. Auto-Generated Station Names | v2.0 | 1/1 | Complete    | 2026-04-02 |
