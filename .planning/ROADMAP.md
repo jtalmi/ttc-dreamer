@@ -122,7 +122,7 @@ Plans:
 - [x] **Phase 7: Full-Screen Layout and Floating Toolbars** - Remove fixed header, float drawing and layer controls over the map, default sidebar to line list (completed 2026-04-01)
 - [ ] **Phase 8: Station-First Drawing Model** - Rewrite drawing session so stations are the atomic unit and lines auto-connect between them
 - [ ] **Phase 9: Station Drag, Auto-Interchange, and Sidebar Panels** - Enable station repositioning with live geometry, auto-interchanges at proposal crossings, and click-to-inspect panels
-- [ ] **Phase 10: Auto-Generated Station Names** - Suggest street-based names via Nominatim reverse geocoding at station placement time
+- [x] **Phase 10: Auto-Generated Station Names** - Suggest street-based names via Nominatim reverse geocoding at station placement time (completed 2026-04-02)
 
 ## Phase Details
 
@@ -199,7 +199,7 @@ Plans:
 **Plans**: 1 plan
 
 Plans:
-- [ ] 10-01-PLAN.md — Create Nominatim reverse geocoding utility with cache/fallback, wire into all station placement paths in toronto-map.tsx
+- [x] 10-01-PLAN.md — Create Nominatim reverse geocoding utility with cache/fallback, wire into all station placement paths in toronto-map.tsx
 
 ## Progress
 
@@ -217,4 +217,4 @@ Phases execute in numeric order: 6 -> 7 -> 8 -> 9 -> 10
 | 7. Full-Screen Layout and Floating Toolbars | v2.0 | 2/2 | Complete   | 2026-04-01 |
 | 8. Station-First Drawing Model | v2.0 | 1/2 | In Progress|  |
 | 9. Station Drag, Auto-Interchange, and Sidebar Panels | v2.0 | 1/2 | In Progress|  |
-| 10. Auto-Generated Station Names | v2.0 | 0/1 | Not started | - |
+| 10. Auto-Generated Station Names | v2.0 | 1/1 | Complete   | 2026-04-02 |

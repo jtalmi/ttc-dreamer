@@ -83,8 +83,8 @@ Requirements for v2.0 milestone: UI Revamp & Data Accuracy.
 ### Station Interaction
 
 - [x] **STATION-01**: User can drag a newly created proposal station to reposition it, and connected line geometry updates
-- [ ] **STATION-02**: When a station is placed, a name is auto-suggested based on nearest street/intersection data
-- [ ] **STATION-03**: User sees an inline name popover on station creation pre-filled with the street-based suggestion
+- [x] **STATION-02**: When a station is placed, a name is auto-suggested based on nearest street/intersection data
+- [x] **STATION-03**: User sees an inline name popover on station creation pre-filled with the street-based suggestion
 
 ### Sidebar
 
@@ -185,8 +185,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DRAW-04 | Phase 9 | Complete |
 | SIDE-02 | Phase 9 | Pending |
 | SIDE-03 | Phase 9 | Pending |
-| STATION-02 | Phase 10 | Pending |
-| STATION-03 | Phase 10 | Pending |
+| STATION-02 | Phase 10 | Complete |
+| STATION-03 | Phase 10 | Complete |
 
 **v1 Coverage:**
 - v1 requirements: 38 total
