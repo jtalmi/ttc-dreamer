@@ -97,6 +97,38 @@ export type PendingDeletion = {
   sharedLineCount?: number;
 };
 
+/** Which existing network a clicked baseline feature belongs to. */
+export type BaselineFeatureSystem = "ttc" | "go";
+
+/** Sidebar payload for an inspected baseline station. */
+export type BaselineStationInspection = {
+  type: "baseline-station";
+  /** Stable raw ID from the baseline dataset (OBJECTID for TTC/GO stations). */
+  sourceId: string;
+  system: BaselineFeatureSystem;
+  name: string;
+  position: [number, number];
+  address: string | null;
+  municipality: string | null;
+  accessibility: string | null;
+};
+
+/** Sidebar payload for an inspected baseline line. */
+export type BaselineLineInspection = {
+  type: "baseline-line";
+  /** Stable raw ID from the baseline dataset (OBJECTID or CORRIDOR_ID). */
+  sourceId: string;
+  system: BaselineFeatureSystem;
+  name: string;
+  color: string;
+  modeLabel: string;
+  status: string | null;
+  shortLabel: string | null;
+};
+
+/** Sidebar payload for any inspected baseline feature. */
+export type BaselineInspection = BaselineStationInspection | BaselineLineInspection;
+
 /** UI-only state for the editor chrome (toolbar, sidebar). */
 export type EditorChromeState = {
   activeTool: ToolMode;
@@ -106,16 +138,25 @@ export type EditorChromeState = {
   drawingSession: DrawingSession | null;
   /** Pending interchange suggestion waiting for user confirmation. */
   pendingInterchangeSuggestion: (InterchangeSuggestion & { stationName: string }) | null;
-  /** Currently selected element ID (line or station). */
+  /** Currently selected element ID (proposal or baseline). */
   selectedElementId: string | null;
   /** Which panel the sidebar is showing. */
-  sidebarPanel: "list" | "create" | "drawing-status" | "inspect-line" | "inspect-station";
+  sidebarPanel:
+    | "list"
+    | "create"
+    | "drawing-status"
+    | "inspect-line"
+    | "inspect-station"
+    | "inspect-baseline-line"
+    | "inspect-baseline-station";
   /** Current snap target position for rendering the snap cue ring. */
   snapPosition: [number, number] | null;
   /** Pending deletion waiting for user confirmation via dialog. */
   pendingDeletion: PendingDeletion | null;
-  /** ID of the currently inspected line or station (inspect tool). */
+  /** ID of the currently inspected line or station (proposal or baseline). */
   inspectedElementId: string | null;
+  /** Metadata for the currently inspected baseline feature, if any. */
+  inspectedBaseline: BaselineInspection | null;
   /** True when comparison (Before / Baseline View) mode is active. */
   comparisonMode: boolean;
 };

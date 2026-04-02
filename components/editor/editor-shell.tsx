@@ -20,6 +20,8 @@ import { LineCreationPanel } from "@/components/editor/sidebar/line-creation-pan
 import { ConfirmationDialog } from "@/components/editor/sidebar/confirmation-dialog";
 import { LineInspectorPanel } from "@/components/editor/sidebar/line-inspector-panel";
 import { StationInspectorPanel } from "@/components/editor/sidebar/station-inspector-panel";
+import { BaselineLineInspectorPanel } from "@/components/editor/sidebar/baseline-line-inspector-panel";
+import { BaselineStationInspectorPanel } from "@/components/editor/sidebar/baseline-station-inspector-panel";
 import { ProposalStatsPanel } from "@/components/editor/sidebar/proposal-stats-panel";
 import { ShareModal } from "@/components/sharing/share-modal";
 import SharedViewShell from "@/components/sharing/shared-view-shell";
@@ -298,6 +300,33 @@ export default function EditorShell() {
       );
     } else {
       // Inspected station was deleted — return to list
+      dispatch({ type: "closeInspector" });
+      sidebarContent = null;
+    }
+  } else if (chrome.sidebarPanel === "inspect-baseline-line") {
+    if (chrome.inspectedBaseline?.type === "baseline-line") {
+      sidebarContent = (
+        <BaselineLineInspectorPanel
+          line={chrome.inspectedBaseline}
+          draft={draft}
+          onClose={() => dispatch({ type: "closeInspector" })}
+        />
+      );
+    } else {
+      dispatch({ type: "closeInspector" });
+      sidebarContent = null;
+    }
+  } else if (chrome.sidebarPanel === "inspect-baseline-station") {
+    if (chrome.inspectedBaseline?.type === "baseline-station") {
+      sidebarContent = (
+        <BaselineStationInspectorPanel
+          station={chrome.inspectedBaseline}
+          draft={draft}
+          neighbourhoods={neighbourhoods}
+          onClose={() => dispatch({ type: "closeInspector" })}
+        />
+      );
+    } else {
       dispatch({ type: "closeInspector" });
       sidebarContent = null;
     }

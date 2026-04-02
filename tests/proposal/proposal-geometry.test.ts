@@ -369,7 +369,7 @@ describe("buildInProgressGeoJSON", () => {
     expect(result!.features[0].properties?.color).toBe("#E91E8C");
   });
 
-  it("includes the cursor position as the final coordinate when set", () => {
+  it("returns null when session has one station even with cursor position set", () => {
     const cursor: [number, number] = [-79.40, 43.67];
     const draft = makeDraft({
       stations: [makeStation({ id: "s1", position: [-79.38, 43.65] })],
@@ -380,12 +380,7 @@ describe("buildInProgressGeoJSON", () => {
       cursorPosition: cursor,
       mode: "new",
     };
-    const result = buildInProgressGeoJSON(session, draft, "#7B61FF");
-    expect(result).not.toBeNull();
-    const coords = (result!.features[0].geometry as GeoJSON.LineString).coordinates;
-    expect(coords).toHaveLength(2);
-    expect(coords[0]).toEqual([-79.38, 43.65]);
-    expect(coords[1]).toEqual(cursor);
+    expect(buildInProgressGeoJSON(session, draft, "#7B61FF")).toBeNull();
   });
 
   it("uses station positions from draft for multi-station line", () => {

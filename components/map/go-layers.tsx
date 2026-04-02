@@ -9,16 +9,13 @@ type GoLayersProps = Readonly<{
 }>;
 
 /**
- * Renders GO Transit rail corridor lines and station markers as context-only,
- * non-interactive layers visually subordinate to the TTC rapid transit layers.
- *
- * GO layers are intentionally excluded from interactiveLayerIds in TorontoMap
- * so they receive no hover or click events.
+ * Renders GO Transit rail corridor lines and station markers as context layers.
+ * TorontoMap decides whether these layers participate in selection.
  */
 export function GoLayers({ routes, stations }: GoLayersProps) {
   return (
     <>
-      {/* GO rail corridor lines — dashed, lower opacity, context-only */}
+      {/* GO rail corridor lines — dashed, lower opacity */}
       <Source id="go-routes" type="geojson" data={routes}>
         <Layer
           id="go-routes-line"
@@ -36,7 +33,7 @@ export function GoLayers({ routes, stations }: GoLayersProps) {
         />
       </Source>
 
-      {/* GO station markers — smaller white/green circles, non-interactive */}
+      {/* GO station markers — smaller white/green circles */}
       <Source id="go-stations" type="geojson" data={stations}>
         <Layer
           id="go-stations-circle"

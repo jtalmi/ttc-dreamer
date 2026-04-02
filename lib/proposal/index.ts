@@ -2,6 +2,10 @@
 
 // Types and constants from proposal-types.ts
 export type {
+  BaselineFeatureSystem,
+  BaselineInspection,
+  BaselineLineInspection,
+  BaselineStationInspection,
   BaselineMode,
   DrawingSession,
   EditorChromeState,

@@ -354,10 +354,6 @@ export default function TorontoMap({
 
     if (activeTool === "draw-line") {
       setIsOverSelectable(false);
-      // Dispatch cursor position update directly
-      dispatch?.({ type: "updateCursorPosition", payload: lngLat });
-      // Also call legacy callback for any external usage
-      onUpdateCursor?.(lngLat);
 
       // Compute snap target for snap cue ring
       if (map && draft) {
@@ -470,7 +466,6 @@ export default function TorontoMap({
     setDraggingStationId(null);
     lastDragPosition.current = null;
     if (activeTool === "draw-line") {
-      dispatch?.({ type: "updateCursorPosition", payload: null });
       onUpdateCursor?.(null);
     }
     dispatch?.({ type: "setSnapPosition", payload: null });
@@ -1039,7 +1034,21 @@ export default function TorontoMap({
       onClick={handleClick}
       onDblClick={handleDblClick}
       onLoad={() => {
-        if (mapRef.current) onMapReady?.(mapRef.current);
+        if (mapRef.current) {
+          // Strip base-map symbol (text/label) layers so they don't
+          // duplicate our custom ContextLabels. At onLoad, only the
+          // base-style layers exist — react-map-gl adds ours later.
+          const map = mapRef.current.getMap();
+          const style = map.getStyle();
+          if (style?.layers) {
+            for (const layer of style.layers) {
+              if (layer.type === "symbol") {
+                map.removeLayer(layer.id);
+              }
+            }
+          }
+          onMapReady?.(mapRef.current);
+        }
       }}
     >
       {/*

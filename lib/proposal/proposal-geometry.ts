@@ -103,27 +103,19 @@ export function buildProposalStationsGeoJSON(
 
 /**
  * Builds a GeoJSON FeatureCollection for the in-progress drawing session.
- * Returns null if no session is active or session has fewer than 2 coordinates
- * (station positions + optional cursor position).
- * Includes a ghost segment to the cursor position if cursorPosition is set.
+ * Returns null if no session is active or fewer than 2 stations are placed.
  */
 export function buildInProgressGeoJSON(
   session: DrawingSession | null,
   draft: ProposalDraft,
   lineColor: string,
 ): FeatureCollection | null {
-  if (!session || session.placedStationIds.length === 0) return null;
+  if (!session || session.placedStationIds.length < 2) return null;
 
   const coords: [number, number][] = deriveWaypointsFromStations(
     session.placedStationIds,
     draft.stations,
   );
-
-  if (session.cursorPosition !== null) {
-    coords.push(session.cursorPosition);
-  }
-
-  if (coords.length < 2) return null;
 
   const features: Feature[] = [
     {

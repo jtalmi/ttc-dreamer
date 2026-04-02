@@ -22,15 +22,6 @@ export function ContextLabels({ neighbourhoods, landmarks, streets }: ContextLab
       {/* Major street lines and name labels */}
       <Source id="major-streets" type="geojson" data={streets}>
         <Layer
-          id="major-streets-line"
-          type="line"
-          paint={{
-            "line-color": "#C8BFB0",
-            "line-width": 1,
-            "line-opacity": 0.5,
-          }}
-        />
-        <Layer
           id="major-streets-labels"
           type="symbol"
           layout={{

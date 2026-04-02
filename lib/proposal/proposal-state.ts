@@ -1,4 +1,5 @@
 import type {
+  BaselineInspection,
   BaselineMode,
   EditorShellState,
   InterchangeSuggestion,
@@ -182,7 +183,13 @@ type ClearProposalAction = {
 
 type InspectElementAction = {
   type: "inspectElement";
-  payload: { id: string; elementType: "line" | "station" };
+  payload:
+    | { id: string; elementType: "line" | "station" }
+    | {
+        id: string;
+        elementType: "baseline-line" | "baseline-station";
+        inspection: BaselineInspection;
+      };
 };
 
 type CloseInspectorAction = {
@@ -265,6 +272,7 @@ export function createInitialProposalDraft(): EditorShellState {
       snapPosition: null,
       pendingDeletion: null,
       inspectedElementId: null,
+      inspectedBaseline: null,
       comparisonMode: false,
     },
   };
@@ -963,6 +971,7 @@ export function proposalEditorReducer(
           sidebarPanel: "list",
           snapPosition: null,
           pendingInterchangeSuggestion: null,
+          inspectedBaseline: null,
         },
       };
 
@@ -971,8 +980,18 @@ export function proposalEditorReducer(
         ...state,
         chrome: {
           ...state.chrome,
+          selectedElementId: action.payload.id,
           inspectedElementId: action.payload.id,
-          sidebarPanel: action.payload.elementType === "line" ? "inspect-line" : "inspect-station",
+          inspectedBaseline:
+            "inspection" in action.payload ? action.payload.inspection : null,
+          sidebarPanel:
+            action.payload.elementType === "line"
+              ? "inspect-line"
+              : action.payload.elementType === "station"
+                ? "inspect-station"
+                : action.payload.elementType === "baseline-line"
+                  ? "inspect-baseline-line"
+                  : "inspect-baseline-station",
           sidebarOpen: true,
         },
       };
@@ -982,7 +1001,9 @@ export function proposalEditorReducer(
         ...state,
         chrome: {
           ...state.chrome,
+          selectedElementId: null,
           inspectedElementId: null,
+          inspectedBaseline: null,
           sidebarPanel: "list",
         },
       };
@@ -1012,6 +1033,7 @@ export function proposalEditorReducer(
           ...state.chrome,
           selectedElementId: null,
           inspectedElementId: null,
+          inspectedBaseline: null,
           sidebarPanel: "list",
           drawingSession: null,
           pendingDeletion: null,
